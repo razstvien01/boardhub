@@ -30,7 +30,7 @@ const kHeadTextStyle = TextStyle(
 //* Text style constants
 const kSubTextStyle = TextStyle(
   fontSize: 18.0,
-  color: kLightColor,
+  color: kAccentColor,
 );
 
 const kSmallTextStyle = TextStyle(

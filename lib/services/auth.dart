@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:rent_house/navbar.dart';
 import 'package:rent_house/signin/signin.dart';
 
 class AuthStateChange extends StatefulWidget {
@@ -27,6 +28,10 @@ class _AuthStateChangeState extends State<AuthStateChange> {
           return Center(
             child: CircularProgressIndicator(),
           );
+        }
+        else if(snapshot.hasData)
+        {
+          return NavBar();
         }
         else {
           return SignIn();
