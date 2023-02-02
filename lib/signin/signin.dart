@@ -4,9 +4,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/forgot/forgot.dart';
-import 'package:rent_house/signin/components/clear_full_button.dart';
+import 'package:rent_house/ud_widgets/clear_full_button.dart';
 import 'package:rent_house/signin/components/default_button.dart';
 import 'package:rent_house/ud_widgets/default_textfield.dart';
+import 'package:rent_house/ud_widgets/empty_appbar.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -52,6 +53,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: EmptyAppBar(),
       backgroundColor: kPrimaryColor,
       body: SingleChildScrollView(
         child: Container(

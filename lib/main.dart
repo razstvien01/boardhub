@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rent_house/services/auth.dart';
+import 'package:rent_house/signin/signin.dart';
 import 'package:rent_house/signup/signup.dart';
 import 'firebase_options.dart';
 
@@ -42,9 +43,9 @@ class MyApp extends StatelessWidget {
       //* App routes
       routes: {
       //   '/intro': (context) => const Intro(),
-      //   '/auth': (context) => const AuthStateChange(),
+        '/auth': (context) => const AuthStateChange(),
       //   '/onboard': (context) => const Onboard(),
-      //   '/onboard/signin': (context) => const SignIn(),
+        '/signin': (context) => const SignIn(),
         '/signup': (context) => const SignUp(),
       },
     );
