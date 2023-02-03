@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rent_house/drawer/nav_drawer.dart';
 import 'package:rent_house/services/auth.dart';
 import 'package:rent_house/signin/signin.dart';
 import 'package:rent_house/signup/signup.dart';

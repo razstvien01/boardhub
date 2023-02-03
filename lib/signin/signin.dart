@@ -54,7 +54,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: EmptyAppBar(),
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kBGColor,
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,

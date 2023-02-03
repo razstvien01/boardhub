@@ -1,4 +1,3 @@
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,44 +19,39 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int index = 0;
   final user = FirebaseAuth.instance.currentUser;
-  
-  List<Widget> widgetOptions()
-  {
-      return [
-        Home(),
-        Search(),
-        Bookmark(),
-      ];
-      // return (user?.email == "admin@gmail.com")
-      //   ? [
-      //       Home(articles: glbArticles),
-      //       Bookmark(bm: bm),
-      //       const Report(),
-      //       const Accounts(),
-      //       const Profile(),
-      //     ]
-      //   : [
-      //       Home(articles: glbArticles),
-      //       Bookmark(bm: bm),
-      //       const Profile(),
-      //     ];
+
+  List<Widget> widgetOptions() {
+    return [
+      Home(),
+      Search(),
+      Bookmark(),
+    ];
+    // return (user?.email == "admin@gmail.com")
+    //   ? [
+    //       Home(articles: glbArticles),
+    //       Bookmark(bm: bm),
+    //       const Report(),
+    //       const Accounts(),
+    //       const Profile(),
+    //     ]
+    //   : [
+    //       Home(articles: glbArticles),
+    //       Bookmark(bm: bm),
+    //       const Profile(),
+    //     ];
   }
-  
+
   List<String> titleList = [];
-  
+
   @override
-  void initState()
-  {
-    
-  }
-  
-  void onTap(int index)
-  {
+  void initState() {}
+
+  void onTap(int index) {
     setState(() {
       this.index = index;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[
@@ -65,37 +59,47 @@ class _NavBarState extends State<NavBar> {
       Icon(Icons.home, size: 25, color: kLightColor),
       Icon(Icons.search, size: 25, color: kLightColor),
       Icon(Icons.bookmark, size: 25, color: kLightColor),
-      
     ];
-    
+
     titleList = [
       "Home",
       "Search",
       "Bookmark",
     ];
-    
+
     return Scaffold(
-      extendBody: true,
-      backgroundColor: kPrimaryColor,
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        elevation: 0.0,
-        // title: Row(
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   children: [
-        //     Text(
-        //       titleList[index],
-        //       style: kHeadTextStyle,
-        //     ),
-        //   ],
-        // ),
+      // extendBody: true,
+      backgroundColor: kBGColor,
+      // appBar: AppBar(
+      //   backgroundColor: kPrimaryColor,
+      //   elevation: 0.0,
+
+      // title: Row(
+      //   mainAxisAlignment: MainAxisAlignment.start,
+      //   children: [
+      //     Text(
+      //       titleList[index],
+      //       style: kHeadTextStyle,
+      //     ),
+      //   ],
+      // ),
+      // ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(5.0),
+        
+        child: AppBar(
+          elevation: 0.0,
+          backgroundColor: kBGColor,
+          // title: Text('Home'),
+        ),
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
             .copyWith(iconTheme: IconThemeData(color: kPrimaryColor)),
         child: CurvedNavigationBar(
           color: kPrimaryColor,
-          backgroundColor: kPrimaryColor,
+          backgroundColor: kBGColor,
+          // backgroundColor: ,
           items: items,
           index: index,
           height: 60,

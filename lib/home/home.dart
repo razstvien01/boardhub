@@ -16,16 +16,16 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryColor,
-      body: Center(
-        child: Center(
-          child: DefaultButton(
-              btnText: 'Sign Out',
-              onPressed: FirebaseAuth.instance
-                  .signOut //* a method that signs out the user from database,
-              ),
-        ),
-      ),
+      backgroundColor: kBGColor,
+      // body: Center(
+      //   child: Center(
+      //     child: DefaultButton(
+      //         btnText: 'Sign Out',
+      //         onPressed: FirebaseAuth.instance
+      //             .signOut //* a method that signs out the user from database,
+      //         ),
+      //   ),
+      // ),
     );
   }
 }

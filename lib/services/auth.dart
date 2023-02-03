@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:rent_house/drawer/nav_drawer.dart';
 import 'package:rent_house/navbar.dart';
 import 'package:rent_house/signin/signin.dart';
 
@@ -31,7 +32,7 @@ class _AuthStateChangeState extends State<AuthStateChange> {
         }
         else if(snapshot.hasData)
         {
-          return NavBar();
+          return NavDrawer();
         }
         else {
           return SignIn();

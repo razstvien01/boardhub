@@ -14,7 +14,7 @@ class _BookmarkState extends State<Bookmark> {
   @override
   Widget build(BuildContext context) {
   return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kBGColor,
       body: Center(
         child: Center(
           child: Text(
