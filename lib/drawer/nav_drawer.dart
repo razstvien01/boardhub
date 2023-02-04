@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
 import 'dart:math';
 
-import 'package:rent_house/home/home.dart';
+import 'package:rent_house/screens/home/home.dart';
 import 'package:rent_house/navbar.dart';
 
 class NavDrawer extends StatefulWidget {
@@ -55,8 +55,10 @@ class _NavDrawerState extends State<NavDrawer> {
             child: Container(
               width: 200.0,
               padding: EdgeInsets.all(8.0),
-              child: Column(children: [
+              child: Column(
+                children: [
                 Expanded(
+                  flex: 1,
                   child: DrawerHeader(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -67,11 +69,11 @@ class _NavDrawerState extends State<NavDrawer> {
                               "https://scontent.fceb1-1.fna.fbcdn.net/v/t1.6435-9/106585158_747287316016240_935640362906304336_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=174925&_nc_eui2=AeHI1dgAXfNzynblv1fAew8rZ-2h2Sez125n7aHZJ7PXbgYTqVjRLlnzxjcQ78R61bdQdJiYymZ7zKBZ7SSUA5IQ&_nc_ohc=fiURfHCH8-YAX8TltIw&_nc_ht=scontent.fceb1-1.fna&oh=00_AfBcfbVmjbwb8UiYl28i_Ueg_NPYAICHo6TTNUTkO6-Ivw&oe=640459AD"),
                         ),
                         SizedBox(
-                          height: 10.0,
+                          height: 5.0,
                         ),
                         Text(
                           "Johan Liebert",
-                          style: kHeadTextStyle,
+                          style: kSubTextStyle,
                         ),
                       ],
                     ),
@@ -79,13 +81,16 @@ class _NavDrawerState extends State<NavDrawer> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: ListView(
-                    children: [
-                      TileButton(Icons.account_circle, "Profile", (){}),
-                      TileButton(Icons.color_lens, "Theme", (){}),
-                      TileButton(Icons.settings, "Settings", () {}),
-                      TileButton(Icons.logout, "Log out", FirebaseAuth.instance.signOut),
-                    ],
+                  child: Container(
+                    child: ListView(
+                      children: [
+                        TileButton(Icons.account_circle, "Profile", () {}),
+                        TileButton(Icons.color_lens, "Theme", () {}),
+                        TileButton(Icons.settings, "Settings", () {}),
+                        TileButton(Icons.logout, "Log out",
+                            FirebaseAuth.instance.signOut),
+                      ],
+                    ),
                   ),
                 ),
               ]),
@@ -113,7 +118,8 @@ class _NavDrawerState extends State<NavDrawer> {
                 //     child: Text("Swipe right to open the menu"),
                 //   ),
                 // ),
-                child: NavBar(),
+                // child: NavBar(),
+                child: Home(),
               ));
             },
           ),
@@ -127,6 +133,7 @@ class _NavDrawerState extends State<NavDrawer> {
             //     value == 0 ? value = 1 : value = 0;
             //   });
             // }
+            
             onHorizontalDragUpdate: (e) {
               // print(e.delta.dx);
               if (e.delta.dx > 0) {
@@ -138,6 +145,8 @@ class _NavDrawerState extends State<NavDrawer> {
                   value = 0;
                 });
               }
+              // print(e.delta.dx);
+              // print(e.delta.dy);
             },
           ),
         ],

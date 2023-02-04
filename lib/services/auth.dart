@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/drawer/nav_drawer.dart';
 import 'package:rent_house/navbar.dart';
-import 'package:rent_house/signin/signin.dart';
+import 'package:rent_house/screens/signin/signin.dart';
 
 class AuthStateChange extends StatefulWidget {
   const AuthStateChange({super.key});
@@ -33,6 +33,7 @@ class _AuthStateChangeState extends State<AuthStateChange> {
         else if(snapshot.hasData)
         {
           return NavDrawer();
+          // return NavBar();
         }
         else {
           return SignIn();

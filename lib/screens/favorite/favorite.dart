@@ -3,14 +3,14 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
 
-class Bookmark extends StatefulWidget {
-  const Bookmark({super.key});
+class Favorite extends StatefulWidget {
+  const Favorite({super.key});
 
   @override
-  State<Bookmark> createState() => _BookmarkState();
+  State<Favorite> createState() => _FavoriteState();
 }
 
-class _BookmarkState extends State<Bookmark> {
+class _FavoriteState extends State<Favorite> {
   @override
   Widget build(BuildContext context) {
   return Scaffold(

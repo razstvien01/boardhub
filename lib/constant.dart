@@ -34,10 +34,11 @@ const kHeadTextStyle = TextStyle(
 const kSubTextStyle = TextStyle(
   fontSize: 20.0,
   color: kLightColor,
+  fontWeight: FontWeight.bold
 );
 
 const kSmallTextStyle = TextStyle(
-  fontSize: 16.0,
+  fontSize: 14.0,
   color: kLightColor,
 );
 

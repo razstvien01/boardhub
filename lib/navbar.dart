@@ -1,13 +1,16 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
-import 'package:rent_house/home/home.dart';
-import 'package:rent_house/search/search.dart';
+import 'package:rent_house/drawer/nav_drawer.dart';
+import 'package:rent_house/screens/chat/char.dart';
+import 'package:rent_house/screens/home/home.dart';
+import 'package:rent_house/screens/search/search.dart';
 
-import 'bookmark/bookmark.dart';
+import 'screens/favorite/favorite.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -24,7 +27,8 @@ class _NavBarState extends State<NavBar> {
     return [
       Home(),
       Search(),
-      Bookmark(),
+      Favorite(),
+      Chat(),
     ];
     // return (user?.email == "admin@gmail.com")
     //   ? [
@@ -58,13 +62,16 @@ class _NavBarState extends State<NavBar> {
       // Icon(Icons.home, size: 25),
       Icon(Icons.home, size: 25, color: kLightColor),
       Icon(Icons.search, size: 25, color: kLightColor),
-      Icon(Icons.bookmark, size: 25, color: kLightColor),
+      Icon(CupertinoIcons.heart_fill, size: 25, color: kLightColor),
+      Icon(Icons.message, size: 25, color: kLightColor),
     ];
 
     titleList = [
       "Home",
       "Search",
-      "Bookmark",
+      "Favorites",
+      "Messages",
+      "Profile",
     ];
 
     return Scaffold(
