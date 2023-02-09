@@ -59,6 +59,7 @@ class _HomeState extends State<Home> {
               //   height: 10.0,
               // ),
               SuggestionList("Recommendation for you", Item.recommendation),
+              SuggestionList("Nearby you", Item.nearby),
             ],
           ),
         ),

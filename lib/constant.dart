@@ -31,11 +31,8 @@ const kHeadTextStyle = TextStyle(
 );
 
 //* Text style constants
-const kSubTextStyle = TextStyle(
-  fontSize: 20.0,
-  color: kLightColor,
-  fontWeight: FontWeight.bold
-);
+const kSubTextStyle =
+    TextStyle(fontSize: 20.0, color: kLightColor, fontWeight: FontWeight.bold);
 
 const kSmallTextStyle = TextStyle(
   fontSize: 14.0,
@@ -50,12 +47,28 @@ const kTitleTextStyle = TextStyle(
 const kCategoryTextStyle = TextStyle(
   fontSize: 32.0,
   color: kLightColor,
-  fontWeight: FontWeight.w500
+  fontWeight: FontWeight.w500,
+  overflow: TextOverflow.ellipsis,
+);
+
+TextStyle kAccentTextStyle = TextStyle(
+  fontWeight: FontWeight.normal,
+  fontSize: 18,
+  color: kAccentColor,
+  overflow: TextOverflow.ellipsis,
 );
 
 const kLightTextStyle = TextStyle(
   fontSize: 20.0,
   color: kLightColor,
+  overflow: TextOverflow.ellipsis,
+);
+
+TextStyle kPrimTextStyle = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 20,
+  color: kPrimaryColor,
+  overflow: TextOverflow.ellipsis,
 );
 
 //* Validators

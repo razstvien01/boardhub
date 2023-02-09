@@ -6,8 +6,9 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/drawer/nav_drawer.dart';
-import 'package:rent_house/screens/chat/char.dart';
+import 'package:rent_house/screens/chat/chat.dart';
 import 'package:rent_house/screens/home/home.dart';
+import 'package:rent_house/screens/profile/profile.dart';
 import 'package:rent_house/screens/search/search.dart';
 
 import 'screens/favorite/favorite.dart';
@@ -29,6 +30,7 @@ class _NavBarState extends State<NavBar> {
       Search(),
       Favorite(),
       Chat(),
+      Profile(),
     ];
     // return (user?.email == "admin@gmail.com")
     //   ? [
@@ -64,6 +66,7 @@ class _NavBarState extends State<NavBar> {
       Icon(Icons.search, size: 25, color: kLightColor),
       Icon(CupertinoIcons.heart_fill, size: 25, color: kLightColor),
       Icon(Icons.message, size: 25, color: kLightColor),
+      Icon(Icons.person_2, size: 25, color: kLightColor,)
     ];
 
     titleList = [
