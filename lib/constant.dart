@@ -42,6 +42,7 @@ const kSmallTextStyle = TextStyle(
 const kTitleTextStyle = TextStyle(
   fontSize: 22.0,
   color: kLightColor,
+  fontWeight: FontWeight.bold,
 );
 
 const kCategoryTextStyle = TextStyle(
