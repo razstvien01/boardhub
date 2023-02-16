@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       //   highlightColor: kTransparent,
       //   fontFamily: 'Jaapokki',
       // ),
-      home: NavBar(),
+      home: AuthStateChange(),
 
       //* App routes
       routes: {

@@ -65,7 +65,7 @@ class _ForgotState extends State<Forgot> {
                 flex: 1,
                 child: Center(
                   child: Text(
-                    'Rent Boarding House',
+                    'BoardHub',
                     style: kHeadTextStyle,
                   ),
                 ),

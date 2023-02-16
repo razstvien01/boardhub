@@ -97,7 +97,7 @@ class _SignUpState extends State<SignUp> {
                 flex: 1,
                 child: Center(
                   child: Text(
-                    'Rent Boarding House',
+                    'BoardHub',
                     style: kHeadTextStyle,
                   ),
                 ),

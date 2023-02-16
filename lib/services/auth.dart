@@ -32,8 +32,8 @@ class _AuthStateChangeState extends State<AuthStateChange> {
         }
         else if(snapshot.hasData)
         {
-          return NavDrawer();
-          // return NavBar();
+          // return NavDrawer();
+          return NavBar();
         }
         else {
           return SignIn();

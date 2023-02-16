@@ -64,7 +64,7 @@ class _SignInState extends State<SignIn> {
                 flex: 1,
                 child: Center(
                   child: Text(
-                    'Rent Boarding House',
+                    'BoardHub',
                     style: kHeadTextStyle,
                   ),
                 ),
