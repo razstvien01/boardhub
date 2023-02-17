@@ -38,7 +38,7 @@ class DefaultTextField extends StatelessWidget {
         textInputAction: TextInputAction.next,
         keyboardType: keyboardType,
         decoration: InputDecoration(
-          errorStyle: TextStyle(color: Colors.orange),
+          errorStyle: TextStyle(color: kPrimaryColor),
           hintText: hintText,
           hintStyle: kSmallTextStyle,
           iconColor: kPrimaryColor,

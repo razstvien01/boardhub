@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
+import 'package:rent_house/ud_widgets/default_textfield.dart';
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});
@@ -9,6 +10,13 @@ class UpdateProfile extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateProfile> {
+  final _userController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController1 = TextEditingController();
+  final _passwordController2 = TextEditingController();
+
+  // final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,10 +60,67 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   ),
                 ],
               ),
-              
-              SizedBox(height: 50,),
-              
-              // Form()
+              SizedBox(
+                height: 50,
+              ),
+              Form(
+                child: Column(
+                  children: [
+                    DefaultTextField(
+                      validator: (value) {
+                        return null;
+                      },
+                      controller: _userController,
+                      hintText: 'Username',
+                      icon: Icons.person,
+                      keyboardType: TextInputType.text,
+                      obscureText: false,
+                    ),
+                    SizedBox(
+                      height: kDefaultPadding,
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => UpdateProfile()),
+                          // );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: kPrimaryColor,
+                            side: BorderSide.none,
+                            shape: StadiumBorder()),
+                        child: Text(
+                          "Confirm",
+                          style: kSubTextStyle,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: kBigPadding,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: kAccentColor,
+                        elevation: 0,
+                        foregroundColor: kPrimaryColor,
+                        shape: StadiumBorder(),
+                        side: BorderSide.none,
+                        
+                      ),
+                      
+                      child: Text(
+                        "Delete Account",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

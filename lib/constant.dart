@@ -95,3 +95,16 @@ String? passwordValidator(String? value) {
   }
   return null;
 }
+
+String? nameValidator(String? value) {
+  if (value!.isEmpty) {
+    return 'Must be filled';
+  }
+  
+  if(RegExp('[a-zA-Z]').hasMatch(value))
+  {
+    return null;
+  }
+
+  return "Enter a Valid Name";
+}
