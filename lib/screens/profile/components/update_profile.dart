@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
+import 'package:rent_house/services/auth_service.dart';
 import 'package:rent_house/ud_widgets/default_textfield.dart';
 
 class UpdateProfile extends StatefulWidget {
-  const UpdateProfile({super.key});
+  final VoidCallback refresh;
+
+  UpdateProfile(this.refresh, {super.key});
 
   @override
   State<UpdateProfile> createState() => _UpdateProfileState();
@@ -11,11 +16,21 @@ class UpdateProfile extends StatefulWidget {
 
 class _UpdateProfileState extends State<UpdateProfile> {
   final _userController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController1 = TextEditingController();
-  final _passwordController2 = TextEditingController();
+  // final _emailController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _numberController = TextEditingController();
+  // final _passwordController1 = TextEditingController();
+  // final _passwordController2 = TextEditingController();
 
-  // final formKey = GlobalKey<FormState>();
+  final currUser = FirebaseAuth.instance.currentUser;
+
+  @override
+  void dispose() {
+    _userController.dispose();
+    _nameController.dispose();
+    _numberController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,16 +94,61 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     SizedBox(
                       height: kDefaultPadding,
                     ),
+                    DefaultTextField(
+                      validator: (value) {
+                        return null;
+                      },
+                      controller: _nameController,
+                      hintText: 'Full Name',
+                      icon: Icons.person_2,
+                      keyboardType: TextInputType.text,
+                      obscureText: false,
+                    ),
+                    SizedBox(
+                      height: kDefaultPadding,
+                    ),
+                    DefaultTextField(
+                      validator: (value) {
+                        return null;
+                      },
+                      controller: _numberController,
+                      hintText: 'Contact Number',
+                      icon: Icons.phone,
+                      keyboardType: TextInputType.text,
+                      obscureText: false,
+                    ),
+                    SizedBox(
+                      height: kDefaultPadding,
+                    ),
                     SizedBox(
                       width: 250,
                       height: 45,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => UpdateProfile()),
-                          // );
+                          //* if text is empty
+                          if (_userController.text.trim() == '' ||
+                              _nameController.text.trim() == '' ||
+                              _numberController.text.trim() == '') {
+                            // AlertDialog(
+                            //   content: Text("Don't leave the entry empty."),
+                            // );
+                            return;
+                          }
+
+                          //* update
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc('${currUser?.uid}')
+                              .update({
+                            'username': _userController.text.trim(),
+                            'fullname': _nameController.text.trim(),
+                            'contact number': _numberController.text.trim(),
+                          });
+
+                          widget.refresh();
+
+                          //* pop
+                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: kPrimaryColor,
@@ -104,16 +164,18 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       height: kBigPadding,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async{
+                        await AuthService().deleteUser();
+                        FirebaseAuth.instance.signOut();
+                        Navigator.pop(context);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kAccentColor,
                         elevation: 0,
                         foregroundColor: kPrimaryColor,
                         shape: StadiumBorder(),
                         side: BorderSide.none,
-                        
                       ),
-                      
                       child: Text(
                         "Delete Account",
                       ),
