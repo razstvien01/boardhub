@@ -27,7 +27,7 @@ class ClearFullButton extends StatelessWidget {
             ),
             TextSpan(
               text: colorText,
-              style: kLightTextStyle
+              style: kPrimTextStyle,
             ),
           ],
         ),

@@ -56,6 +56,7 @@ class _SignUpState extends State<SignUp> {
       'email': email,
       'enable': true,
       'bookmark': {},
+      'role': 'user',
     });
   }
 
@@ -108,14 +109,11 @@ class _SignUpState extends State<SignUp> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 100,),
-            Center(
-              child: Text(
-                'BoardHub',
-                style: kHeadTextStyle,
-              ),
+            SizedBox(height: 40,),
+            Image(
+              image: AssetImage(logo),
+              height: 190.0,
             ),
-            SizedBox(height: 70,),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/screens/forgot/forgot.dart';
+import 'package:rent_house/services/auth.dart';
 import 'package:rent_house/ud_widgets/clear_full_button.dart';
 import 'package:rent_house/screens/signin/components/default_button.dart';
 import 'package:rent_house/ud_widgets/default_textfield.dart';
@@ -28,6 +30,7 @@ class _SignInState extends State<SignIn> {
     _passwordController.dispose();
     super.dispose();
   }
+  
 
   Future signIn() async {
     try {
@@ -35,9 +38,10 @@ class _SignInState extends State<SignIn> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
       
+
       Navigator.of(context).pushNamedAndRemoveUntil('/auth', (route) => false);
-      
     } on FirebaseAuthException catch (e) {
       formKey.currentState!.validate();
       showDialog(
@@ -62,11 +66,9 @@ class _SignInState extends State<SignIn> {
             children: [
               Expanded(
                 flex: 1,
-                child: Center(
-                  child: Text(
-                    'BoardHub',
-                    style: kHeadTextStyle,
-                  ),
+                child: Image(
+                  image: AssetImage(logo),
+                  height: 190.0,
                 ),
               ),
               Expanded(

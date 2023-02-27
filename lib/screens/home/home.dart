@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
+import 'package:rent_house/screens/notification/notification.dart';
 import 'package:rent_house/screens/signin/components/default_button.dart';
 import 'package:rent_house/ud_widgets/search_field.dart';
 import 'package:rent_house/ud_widgets/select_category.dart';
@@ -20,6 +21,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       backgroundColor: kBGColor,
       appBar: AppBar(
         elevation: 0.0,
@@ -39,7 +41,14 @@ class _HomeState extends State<Home> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationUI()),
+                );
+            },
             icon: Icon(
               Icons.notifications,
               color: kPrimaryColor,
@@ -64,6 +73,20 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+      
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+        backgroundColor: kBGColor,
+        foregroundColor: kPrimaryColor,
+        shape: BeveledRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          side: BorderSide(color: kPrimaryColor, width: 3.0, style: BorderStyle.solid),
+        ),
+        // mini: true,
+      ),
+      
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

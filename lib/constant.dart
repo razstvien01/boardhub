@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 
+
+Map<String, dynamic> userGlbData = {};
+bool enable = true;
+
 // const kBGColor = Color.fromARGB(214, 0, 0, 0);
-Color kBGColor = (Colors.grey[850] as Color);
+Color kBGColor = (Colors.black as Color);
 // Color kBGColor = (Colors.red[500] as Color);
+
+
 const kLightColor = Colors.white;
-Color kAccentColor = (Colors.red[200] as Color);
-Color kPrimaryColor = Colors.red[500] as Color;
+Color kAccentColor = (Color.fromARGB(143, 255, 153, 0) as Color);
+Color kPrimaryColor = Color.fromARGB(255, 197, 89, 17);
+// const kPrimaryColor = Color.fromARGB(255, 255, 152, 0);
+
 
 //* Default appbar height
 const kAppBarHeight = 56.0;
@@ -23,6 +31,9 @@ const kFixPadding = 16.0;
 
 const kShape = 30.0;
 
+//* Images path
+const String logo = 'assets/images/logo.png';
+
 //* Text style constants
 const kHeadTextStyle = TextStyle(
   fontSize: 24.0,
@@ -37,6 +48,13 @@ const kSubTextStyle =
 const kSmallTextStyle = TextStyle(
   fontSize: 14.0,
   color: kLightColor,
+);
+
+
+const kMidItalicTextStyle = TextStyle(
+  fontSize: 16.0,
+  color: kLightColor,
+  fontStyle: FontStyle.italic,
 );
 
 const kTitleTextStyle = TextStyle(

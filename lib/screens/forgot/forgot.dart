@@ -62,12 +62,10 @@ class _ForgotState extends State<Forgot> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                flex: 1,
-                child: Center(
-                  child: Text(
-                    'BoardHub',
-                    style: kHeadTextStyle,
-                  ),
+                flex: 2,
+                child: Image(
+                  image: AssetImage(logo),
+                  height: 190.0,
                 ),
               ),
               Expanded(

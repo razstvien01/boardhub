@@ -2,18 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
-import 'package:rent_house/screens/blocked/blocked.dart';
+import 'package:rent_house/screens/accounts/accounts.dart';
 import 'package:rent_house/screens/profile/components/update_profile.dart';
 import 'package:rent_house/ud_widgets/profile_menu.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ProfileAdmin extends StatefulWidget {
+  const ProfileAdmin({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfileAdmin> createState() => _ProfileAdminState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileAdminState extends State<ProfileAdmin> {
   final currUser = FirebaseAuth.instance.currentUser;
   Map<String, dynamic> data = {};
 
@@ -37,13 +37,6 @@ class _ProfileState extends State<Profile> {
   Widget getUserInfo(context, snapshot) {
     if (snapshot.hasData) {
       data = snapshot.data!.data() as Map<String, dynamic>;
-
-      userGlbData = data;
-
-      if (!data['enable']) {
-        enable = data['enable'];
-        FirebaseAuth.instance.signOut();
-      }
 
       return profileUI(context);
     } else {
@@ -104,41 +97,72 @@ class _ProfileState extends State<Profile> {
             height: 20,
           ),
 
-          SizedBox(
-            width: 250,
-            height: 45,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpdateProfile(() {
-                            setState(() {});
-                          })),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimaryColor,
-                  side: BorderSide.none,
-                  shape: StadiumBorder()),
-              child: Text(
-                "Edit Profile",
-                style: kSubTextStyle,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
+          // SizedBox(
+          //   width: 250,
+          //   height: 45,
+          //   child: ElevatedButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => UpdateProfile(() {
+          //           setState(() {
+
+          //           });
+          //         })),
+          //       );
+          //     },
+          //     style: ElevatedButton.styleFrom(
+          //         backgroundColor: kPrimaryColor,
+          //         side: BorderSide.none,
+          //         shape: StadiumBorder()),
+          //     child: Text(
+          //       "Edit Profile",
+          //       style: kSubTextStyle,
+          //     ),
+          //   ),
+          // ),
           Divider(),
-          SizedBox(
-            height: 10,
-          ),
 
           //* Menu
           ProfileMenuWidget(
             title: "Settings",
             icon: Icons.settings,
+            onPress: () {},
+            textColor: kLightColor,
+          ),
+
+          SizedBox(
+            height: 5,
+          ),
+
+          ProfileMenuWidget(
+            title: "Manage Accounts",
+            icon: Icons.manage_accounts,
+            onPress: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Accounts()));
+            },
+            textColor: kLightColor,
+          ),
+
+          SizedBox(
+            height: 5,
+          ),
+
+          ProfileMenuWidget(
+            title: "View Log Report",
+            icon: Icons.report,
+            onPress: () {},
+            textColor: kLightColor,
+          ),
+
+          SizedBox(
+            height: 5,
+          ),
+
+          ProfileMenuWidget(
+            title: "View Report Bugs",
+            icon: Icons.bug_report,
             onPress: () {},
             textColor: kLightColor,
           ),
