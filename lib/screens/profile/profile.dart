@@ -5,6 +5,9 @@ import 'package:rent_house/constant.dart';
 import 'package:rent_house/screens/blocked/blocked.dart';
 import 'package:rent_house/screens/profile/components/update_profile.dart';
 import 'package:rent_house/ud_widgets/profile_menu.dart';
+import 'package:dropdown_button2/src/dropdown_button2.dart';
+
+import 'components/menu_item.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -52,6 +55,10 @@ class _ProfileState extends State<Profile> {
   }
 
   SingleChildScrollView profileUI(BuildContext context) {
+    // final List<Icon> items = [
+
+    // ]
+
     return SingleChildScrollView(
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -75,11 +82,58 @@ class _ProfileState extends State<Profile> {
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: kAccentColor),
-                  child: Icon(
-                    Icons.edit,
-                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.circular(100),
+                    color: kLightColor,
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      customButton: Icon(
+                        Icons.edit,
+                        size: 30,
+                        color: kPrimaryColor,
+                        
+                      ),
+                      items: [
+                        ...MenuItems.firstItems.map(
+                          (item) => DropdownMenuItem<MenuItem>(
+                            value: item,
+                            child: MenuItems.buildItem(item),
+                          ),
+                        ),
+                        // const DropdownMenuItem<Divider>(
+                        //     enabled: false, child: Divider()),
+                        // ...MenuItems.secondItems.map(
+                        //   (item) => DropdownMenuItem<MenuItem>(
+                        //     value: item,
+                        //     child: MenuItems.buildItem(item),
+                        //   ),
+                        // ),
+                      ],
+                      onChanged: (value) {
+                        MenuItems.onChanged(context, value as MenuItem);
+                      },
+                      dropdownStyleData: DropdownStyleData(
+                        width: 160,
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          // color: Colors.redAccent,
+                          color: kPrimaryColor,
+                        ),
+                        elevation: 8,
+                        offset: const Offset(0, 8),
+                      ),
+                      menuItemStyleData: MenuItemStyleData(
+                        customHeights: [
+                          ...List<double>.filled(
+                              MenuItems.firstItems.length, 48),
+                          // 8,
+                          // ...List<double>.filled(
+                          //     MenuItems.secondItems.length, 48),
+                        ],
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                      ),
+                    ),
                   ),
                 ),
               ),
