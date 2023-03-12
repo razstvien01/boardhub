@@ -1,4 +1,14 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'package:rent_house/constant.dart';
 
 class MenuItem {
   final String text;
@@ -12,13 +22,10 @@ class MenuItem {
 
 class MenuItems {
   static const List<MenuItem> firstItems = [camera, upload];
-  // static const List<MenuItem> firstItems = [home, share];
-  // static const List<MenuItem> secondItems = [logout];
 
   static const camera = MenuItem(text: 'Take a photo', icon: Icons.photo_camera);
   static const upload = MenuItem(text: 'Select a photo', icon: Icons.add_a_photo);
-  // static const settings = MenuItem(text: 'Settings', icon: Icons.settings);
-  // static const logout = MenuItem(text: 'Log Out', icon: Icons.logout);
+  
 
   static Widget buildItem(MenuItem item) {
     return Row(
@@ -38,13 +45,15 @@ class MenuItems {
     );
   }
 
-  static onChanged(BuildContext context, MenuItem item) {
+  static onChanged(BuildContext context, MenuItem item, Function function) {
     switch (item) {
       case MenuItems.camera:
-        //Do something
+        
+        function(ImageSource.camera);
         break;
       case MenuItems.upload:
-        //Do something
+        
+        function(ImageSource.gallery);
         break;
     }
   }

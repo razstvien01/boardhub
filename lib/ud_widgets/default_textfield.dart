@@ -7,10 +7,10 @@ class DefaultTextField extends StatelessWidget {
   final TextEditingController controller;
   final validator;
   final keyboardType, obscureText;
+  int maxLines;
   VoidCallback? isObscure;
 
-  DefaultTextField(
-    {
+  DefaultTextField({
     super.key,
     required this.hintText,
     required this.icon,
@@ -19,6 +19,7 @@ class DefaultTextField extends StatelessWidget {
     required this.validator,
     this.obscureText = false,
     this.isObscure,
+    this.maxLines = 1,
   });
 
   @override
@@ -29,9 +30,11 @@ class DefaultTextField extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(kShape)),
         color: kAccentColor,
-        
       ),
       child: TextFormField(
+        //maxLines: null,
+        minLines: 1,
+        maxLines: maxLines,
         validator: validator,
         controller: controller,
         cursorColor: kPrimaryColor,
@@ -47,12 +50,14 @@ class DefaultTextField extends StatelessWidget {
             icon,
             color: kLightColor,
           ),
-          suffixIcon: (TextInputType.visiblePassword == keyboardType) ? IconButton(
-            icon: Icon(
-              obscureText ? Icons.visibility : Icons.visibility_off,
-            ),
-            onPressed: this.isObscure,
-          ) : null,
+          suffixIcon: (TextInputType.visiblePassword == keyboardType)
+              ? IconButton(
+                  icon: Icon(
+                    obscureText ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: this.isObscure,
+                )
+              : null,
         ),
         style: kSmallTextStyle,
         obscureText: obscureText,

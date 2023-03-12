@@ -14,6 +14,7 @@ Color kAccentColor = (Color.fromARGB(143, 255, 153, 0) as Color);
 Color kPrimaryColor = Color.fromARGB(255, 197, 89, 17);
 // const kPrimaryColor = Color.fromARGB(255, 255, 152, 0);
 
+String? imageURL;
 
 //* Default appbar height
 const kAppBarHeight = 56.0;

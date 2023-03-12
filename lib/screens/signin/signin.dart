@@ -79,6 +79,7 @@ class _SignInState extends State<SignIn> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       DefaultTextField(
+                        maxLines: 1,
                         validator: emailValidator,
                         controller: _emailController,
                         hintText: 'Email Address',
@@ -90,6 +91,8 @@ class _SignInState extends State<SignIn> {
                         height: kFixPadding,
                       ),
                       DefaultTextField(
+                        
+                        maxLines: 1,
                         validator: passwordValidator,
                         controller: _passwordController,
                         hintText: 'Password',
