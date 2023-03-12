@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -34,8 +35,23 @@ class _ProfileState extends State<Profile> {
   
   final ImagePicker _picker = ImagePicker();
   
+  
+  
+  Future<void> downloadURL() async{
+    try
+    {
+      imageURL = await FirebaseStorage.instance.ref('profile/${currUser?.uid}' + 'profile_pic').getDownloadURL();
+    }
+    catch(e)
+    {
+      
+    }
+  }
+  
   Future _uploadFile(String path) async{
-    final ref = FirebaseStorage.instance.ref().child('images').child('${DateTime.now().toIso8601String() + p.basename(path)}');
+    // final ref = FirebaseStorage.instance.ref().child('images').child('${DateTime.now().toIso8601String() + p.basename(path)}');
+    final ref = FirebaseStorage.instance.ref().child('profile').child('${currUser?.uid}' + 'profile_pic');
+    
     
     final result = await ref.putFile(File(path));
     final fileUrl = await result.ref.getDownloadURL();
@@ -100,6 +116,14 @@ class _ProfileState extends State<Profile> {
       data = snapshot.data!.data() as Map<String, dynamic>;
 
       userGlbData = data;
+      
+      try{
+        downloadURL();
+      } catch(e)
+      {
+        
+      }
+      
 
       if (!data['enable']) {
         enable = data['enable'];
@@ -113,9 +137,6 @@ class _ProfileState extends State<Profile> {
   }
 
   SingleChildScrollView profileUI(BuildContext context) {
-    // final List<Icon> items = [
-
-    // ]
 
     return SingleChildScrollView(
       child: Column(
@@ -127,13 +148,6 @@ class _ProfileState extends State<Profile> {
           ),
           Stack(
             children: [
-              // CircleAvatar(
-              //   radius: 50.0,
-              //   backgroundImage: NetworkImage(
-              //     "https://scontent.fceb1-1.fna.fbcdn.net/v/t1.6435-9/106585158_747287316016240_935640362906304336_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=174925&_nc_eui2=AeHI1dgAXfNzynblv1fAew8rZ-2h2Sez125n7aHZJ7PXbgYTqVjRLlnzxjcQ78R61bdQdJiYymZ7zKBZ7SSUA5IQ&_nc_ohc=fiURfHCH8-YAX8TltIw&_nc_ht=scontent.fceb1-1.fna&oh=00_AfBcfbVmjbwb8UiYl28i_Ueg_NPYAICHo6TTNUTkO6-Ivw&oe=640459AD",
-              //   ),
-              // ),
-
               if (imageURL == null)
                 Icon(
                   Icons.person,
