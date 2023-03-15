@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:rent_house/constant.dart';
 
 class SelectCategory extends StatefulWidget {
@@ -47,9 +48,12 @@ class _SelectCategoryState extends State<SelectCategory> {
         scrollDirection: Axis.horizontal,
         children: [
           categoryButton(Icons.house_rounded, "House"),
-          categoryButton(Icons.villa_rounded, "Villa"),
+          categoryButton(Icons.landscape, "Land"),
           categoryButton(Icons.apartment_rounded, "Apartment"),
+          categoryButton(LineIcons.building, 'Condo'),
+          categoryButton(Icons.villa_rounded, "Villa"),
           categoryButton(Icons.castle_rounded, "Castles"),
+          
         ],
       ),
     );

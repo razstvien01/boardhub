@@ -7,7 +7,7 @@ import 'package:rent_house/constant.dart';
 import 'package:rent_house/screens/forgot/forgot.dart';
 import 'package:rent_house/services/auth.dart';
 import 'package:rent_house/ud_widgets/clear_full_button.dart';
-import 'package:rent_house/screens/signin/components/default_button.dart';
+import 'package:rent_house/ud_widgets/default_button.dart';
 import 'package:rent_house/ud_widgets/default_textfield.dart';
 import 'package:rent_house/ud_widgets/empty_appbar.dart';
 

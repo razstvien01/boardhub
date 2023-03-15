@@ -13,10 +13,12 @@ class DefaultButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 45,
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(vertical: kDefaultPadding),
       padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: TextButton(
+        
         onPressed: onPressed,
         child: Text(btnText.toUpperCase()),
         style: TextButton.styleFrom(

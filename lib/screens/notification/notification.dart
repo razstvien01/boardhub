@@ -28,7 +28,7 @@ class _NotificationUIState extends State<NotificationUI> {
           color: kPrimaryColor,
         ),
         title: Text(
-          "Edit Profile",
+          "Notifications",
           style: kSubTextStyle,
         ),
       ),

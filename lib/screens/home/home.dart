@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/add_property/add_property.dart';
 import 'package:rent_house/screens/notification/notification.dart';
-import 'package:rent_house/screens/signin/components/default_button.dart';
+import 'package:rent_house/ud_widgets/default_button.dart';
 import 'package:rent_house/ud_widgets/search_field.dart';
 import 'package:rent_house/ud_widgets/select_category.dart';
 import 'package:rent_house/ud_widgets/suggestion_list.dart';
@@ -21,8 +22,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  
+  
+  
+  
   @override
   Widget build(BuildContext context) {
+    
+    
     return Scaffold(
       backgroundColor: kBGColor,
       appBar: AppBar(
@@ -36,7 +43,7 @@ class _HomeState extends State<Home> {
               color: kPrimaryColor,
             ),
             Text(
-              "Cebu City, Philippines",
+              theCurrLoc as String,
               style: kSubTextStyle,
             ),
           ],
@@ -67,26 +74,13 @@ class _HomeState extends State<Home> {
               // SizedBox(
               //   height: 10.0,
               // ),
-              SuggestionList("Recommendation for you", Item.recommendation),
-              SuggestionList("Nearby you", Item.nearby),
+              SuggestionList("Recommendation for you", []),
+              SuggestionList("Nearby you", []),
             ],
           ),
         ),
       ),
 
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-
-      //   },
-      //   child: Icon(Icons.add),
-      //   backgroundColor: kBGColor,
-      //   foregroundColor: kPrimaryColor,
-      //   shape: BeveledRectangleBorder(
-      //     borderRadius: BorderRadius.circular(20.0),
-      //     side: BorderSide(color: kPrimaryColor, width: 3.0, style: BorderStyle.solid),
-      //   ),
-      //   // mini: true,
-      // ),
       floatingActionButton: SpeedDial(
         icon: Icons.add_home,
         backgroundColor: kBGColor,
@@ -116,23 +110,28 @@ class _HomeState extends State<Home> {
                 textColor: Colors.white,
                 fontSize: 16.0,
               );
-              
+
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddProperty(property_type: 'House')),
+                MaterialPageRoute(
+                    builder: (context) => AddProperty(
+                          property_type: 'House',
+                          refresh: () => setState(() {}),
+                        )),
               );
             },
           ),
+          
           SpeedDialChild(
             backgroundColor: kBGColor,
             child: Icon(
-              Icons.villa,
+              LineIcons.building,
               color: kPrimaryColor,
             ),
-            label: 'Villa',
+            label: 'Land',
             onTap: () {
               Fluttertoast.showToast(
-                msg: "Villa Selected . . .",
+                msg: "Land Selected . . .",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
@@ -140,13 +139,18 @@ class _HomeState extends State<Home> {
                 textColor: Colors.white,
                 fontSize: 16.0,
               );
-              
+
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddProperty(property_type: 'Villa')),
+                MaterialPageRoute(
+                    builder: (context) => AddProperty(
+                          property_type: 'Land',
+                          refresh: () => setState(() {}),
+                        )),
               );
             },
           ),
+          
           SpeedDialChild(
             backgroundColor: kBGColor,
             child: Icon(
@@ -166,15 +170,119 @@ class _HomeState extends State<Home> {
                 textColor: Colors.white,
                 fontSize: 16.0,
               );
-              
-              
+
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddProperty(property_type: 'Apartment')),
+                MaterialPageRoute(
+                    builder: (context) => AddProperty(
+                          property_type: 'Apartment',
+                          refresh: () => setState(() {}),
+                        )),
+              );
+              
+              
+              
+            },
+          ),
+          
+          SpeedDialChild(
+            backgroundColor: kBGColor,
+            child: Icon(
+              LineIcons.building,
+              color: kPrimaryColor,
+            ),
+            label: 'Condo',
+            onTap: () {
+              print('ontap');
+              // Fluttertoast.showToast(msg: "RANDOM", fontSize: 18, );
+              Fluttertoast.showToast(
+                msg: "Condo Selected . . .",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: kAccentColor,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddProperty(
+                          property_type: 'Condo',
+                          refresh: () => setState(() {}),
+                        )),
+              );
+              
+              
+              
+            },
+          ),
+          
+          SpeedDialChild(
+            backgroundColor: kBGColor,
+            child: Icon(
+              Icons.villa,
+              color: kPrimaryColor,
+            ),
+            label: 'Villa',
+            onTap: () {
+              Fluttertoast.showToast(
+                msg: "Villa Selected . . .",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: kAccentColor,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddProperty(
+                          property_type: 'Villa',
+                          refresh: () => setState(() {}),
+                        )),
               );
             },
           ),
+          
+          
+          SpeedDialChild(
+            backgroundColor: kBGColor,
+            child: Icon(
+              Icons.castle,
+              color: kPrimaryColor,
+            ),
+            label: 'Castle',
+            onTap: () {
+              Fluttertoast.showToast(
+                msg: "Castle Selected . . .",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: kAccentColor,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddProperty(
+                          property_type: 'Castle',
+                          refresh: () => setState(() {}),
+                        )),
+              );
+              
+              
+            },
+          ),
+          
+          
         ],
+        
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

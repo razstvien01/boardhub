@@ -56,7 +56,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   CircleAvatar(
                     radius: 50.0,
                     backgroundImage: NetworkImage(
-                        "https://scontent.fceb1-1.fna.fbcdn.net/v/t1.6435-9/106585158_747287316016240_935640362906304336_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=174925&_nc_eui2=AeHI1dgAXfNzynblv1fAew8rZ-2h2Sez125n7aHZJ7PXbgYTqVjRLlnzxjcQ78R61bdQdJiYymZ7zKBZ7SSUA5IQ&_nc_ohc=fiURfHCH8-YAX8TltIw&_nc_ht=scontent.fceb1-1.fna&oh=00_AfBcfbVmjbwb8UiYl28i_Ueg_NPYAICHo6TTNUTkO6-Ivw&oe=640459AD"),
+                        profileImageURL as String,
+                        ),
                   ),
                   Positioned(
                     bottom: 0,
@@ -172,7 +173,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kAccentColor,
                         elevation: 0,
-                        foregroundColor: kPrimaryColor,
+                        foregroundColor: kLightColor,
                         shape: StadiumBorder(),
                         side: BorderSide.none,
                       ),

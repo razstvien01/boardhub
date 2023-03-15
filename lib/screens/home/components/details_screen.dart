@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
@@ -92,12 +93,44 @@ class _DetailsSreenState extends State<DetailsSreen> {
                     ),
                   ],
                 ),
+                Row(
+                  children: [
+                    Text(
+                      'posted by ',
+                      style: kSmallTextStyle,
+                    ),
+                    FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance
+                            .collection("users")
+                            .doc('${widget.item.tenantID}')
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return CircularProgressIndicator();
+
+                          Map<String, dynamic> data =
+                              snapshot.data!.data() as Map<String, dynamic>;
+
+                          return Text(
+                            data['fullname'],
+                            style: kSubTextStyle,
+                          );
+                        }),
+                  ],
+                ),
+
+                SizedBox(
+                  height: 8.0,
+                ),
+
                 Text(
                   widget.item.description!,
                   style: kSmallTextStyle,
                 ),
                 // Expanded(child: Container()),
-                SizedBox(height: 8.0,),
+                SizedBox(
+                  height: 8.0,
+                ),
                 Container(
                   width: double.infinity,
                   height: 60.0,
@@ -112,12 +145,11 @@ class _DetailsSreenState extends State<DetailsSreen> {
                     ),
                     fillColor: kPrimaryColor,
                     child: Text(
-                      "Rent Now",
+                      "Contact Tenant",
                       style: kLightTextStyle,
                     ),
                   ),
                 ),
-                
               ],
             )),
       ),

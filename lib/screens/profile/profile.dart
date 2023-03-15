@@ -32,32 +32,29 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final currUser = FirebaseAuth.instance.currentUser;
   Map<String, dynamic> data = {};
-  
+
   final ImagePicker _picker = ImagePicker();
-  
-  
-  
-  Future<void> downloadURL() async{
-    try
-    {
-      imageURL = await FirebaseStorage.instance.ref('profile/${currUser?.uid}' + 'profile_pic').getDownloadURL();
-    }
-    catch(e)
-    {
-      
-    }
+
+  Future<void> downloadURL() async {
+    try {
+      profileImageURL = await FirebaseStorage.instance
+          .ref('profile/${currUser?.uid}' + 'profile_pic')
+          .getDownloadURL();
+    } catch (e) {}
   }
-  
-  Future _uploadFile(String path) async{
+
+  Future _uploadFile(String path) async {
     // final ref = FirebaseStorage.instance.ref().child('images').child('${DateTime.now().toIso8601String() + p.basename(path)}');
-    final ref = FirebaseStorage.instance.ref().child('profile').child('${currUser?.uid}' + 'profile_pic');
-    
-    
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('profile')
+        .child('${currUser?.uid}' + 'profile_pic');
+
     final result = await ref.putFile(File(path));
     final fileUrl = await result.ref.getDownloadURL();
-    
+
     setState(() {
-      imageURL = fileUrl;
+      profileImageURL = fileUrl;
     });
   }
 
@@ -67,7 +64,7 @@ class _ProfileState extends State<Profile> {
 
     final result = await FlutterImageCompress.compressAndGetFile(path, newPath,
         quality: quality);
-        
+
     return result!;
   }
 
@@ -89,10 +86,9 @@ class _ProfileState extends State<Profile> {
     }
 
     final imageFile = await compressImage(file.path, 35);
-    
+
     await _uploadFile(imageFile.path);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -116,14 +112,10 @@ class _ProfileState extends State<Profile> {
       data = snapshot.data!.data() as Map<String, dynamic>;
 
       userGlbData = data;
-      
-      try{
+
+      try {
         downloadURL();
-      } catch(e)
-      {
-        
-      }
-      
+      } catch (e) {}
 
       if (!data['enable']) {
         enable = data['enable'];
@@ -137,7 +129,6 @@ class _ProfileState extends State<Profile> {
   }
 
   SingleChildScrollView profileUI(BuildContext context) {
-
     return SingleChildScrollView(
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -148,20 +139,16 @@ class _ProfileState extends State<Profile> {
           ),
           Stack(
             children: [
-              if (imageURL == null)
-                Icon(
-                  Icons.person,
-                  size: 100,
-                  color: Colors.white,
-                ),
-                
-              if(imageURL != null)
-                CircleAvatar(
-                  radius: 50.0,
-                  backgroundImage: NetworkImage(imageURL as String),
-                ),
-              
-
+              (profileImageURL == null)
+                  ? Icon(
+                      Icons.person,
+                      size: 100,
+                      color: Colors.white,
+                    )
+                  : CircleAvatar(
+                      radius: 50.0,
+                      backgroundImage: NetworkImage(profileImageURL as String),
+                    ),
               Positioned(
                 bottom: 0,
                 right: 0,
@@ -196,9 +183,9 @@ class _ProfileState extends State<Profile> {
                         // ),
                       ],
                       onChanged: (value) {
-                        MenuItems.onChanged(context, value as MenuItem, _pickImage);
+                        MenuItems.onChanged(
+                            context, value as MenuItem, _pickImage);
                       },
-                      
                       dropdownStyleData: DropdownStyleData(
                         width: 160,
                         padding: const EdgeInsets.symmetric(vertical: 6),
