@@ -41,7 +41,7 @@ class _AddPropertyState extends State<AddProperty> {
 
   final currUser = FirebaseAuth.instance.currentUser;
 
-  final List<String> locations = ['Cebu City, Cebu', 'Talisay Citty, Cebu'];
+  final List<String> locations = ['Cebu City, Cebu', 'Talisay City, Cebu'];
   String? selectedLocation;
 
   final ImagePicker _picker = ImagePicker();

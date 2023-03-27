@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 Map<String, dynamic> userGlbData = {};
 bool enable = true;
+String? profileImageURL;
+String? theCurrLoc = "Cebu City, Cebu";
+
 
 // const kBGColor = Color.fromARGB(214, 0, 0, 0);
 Color kBGColor = (Colors.black as Color);
@@ -13,10 +16,6 @@ const kLightColor = Colors.white;
 Color kAccentColor = (Color.fromARGB(143, 255, 153, 0) as Color);
 Color kPrimaryColor = Color.fromARGB(255, 197, 89, 17);
 // const kPrimaryColor = Color.fromARGB(255, 255, 152, 0);
-
-String? profileImageURL;
-
-String? theCurrLoc = "Cebu City, Cebu";
 
 //* Default appbar height
 const kAppBarHeight = 56.0;

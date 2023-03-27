@@ -90,7 +90,7 @@ class _SuggestionListState extends State<SuggestionList> {
             // SizedBox(height: 12.0),
 
             Container(
-              height: 340.0,
+              height: 300.0,
               width: double.infinity,
               
               child: ListView.builder(

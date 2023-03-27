@@ -78,7 +78,10 @@ class _SignUpState extends State<SignUp> {
             _nameController.text.trim(),
             _numberController.text.trim(),
             _emailController.text.trim());
-
+        
+        
+        profileImageURL = null;
+        
         // Navigator.of(context)
         //     .pushNamedAndRemoveUntil('/auth', (route) => false);
         Navigator.of(context).pushReplacementNamed('/auth');

@@ -51,14 +51,25 @@ class _UpdateProfileState extends State<UpdateProfile> {
         child: Container(
           child: Column(
             children: [
+              
               Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 50.0,
-                    backgroundImage: NetworkImage(
-                        profileImageURL as String,
-                        ),
-                  ),
+                  // CircleAvatar(
+                  //   radius: 50.0,
+                  //   backgroundImage: NetworkImage(
+                  //       profileImageURL as String,
+                  //       ),
+                  // ),
+                  (profileImageURL == null)
+                  ? Icon(
+                      Icons.person,
+                      size: 100,
+                      color: Colors.white,
+                    )
+                  : CircleAvatar(
+                      radius: 50.0,
+                      backgroundImage: NetworkImage(profileImageURL as String),
+                    ),
                   Positioned(
                     bottom: 0,
                     right: 0,

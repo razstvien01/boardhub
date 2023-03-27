@@ -40,7 +40,8 @@ class _SignInState extends State<SignIn> {
       );
 
       
-
+      profileImageURL = null;
+      
       Navigator.of(context).pushNamedAndRemoveUntil('/auth', (route) => false);
     } on FirebaseAuthException catch (e) {
       formKey.currentState!.validate();

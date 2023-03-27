@@ -8,6 +8,7 @@ import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/add_property/add_property.dart';
 import 'package:rent_house/screens/notification/notification.dart';
+import 'package:rent_house/select_locations/select_locations.dart';
 import 'package:rent_house/ud_widgets/default_button.dart';
 import 'package:rent_house/ud_widgets/search_field.dart';
 import 'package:rent_house/ud_widgets/select_category.dart';
@@ -38,9 +39,25 @@ class _HomeState extends State<Home> {
         toolbarHeight: 80.0,
         title: Row(
           children: [
-            Icon(
-              Icons.location_on,
-              color: kPrimaryColor,
+            // Icon(
+            //   Icons.location_on,
+            //   color: kPrimaryColor,
+            // ),
+            IconButton(
+              icon: Icon(
+                Icons.location_on,
+                color: kPrimaryColor
+              ), onPressed: () {
+                
+                
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SelectLocation(refresh: () {setState(() {
+                  
+                });})),
+              );
+                
+                },
             ),
             Text(
               theCurrLoc as String,

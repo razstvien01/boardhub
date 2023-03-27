@@ -115,7 +115,10 @@ class _ProfileState extends State<Profile> {
 
       try {
         downloadURL();
-      } catch (e) {}
+      } catch (e) {
+        print("Download URL");
+        print(e);
+      }
 
       if (!data['enable']) {
         enable = data['enable'];
