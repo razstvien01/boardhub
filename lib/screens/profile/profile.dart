@@ -112,6 +112,8 @@ class _ProfileState extends State<Profile> {
       data = snapshot.data!.data() as Map<String, dynamic>;
 
       userGlbData = data;
+      
+      //print(userGlbData['bookmark']);
 
       try {
         downloadURL();

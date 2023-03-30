@@ -87,7 +87,10 @@ class _DetailsSreenState extends State<DetailsSreen> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print("Add favorite") ;                     
+                        
+                        },
                       icon: Icon(Icons.favorite_border_outlined),
                       color: kPrimaryColor,
                     ),

@@ -28,27 +28,6 @@ class _SuggestionListState extends State<SuggestionList> {
       
       int i = 0;
       for (var k in data.keys) {
-        print(++i);
-        print(k);
-
-        // for (var v in data.values) {
-        //   print(v['price']);
-
-        //   widget.items.add(Item(
-        //     v['title'],
-        //     v['type'],
-        //     v['location'],
-        //     v['price'],
-        //     v['imageUrl'],
-        //     v['description'],
-        //     //userData['fullname'],
-        //     v['uid'],
-        //     k,
-        //   ));
-        // }
-        
-        print(data[k]['title']);
-        
           widget.items.add(Item(
             data[k]['title'],
             data[k]['type'],
@@ -61,8 +40,6 @@ class _SuggestionListState extends State<SuggestionList> {
             k,
           ));
       }
-      
-      print(widget.items.length);
 
       return Container(
         child: Column(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 
 Map<String, dynamic> userGlbData = {};
+Map<String, dynamic> favItems = {};
 bool enable = true;
 String? profileImageURL;
 String? theCurrLoc = "Cebu City, Cebu";
