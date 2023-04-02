@@ -15,8 +15,26 @@ class ItemCard extends StatefulWidget {
 }
 
 class _ItemCardState extends State<ItemCard> {
+  final user = FirebaseFirestore.instance
+      .collection("users")
+      .doc("${FirebaseAuth.instance.currentUser?.uid}");
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    for (var key in userGlbData['bookmark'].keys) {
+      if(key == widget.item.dateTime)
+      {
+        setState(() {
+          widget.item.favorite = true;
+        });
+      }
+    }
+    
     return Container(
       width: 300.0,
       margin: EdgeInsets.only(right: 20.0),
@@ -94,55 +112,15 @@ class _ItemCardState extends State<ItemCard> {
                   ),
                   IconButton(
                     onPressed: () {
-                      print("Fav button pressed");
                       setState(() {
                         widget.item.favorite = !(widget.item.favorite!);
+
+                        //print((widget.item.dateTime == userGlbData['bookmark'][widget.item.dateTime]));
+                        //print(userGlbData['bookmark'][widget.item.dateTime]);
                       });
 
-                      //userGlbData['bookmark']
-                      final user = FirebaseFirestore.instance
-                          .collection("users")
-                          .doc("${FirebaseAuth.instance.currentUser?.uid}");
-                      
-                      // if (userGlbData['bookmark'][widget.item.dateTime] ==
-                      //     null) {
-                      //   // userGlbData['bookmark'][widget.item.dateTime] = {
-                      //   //   'description': widget.item.description,
-                      //   //   'imageUrl': widget.item.thumb_url,
-                      //   //   'location': widget.item.location,
-                      //   //   'price': widget.item.price,
-                      //   //   'type': widget.item.category,
-                      //   //   'title': widget.item.title,
-                      //   //   'uid': widget.item.tenantID
-                      //   // };
-                      //   print(userGlbData);
-                      // }
-                      // if(favItems[widget.item.dateTime] == null)
-                      // {
-
-                      //   favItems[widget.item.dateTime] =
-                      //   {
-                      //     'description': widget.item.description,
-                      //     'imageUrl': widget.item.thumb_url,
-                      //     'location': widget.item.location,
-                      //     'price': widget.item.price,
-                      //     'type': widget.item.category,
-                      //     'title': widget.item.title,
-                      //     'uid': widget.item.tenantID
-                      //   };
-                      // }
-                      // else{
-                      //   favItems.remove(widget.item.dateTime);
-                      // }
-                      
-                      // else
-                      // {
-                      //   userGlbData['bookmark'].remove(widget.item.dateTime);
-                      // }
-                      
-                      if(userGlbData['bookmark'][widget.item.dateTime] == null)
-                      {
-                        print("Pass here");
+                      if (userGlbData['bookmark'][widget.item.dateTime] ==
+                          null) {
                         userGlbData['bookmark'][widget.item.dateTime] = {
                           'description': widget.item.description,
                           'imageUrl': widget.item.location,
@@ -152,13 +130,11 @@ class _ItemCardState extends State<ItemCard> {
                           'title': widget.item.title,
                           'uid': widget.item.tenantID,
                         };
-                      }
-                      else{
+                      } else {
                         userGlbData['bookmark'].remove(widget.item.dateTime);
                       }
-                      
-                      print(userGlbData['bookmark']);
-                      
+
+                      //print(userGlbData['bookmark']);
 
                       user.update({
                         'bookmark': userGlbData['bookmark'],

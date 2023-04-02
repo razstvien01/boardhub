@@ -21,8 +21,6 @@ class _SuggestionListState extends State<SuggestionList> {
   Widget getPropertiesInfo(context, snapshot) {
     if (snapshot.hasData) {
       Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-
-      //print(data);
       
       widget.items = [];
       
@@ -49,10 +47,6 @@ class _SuggestionListState extends State<SuggestionList> {
               children: [
                 Text(
                   widget.title!,
-                  // style: TextStyle(
-                  //   fontSize: 16,
-                  //   color: kLightColor,
-                  // ),
                   style: kSubTextStyle,
                 ),
                 TextButton(
