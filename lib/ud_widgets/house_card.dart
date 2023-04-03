@@ -123,8 +123,8 @@ class _ItemCardState extends State<ItemCard> {
                           null) {
                         userGlbData['bookmark'][widget.item.dateTime] = {
                           'description': widget.item.description,
-                          'imageUrl': widget.item.location,
-                          'location': widget.item.price,
+                          'imageUrl': widget.item.thumb_url,
+                          'location': widget.item.location,
                           'price': widget.item.price,
                           'type': widget.item.category,
                           'title': widget.item.title,
@@ -135,10 +135,11 @@ class _ItemCardState extends State<ItemCard> {
                       }
 
                       //print(userGlbData['bookmark']);
-
+                      
                       user.update({
                         'bookmark': userGlbData['bookmark'],
                       });
+                      
                     },
                     icon: Icon((!(widget.item.favorite!))
                         ? Icons.favorite_border_outlined

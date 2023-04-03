@@ -6,8 +6,8 @@ import 'package:rent_house/models/item_model.dart';
 
 class DetailsSreen extends StatefulWidget {
   Item item;
-
-  DetailsSreen(this.item, {super.key});
+  VoidCallback refresh;
+  DetailsSreen(this.item, this.refresh, {super.key});
 
   @override
   State<DetailsSreen> createState() => _DetailsSreenState();
@@ -17,18 +17,17 @@ class _DetailsSreenState extends State<DetailsSreen> {
   final user = FirebaseFirestore.instance
       .collection("users")
       .doc("${FirebaseAuth.instance.currentUser?.uid}");
-  
+
   @override
   Widget build(BuildContext context) {
     for (var key in userGlbData['bookmark'].keys) {
-      if(key == widget.item.dateTime)
-      {
+      if (key == widget.item.dateTime) {
         setState(() {
           widget.item.favorite = true;
         });
       }
     }
-    
+
     return Scaffold(
       backgroundColor: kBGColor,
       appBar: AppBar(
@@ -101,20 +100,20 @@ class _DetailsSreenState extends State<DetailsSreen> {
                       ),
                     ),
                     IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.item.favorite = !(widget.item.favorite!);
+                      onPressed: () {
+                        setState(() {
+                          widget.item.favorite = !(widget.item.favorite!);
 
-                        //print((widget.item.dateTime == userGlbData['bookmark'][widget.item.dateTime]));
-                        //print(userGlbData['bookmark'][widget.item.dateTime]);
-                      });
+                          //print((widget.item.dateTime == userGlbData['bookmark'][widget.item.dateTime]));
+                          //print(userGlbData['bookmark'][widget.item.dateTime]);
+                        });
 
-                      if (userGlbData['bookmark'][widget.item.dateTime] ==
+                        if (userGlbData['bookmark'][widget.item.dateTime] ==
                           null) {
                         userGlbData['bookmark'][widget.item.dateTime] = {
                           'description': widget.item.description,
-                          'imageUrl': widget.item.location,
-                          'location': widget.item.price,
+                          'imageUrl': widget.item.thumb_url,
+                          'location': widget.item.location,
                           'price': widget.item.price,
                           'type': widget.item.category,
                           'title': widget.item.title,
@@ -124,17 +123,20 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         userGlbData['bookmark'].remove(widget.item.dateTime);
                       }
 
-                      //print(userGlbData['bookmark']);
+                        //print(userGlbData['bookmark']);
 
-                      user.update({
-                        'bookmark': userGlbData['bookmark'],
-                      });
-                    },
-                    icon: Icon((!(widget.item.favorite!))
-                        ? Icons.favorite_border_outlined
-                        : Icons.favorite_outlined),
-                    color: kPrimaryColor,
-                  ),
+                        user.update({
+                          'bookmark': userGlbData['bookmark'],
+                        });
+                        
+                        widget.refresh();
+                      },
+                      icon: Icon((!(widget.item.favorite!))
+                          ? Icons.favorite_border_outlined
+                          : Icons.favorite_outlined),
+                      color: kPrimaryColor,
+                      
+                    ),
                   ],
                 ),
                 Row(

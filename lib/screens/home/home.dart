@@ -23,14 +23,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
-  
-  
-  
   @override
   Widget build(BuildContext context) {
-    
-    
     return Scaffold(
       backgroundColor: kBGColor,
       appBar: AppBar(
@@ -44,20 +38,16 @@ class _HomeState extends State<Home> {
             //   color: kPrimaryColor,
             // ),
             IconButton(
-              icon: Icon(
-                Icons.location_on,
-                color: kPrimaryColor
-              ), onPressed: () {
-                
-                
+              icon: Icon(Icons.location_on, color: kPrimaryColor),
+              onPressed: () {
                 Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SelectLocation(refresh: () {setState(() {
-                  
-                });})),
-              );
-                
-                },
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SelectLocation(refresh: () {
+                            setState(() {});
+                          })),
+                );
+              },
             ),
             Text(
               theCurrLoc as String,
@@ -91,8 +81,14 @@ class _HomeState extends State<Home> {
               // SizedBox(
               //   height: 10.0,
               // ),
-              SuggestionList("Recommendation for you", []),
-              SuggestionList("Nearby you", []),
+              SuggestionList(
+                "Recommendation for you",
+                [],
+              ),
+              SuggestionList(
+                "Nearby you",
+                [],
+              ),
             ],
           ),
         ),
@@ -138,7 +134,6 @@ class _HomeState extends State<Home> {
               );
             },
           ),
-          
           SpeedDialChild(
             backgroundColor: kBGColor,
             child: Icon(
@@ -167,7 +162,6 @@ class _HomeState extends State<Home> {
               );
             },
           ),
-          
           SpeedDialChild(
             backgroundColor: kBGColor,
             child: Icon(
@@ -196,12 +190,8 @@ class _HomeState extends State<Home> {
                           refresh: () => setState(() {}),
                         )),
               );
-              
-              
-              
             },
           ),
-          
           SpeedDialChild(
             backgroundColor: kBGColor,
             child: Icon(
@@ -230,12 +220,8 @@ class _HomeState extends State<Home> {
                           refresh: () => setState(() {}),
                         )),
               );
-              
-              
-              
             },
           ),
-          
           SpeedDialChild(
             backgroundColor: kBGColor,
             child: Icon(
@@ -264,8 +250,6 @@ class _HomeState extends State<Home> {
               );
             },
           ),
-          
-          
           SpeedDialChild(
             backgroundColor: kBGColor,
             child: Icon(
@@ -292,14 +276,9 @@ class _HomeState extends State<Home> {
                           refresh: () => setState(() {}),
                         )),
               );
-              
-              
             },
           ),
-          
-          
         ],
-        
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

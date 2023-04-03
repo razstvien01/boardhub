@@ -21,22 +21,21 @@ class _SuggestionListState extends State<SuggestionList> {
   Widget getPropertiesInfo(context, snapshot) {
     if (snapshot.hasData) {
       Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-      
+
       widget.items = [];
-      
-      int i = 0;
+
       for (var k in data.keys) {
-          widget.items.add(Item(
-            data[k]['title'],
-            data[k]['type'],
-            data[k]['location'],
-            data[k]['price'],
-            data[k]['imageUrl'],
-            data[k]['description'],
-            //userData['fullname'],
-            data[k]['uid'],
-            k,
-          ));
+        widget.items.add(Item(
+          data[k]['title'],
+          data[k]['type'],
+          data[k]['location'],
+          data[k]['price'],
+          data[k]['imageUrl'],
+          data[k]['description'],
+          //userData['fullname'],
+          data[k]['uid'],
+          k,
+        ));
       }
 
       return Container(
@@ -63,7 +62,6 @@ class _SuggestionListState extends State<SuggestionList> {
             Container(
               height: 300.0,
               width: double.infinity,
-              
               child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -77,7 +75,9 @@ class _SuggestionListState extends State<SuggestionList> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                DetailsSreen(widget.items[index])),
+                                DetailsSreen(widget.items[index], () {
+                                  setState(() {});
+                                })),
                       );
                     },
                   );
