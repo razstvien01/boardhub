@@ -35,12 +35,21 @@ class _SuggestionListState extends State<SuggestionList> {
           propertyData[k]['uid'],
           k,
           propertyData[k]['favorite'],
+          "",
         ));
       }
 
       //* sorting a properties based on their DateTime
-      widget.items.sort((a, b) => DateTime.parse(b.dateTime.split(" – ")[0])
-          .compareTo(DateTime.parse(a.dateTime.split(" – ")[0])));
+      // widget.items.sort((a, b) => DateTime.parse(b.dateTime.split(" – ")[0])
+      //     .compareTo(DateTime.parse(a.dateTime.split(" – ")[0])));
+
+      widget.items.sort((a, b) {
+        DateTime dateTimeA = DateTime.parse(
+            a.dateTime.split(" – ")[0] + " " + a.dateTime.split(" – ")[1]);
+        DateTime dateTimeB = DateTime.parse(
+            b.dateTime.split(" – ")[0] + " " + b.dateTime.split(" – ")[1]);
+        return dateTimeB.compareTo(dateTimeA);
+      });
 
       return Container(
         child: Column(
@@ -174,13 +183,22 @@ class _SuggestionListState extends State<SuggestionList> {
             i[j]['uid'],
             j,
             i[j]['favorite'],
+            "",
           ));
         }
       }
 
       //* sorting a properties based on their DateTime
-      widget.items.sort((a, b) => DateTime.parse(b.dateTime.split(" – ")[0])
-          .compareTo(DateTime.parse(a.dateTime.split(" – ")[0])));
+      // widget.items.sort((a, b) => DateTime.parse(b.dateTime.split(" – ")[0])
+      //     .compareTo(DateTime.parse(a.dateTime.split(" – ")[0])));
+      
+      widget.items.sort((a, b) {
+        DateTime dateTimeA = DateTime.parse(
+            a.dateTime.split(" – ")[0] + " " + a.dateTime.split(" – ")[1]);
+        DateTime dateTimeB = DateTime.parse(
+            b.dateTime.split(" – ")[0] + " " + b.dateTime.split(" – ")[1]);
+        return dateTimeB.compareTo(dateTimeA);
+      });
 
       return Container(
         child: Column(

@@ -33,14 +33,14 @@ class _NavBarState extends State<NavBar> {
         ? [
             Home(),
             // Search(),
-            Favorite(),
+            Favorite(favItems),
             Chat(),
             Profile(),
           ]
         : [
             Home(),
             // Search(),
-            Favorite(),
+            Favorite(favItems),
             Chat(),
             ProfileAdmin(),
           ];

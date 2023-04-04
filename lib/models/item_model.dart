@@ -10,8 +10,9 @@ class Item{
   String? tenantID;
   String dateTime;
   bool? favorite = false;
+  String favAddTime;
   
-  Item(this.title, this.category, this.location, this.price, this.thumb_url, this.description, this.tenantID, this.dateTime, this.favorite);
+  Item(this.title, this.category, this.location, this.price, this.thumb_url, this.description, this.tenantID, this.dateTime, this.favorite, this.favAddTime);
   
   //* Dummy date so we can display it
   //* you can replace this date by another from an API or your database

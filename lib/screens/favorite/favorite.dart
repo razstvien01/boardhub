@@ -8,7 +8,8 @@ import '../../models/item_model.dart';
 import '../home/components/details_screen.dart';
 
 class Favorite extends StatefulWidget {
-  const Favorite({super.key});
+  List<Item> items;
+  Favorite(this.items, {super.key});
 
   @override
   State<Favorite> createState() => _FavoriteState();
@@ -27,35 +28,53 @@ class _FavoriteState extends State<Favorite> {
   Widget build(BuildContext context) {
     try {
       _isEmpty = userGlbData['bookmark'].isEmpty;
-    } catch (e) {
-
-    }
+    } catch (e) {}
 
     if (!_isEmpty) {
-      favItems = [];
+      widget.items = [];
 
       Map favs = userGlbData['bookmark'];
 
       for (var k in favs.keys) {
-
-        favItems.add(
-          Item(
-            favs[k]['title'],
-            favs[k]['type'],
-            favs[k]['location'],
-            favs[k]['price'],
-            favs[k]['imageUrl'],
-            favs[k]['description'],
-            favs[k]['uid'],
-            k,
-            true,
-          ),
-        );
+        widget.items.add(Item(
+          favs[k]['title'],
+          favs[k]['type'],
+          favs[k]['location'],
+          favs[k]['price'],
+          favs[k]['imageUrl'],
+          favs[k]['description'],
+          favs[k]['uid'],
+          k,
+          true,
+          favs[k]['favAddTime'],
+        ));
       }
-      
+
       //* sorting a properties based on their DateTime
-      // favItems.sort((a, b) => DateTime.parse(a.dateTime.split(" – ")[0])
-      //     .compareTo(DateTime.parse(b.dateTime.split(" – ")[0])));
+
+      // widget.items.sort((a, b) {
+      //   DateTime dateTimeA = DateTime.parse(
+      //       a.favAddTime.split(" – ")[0] + " " + a.favAddTime.split(" – ")[1]);
+      //   DateTime dateTimeB = DateTime.parse(
+      //       b.favAddTime.split(" – ")[0] + " " + b.favAddTime.split(" – ")[1]);
+      //   return dateTimeB.compareTo(dateTimeA);
+      // });
+
+      widget.items.sort((a, b) {
+        DateTime dateTimeA = DateTime.parse(
+            a.favAddTime.split(" – ")[0] + " " + a.favAddTime.split(" – ")[1]);
+        DateTime dateTimeB = DateTime.parse(
+            b.favAddTime.split(" – ")[0] + " " + b.favAddTime.split(" – ")[1]);
+
+        int dateCompare = dateTimeB.compareTo(dateTimeA);
+        if (dateCompare != 0) return dateCompare;
+
+        int hourCompare = dateTimeB.hour.compareTo(dateTimeA.hour);
+        if (hourCompare != 0) return hourCompare;
+
+        int secondCompare = dateTimeB.second.compareTo(dateTimeA.second);
+        return secondCompare;
+      });
     }
 
     return Scaffold(
@@ -85,13 +104,13 @@ class _FavoriteState extends State<Favorite> {
       child: Column(
         children: [
           ListView.builder(
-            itemCount: favItems.length,
+            itemCount: widget.items.length,
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return ItemCard(
-                favItems[index],
+                widget.items[index],
                 () {
                   Navigator.push(
                     context,
@@ -101,9 +120,9 @@ class _FavoriteState extends State<Favorite> {
                             })),
                   );
                 },
-                () { setState(() {
-                  
-                });},
+                () {
+                  setState(() {});
+                },
               );
             },
           ),

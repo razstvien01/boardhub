@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 
@@ -28,14 +29,13 @@ class _ItemCardState extends State<ItemCard> {
   @override
   Widget build(BuildContext context) {
     for (var key in userGlbData['bookmark'].keys) {
-      if(key == widget.item.dateTime)
-      {
+      if (key == widget.item.dateTime) {
         setState(() {
           widget.item.favorite = true;
         });
       }
     }
-    
+
     return Container(
       width: 300.0,
       margin: EdgeInsets.only(right: 20.0),
@@ -118,6 +118,9 @@ class _ItemCardState extends State<ItemCard> {
                       });
                       if (userGlbData['bookmark'][widget.item.dateTime] ==
                           null) {
+                        DateTime now = DateTime.now();
+                        String formattedDate =
+                            DateFormat('yyyy-MM-dd – kk:mm:ss').format(now);
                         userGlbData['bookmark'][widget.item.dateTime] = {
                           'description': widget.item.description,
                           'imageUrl': widget.item.thumb_url,
@@ -126,14 +129,14 @@ class _ItemCardState extends State<ItemCard> {
                           'type': widget.item.category,
                           'title': widget.item.title,
                           'uid': widget.item.tenantID,
+                          'favAddTime': formattedDate,
                         };
-                        
                       } else {
                         setState(() {
                           userGlbData['bookmark'].remove(widget.item.dateTime);
                         });
                       }
-                      
+
                       user.update({
                         'bookmark': userGlbData['bookmark'],
                       });
