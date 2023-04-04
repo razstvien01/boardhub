@@ -385,6 +385,7 @@ class _AddPropertyState extends State<AddProperty> {
                             'imageUrl': newProperty.thumb_url,
                             'description': newProperty.description,
                             'uid': newProperty.tenantID,
+                            'favorite': false,
                           }
                         });
 

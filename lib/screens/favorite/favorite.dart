@@ -53,7 +53,9 @@ class _FavoriteState extends State<Favorite> {
         );
       }
       
-      
+      //* sorting a properties based on their DateTime
+      // favItems.sort((a, b) => DateTime.parse(a.dateTime.split(" – ")[0])
+      //     .compareTo(DateTime.parse(b.dateTime.split(" – ")[0])));
     }
 
     return Scaffold(

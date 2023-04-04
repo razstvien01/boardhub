@@ -36,10 +36,10 @@ class _DetailsSreenState extends State<DetailsSreen> {
         iconTheme: IconThemeData(
           color: kPrimaryColor,
         ),
-        title: Text(
-          widget.item.title!,
-          style: kSubTextStyle,
-        ),
+        // title: Text(
+        //   widget.item.title!,
+        //   style: kSubTextStyle,
+        // ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -103,39 +103,35 @@ class _DetailsSreenState extends State<DetailsSreen> {
                       onPressed: () {
                         setState(() {
                           widget.item.favorite = !(widget.item.favorite!);
-
-                          //print((widget.item.dateTime == userGlbData['bookmark'][widget.item.dateTime]));
-                          //print(userGlbData['bookmark'][widget.item.dateTime]);
                         });
 
                         if (userGlbData['bookmark'][widget.item.dateTime] ==
-                          null) {
-                        userGlbData['bookmark'][widget.item.dateTime] = {
-                          'description': widget.item.description,
-                          'imageUrl': widget.item.thumb_url,
-                          'location': widget.item.location,
-                          'price': widget.item.price,
-                          'type': widget.item.category,
-                          'title': widget.item.title,
-                          'uid': widget.item.tenantID,
-                        };
-                      } else {
-                        userGlbData['bookmark'].remove(widget.item.dateTime);
-                      }
+                            null) {
+                          userGlbData['bookmark'][widget.item.dateTime] = {
+                            'description': widget.item.description,
+                            'imageUrl': widget.item.thumb_url,
+                            'location': widget.item.location,
+                            'price': widget.item.price,
+                            'type': widget.item.category,
+                            'title': widget.item.title,
+                            'uid': widget.item.tenantID,
+                          };
+                        } else {
+                          userGlbData['bookmark'].remove(widget.item.dateTime);
+                        }
 
                         //print(userGlbData['bookmark']);
 
                         user.update({
                           'bookmark': userGlbData['bookmark'],
                         });
-                        
+
                         widget.refresh();
                       },
                       icon: Icon((!(widget.item.favorite!))
                           ? Icons.favorite_border_outlined
                           : Icons.favorite_outlined),
                       color: kPrimaryColor,
-                      
                     ),
                   ],
                 ),
@@ -168,7 +164,13 @@ class _DetailsSreenState extends State<DetailsSreen> {
                 SizedBox(
                   height: 8.0,
                 ),
-
+                Text(
+                  widget.item.dateTime,
+                  style: kSmallTextStyle,
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
                 Text(
                   widget.item.description!,
                   style: kSmallTextStyle,
