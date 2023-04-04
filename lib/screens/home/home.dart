@@ -17,14 +17,34 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
+  
+  void refreshHome(VoidCallback refresh)
+  {
+    refresh();
+  }
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  
+  @override
+  void initState() {
+    // Future.delayed(Duration(seconds: 3), () {
+    //   setState(() {});
+    // });
+  }
+  
+  
   @override
   Widget build(BuildContext context) {
+    
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {});
+    });
+    
+    
     return Scaffold(
       backgroundColor: kBGColor,
       appBar: AppBar(
@@ -33,10 +53,7 @@ class _HomeState extends State<Home> {
         toolbarHeight: 80.0,
         title: Row(
           children: [
-            // Icon(
-            //   Icons.location_on,
-            //   color: kPrimaryColor,
-            // ),
+
             IconButton(
               icon: Icon(Icons.location_on, color: kPrimaryColor),
               onPressed: () {
@@ -83,7 +100,7 @@ class _HomeState extends State<Home> {
               // ),
               SuggestionList(
                 "Recommendation for you",
-                [],
+                Item.recommendation,
               ),
               SuggestionList(
                 "Nearby you",

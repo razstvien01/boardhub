@@ -7,8 +7,9 @@ import 'package:rent_house/models/item_model.dart';
 class ItemCard extends StatefulWidget {
   Item item;
   VoidCallback onTap;
+  VoidCallback refresh;
 
-  ItemCard(this.item, this.onTap, {super.key});
+  ItemCard(this.item, this.onTap, this.refresh, {super.key});
 
   @override
   State<ItemCard> createState() => _ItemCardState();
@@ -114,11 +115,7 @@ class _ItemCardState extends State<ItemCard> {
                     onPressed: () {
                       setState(() {
                         widget.item.favorite = !(widget.item.favorite!);
-
-                        //print((widget.item.dateTime == userGlbData['bookmark'][widget.item.dateTime]));
-                        //print(userGlbData['bookmark'][widget.item.dateTime]);
                       });
-
                       if (userGlbData['bookmark'][widget.item.dateTime] ==
                           null) {
                         userGlbData['bookmark'][widget.item.dateTime] = {
@@ -130,16 +127,18 @@ class _ItemCardState extends State<ItemCard> {
                           'title': widget.item.title,
                           'uid': widget.item.tenantID,
                         };
+                        
                       } else {
-                        userGlbData['bookmark'].remove(widget.item.dateTime);
+                        setState(() {
+                          userGlbData['bookmark'].remove(widget.item.dateTime);
+                        });
                       }
-
-                      //print(userGlbData['bookmark']);
                       
                       user.update({
                         'bookmark': userGlbData['bookmark'],
                       });
-                      
+
+                      widget.refresh();
                     },
                     icon: Icon((!(widget.item.favorite!))
                         ? Icons.favorite_border_outlined

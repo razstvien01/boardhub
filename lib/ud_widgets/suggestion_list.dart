@@ -20,23 +20,24 @@ class SuggestionList extends StatefulWidget {
 class _SuggestionListState extends State<SuggestionList> {
   Widget getPropertiesInfo(context, snapshot) {
     if (snapshot.hasData) {
-      Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+      propertyData = snapshot.data!.data() as Map<String, dynamic>;
 
       widget.items = [];
 
-      for (var k in data.keys) {
+      for (var k in propertyData.keys) {
         widget.items.add(Item(
-          data[k]['title'],
-          data[k]['type'],
-          data[k]['location'],
-          data[k]['price'],
-          data[k]['imageUrl'],
-          data[k]['description'],
-          //userData['fullname'],
-          data[k]['uid'],
+          propertyData[k]['title'],
+          propertyData[k]['type'],
+          propertyData[k]['location'],
+          propertyData[k]['price'],
+          propertyData[k]['imageUrl'],
+          propertyData[k]['description'],
+          propertyData[k]['uid'],
           k,
+          propertyData[k]['favorite'],
         ));
       }
+      
 
       return Container(
         child: Column(
@@ -79,6 +80,9 @@ class _SuggestionListState extends State<SuggestionList> {
                                   setState(() {});
                                 })),
                       );
+                    },
+                    () {
+                      setState(() {});
                     },
                   );
                 },

@@ -362,7 +362,7 @@ class _AddPropertyState extends State<AddProperty> {
                             imageUrl,
                             _descriptionController.text.trim(),
                             uid,
-                            formattedDate));
+                            formattedDate, false,));
 
                         Item newProperty = Item(
                             _titleController.text.trim(),
@@ -372,7 +372,7 @@ class _AddPropertyState extends State<AddProperty> {
                             imageUrl,
                             _descriptionController.text.trim(),
                             uid,
-                            formattedDate);
+                            formattedDate, false);
 
                         Item.nearby.add(newProperty);
 

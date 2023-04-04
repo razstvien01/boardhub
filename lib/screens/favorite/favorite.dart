@@ -16,7 +16,7 @@ class Favorite extends StatefulWidget {
 
 class _FavoriteState extends State<Favorite> {
   bool _isEmpty = true;
-  List<Item> favItems = [];
+  // List<Item> favItems = [];
 
   @override
   void initState() {
@@ -27,11 +27,8 @@ class _FavoriteState extends State<Favorite> {
   Widget build(BuildContext context) {
     try {
       _isEmpty = userGlbData['bookmark'].isEmpty;
-
-      print("Empty: " + _isEmpty.toString());
     } catch (e) {
-      print("From fav page");
-      //_isEmpty = true;
+
     }
 
     if (!_isEmpty) {
@@ -40,7 +37,6 @@ class _FavoriteState extends State<Favorite> {
       Map favs = userGlbData['bookmark'];
 
       for (var k in favs.keys) {
-        print(favs[k]['location']);
 
         favItems.add(
           Item(
@@ -52,9 +48,12 @@ class _FavoriteState extends State<Favorite> {
             favs[k]['description'],
             favs[k]['uid'],
             k,
+            true,
           ),
         );
       }
+      
+      
     }
 
     return Scaffold(
@@ -80,9 +79,6 @@ class _FavoriteState extends State<Favorite> {
   }
 
   SingleChildScrollView genFavList() {
-    print(favItems.length);
-    print(userGlbData['bookmark'].isEmpty);
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -103,6 +99,9 @@ class _FavoriteState extends State<Favorite> {
                             })),
                   );
                 },
+                () { setState(() {
+                  
+                });},
               );
             },
           ),

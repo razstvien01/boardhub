@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'models/item_model.dart';
+
 
 Map<String, dynamic> userGlbData = {};
-Map<String, dynamic> favItems = {};
+//Map<String, dynamic> favItems = {};
+List<Item> favItems = [];
+
+Map<String, dynamic> propertyData = {};
 bool enable = true;
 String? profileImageURL;
 String? theCurrLoc = "Cebu City, Cebu";
+
 
 
 // const kBGColor = Color.fromARGB(214, 0, 0, 0);
