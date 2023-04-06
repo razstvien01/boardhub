@@ -45,6 +45,8 @@ class _AddPropertyState extends State<AddProperty> {
   String? selectedLocation;
 
   final ImagePicker _picker = ImagePicker();
+  // List<XFile> _
+  
 
   String? imageUrl;
   late File imageFile = File('');

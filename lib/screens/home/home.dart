@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -8,7 +10,7 @@ import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/add_property/add_property.dart';
 import 'package:rent_house/screens/notification/notification.dart';
-import 'package:rent_house/select_locations/select_locations.dart';
+import 'package:rent_house/screens/select_locations/select_locations.dart';
 import 'package:rent_house/ud_widgets/default_button.dart';
 import 'package:rent_house/ud_widgets/search_field.dart';
 import 'package:rent_house/ud_widgets/select_category.dart';
@@ -17,9 +19,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
-  
-  void refreshHome(VoidCallback refresh)
-  {
+
+  void refreshHome(VoidCallback refresh) {
     refresh();
   }
 
@@ -28,23 +29,34 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
+  Timer? _timer;
+
   @override
   void initState() {
     // Future.delayed(Duration(seconds: 3), () {
     //   setState(() {});
     // });
   }
-  
-  
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer in the dispose() method
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {});
+    // Future.delayed(Duration(seconds: 1), () {
+    //   setState(() {});
+    // });
+        _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (mounted) { // Check if the object is still mounted before calling setState
+        setState(() {
+          // Update the state
+        });
+      }
     });
-    
-    
+
     return Scaffold(
       backgroundColor: kBGColor,
       appBar: AppBar(
@@ -53,7 +65,6 @@ class _HomeState extends State<Home> {
         toolbarHeight: 80.0,
         title: Row(
           children: [
-
             IconButton(
               icon: Icon(Icons.location_on, color: kPrimaryColor),
               onPressed: () {
@@ -67,7 +78,7 @@ class _HomeState extends State<Home> {
               },
             ),
             Text(
-              theCurrLoc as String,
+              userGlbData['location'],
               style: kSubTextStyle,
             ),
           ],

@@ -57,6 +57,7 @@ class _SignUpState extends State<SignUp> {
       'enable': true,
       'bookmark': {},
       'role': 'user',
+      'location': 'Cebu City, Cebu',
     });
   }
 

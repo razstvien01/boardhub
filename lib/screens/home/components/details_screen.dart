@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 
@@ -104,7 +105,9 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         setState(() {
                           widget.item.favorite = !(widget.item.favorite!);
                         });
-
+                        DateTime now = DateTime.now();
+                        String formattedDate =
+                            DateFormat('yyyy-MM-dd – kk:mm:ss').format(now);
                         if (userGlbData['bookmark'][widget.item.dateTime] ==
                             null) {
                           userGlbData['bookmark'][widget.item.dateTime] = {
@@ -115,6 +118,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                             'type': widget.item.category,
                             'title': widget.item.title,
                             'uid': widget.item.tenantID,
+                            'favAddTime': formattedDate,
                           };
                         } else {
                           userGlbData['bookmark'].remove(widget.item.dateTime);

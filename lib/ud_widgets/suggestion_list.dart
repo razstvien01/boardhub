@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/home/components/details_screen.dart';
+import 'package:rent_house/screens/test/multiple_images.dart';
 import 'package:rent_house/ud_widgets/clear_full_button.dart';
 import 'package:rent_house/ud_widgets/house_card.dart';
 
@@ -20,7 +21,13 @@ class SuggestionList extends StatefulWidget {
 class _SuggestionListState extends State<SuggestionList> {
   Widget getPropertiesInfo(context, snapshot) {
     if (snapshot.hasData) {
-      propertyData = snapshot.data!.data() as Map<String, dynamic>;
+      
+      try {
+        propertyData = snapshot.data!.data() as Map<String, dynamic>;
+      } catch (e) {
+        return Container(color: kBGColor,);
+      }
+      
 
       widget.items = [];
 
@@ -62,60 +69,14 @@ class _SuggestionListState extends State<SuggestionList> {
                   style: kSubTextStyle,
                 ),
                 TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "See All",
-                    style: TextStyle(color: kPrimaryColor),
-                  ),
-                ),
-              ],
-            ),
-            // SizedBox(height: 12.0),
-
-            Container(
-              height: 300.0,
-              width: double.infinity,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.items.length,
-                //itemCount: data.keys.length,
-                itemBuilder: (context, index) {
-                  return ItemCard(
-                    widget.items[index],
-                    () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                DetailsSreen(widget.items[index], () {
-                                  setState(() {});
-                                })),
-                      );
-                    },
-                    () {
-                      setState(() {});
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-
-      return Container(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  widget.title!,
-                  style: kSubTextStyle,
-                ),
-                TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Test(),
+                      ),
+                    );
+                  },
                   child: Text(
                     "See All",
                     style: TextStyle(color: kPrimaryColor),
@@ -191,7 +152,7 @@ class _SuggestionListState extends State<SuggestionList> {
       //* sorting a properties based on their DateTime
       // widget.items.sort((a, b) => DateTime.parse(b.dateTime.split(" – ")[0])
       //     .compareTo(DateTime.parse(a.dateTime.split(" – ")[0])));
-      
+
       widget.items.sort((a, b) {
         DateTime dateTimeA = DateTime.parse(
             a.dateTime.split(" – ")[0] + " " + a.dateTime.split(" – ")[1]);
@@ -211,7 +172,14 @@ class _SuggestionListState extends State<SuggestionList> {
                   style: kSubTextStyle,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Test(),
+                      ),
+                    );
+                  },
                   child: Text(
                     "See All",
                     style: TextStyle(color: kPrimaryColor),
@@ -265,7 +233,7 @@ class _SuggestionListState extends State<SuggestionList> {
         ? FutureBuilder<DocumentSnapshot?>(
             future: FirebaseFirestore.instance
                 .collection('properties')
-                .doc(theCurrLoc)
+                .doc(userGlbData['location'])
                 .get(),
             builder: getPropertiesInfo,
           )
