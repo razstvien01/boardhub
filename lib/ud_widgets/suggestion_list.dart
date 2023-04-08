@@ -32,6 +32,7 @@ class _SuggestionListState extends State<SuggestionList> {
       widget.items = [];
 
       for (var k in propertyData.keys) {
+        
         widget.items.add(Item(
           propertyData[k]['title'],
           propertyData[k]['type'],
@@ -42,7 +43,7 @@ class _SuggestionListState extends State<SuggestionList> {
           propertyData[k]['uid'],
           k,
           propertyData[k]['favorite'],
-          "",
+          propertyData[k]['images'],
         ));
       }
 
@@ -144,8 +145,10 @@ class _SuggestionListState extends State<SuggestionList> {
             i[j]['uid'],
             j,
             i[j]['favorite'],
-            "",
+            i[j]['images'],
           ));
+          
+          // print(i[j]['images']);
         }
       }
 
@@ -153,13 +156,36 @@ class _SuggestionListState extends State<SuggestionList> {
       // widget.items.sort((a, b) => DateTime.parse(b.dateTime.split(" – ")[0])
       //     .compareTo(DateTime.parse(a.dateTime.split(" – ")[0])));
 
-      widget.items.sort((a, b) {
-        DateTime dateTimeA = DateTime.parse(
-            a.dateTime.split(" – ")[0] + " " + a.dateTime.split(" – ")[1]);
-        DateTime dateTimeB = DateTime.parse(
-            b.dateTime.split(" – ")[0] + " " + b.dateTime.split(" – ")[1]);
-        return dateTimeB.compareTo(dateTimeA);
-      });
+      // widget.items.sort((a, b) {
+      //   DateTime dateTimeA = DateTime.parse(
+      //       a.dateTime.split(" – ")[0] + " " + a.dateTime.split(" – ")[1]);
+      //   DateTime dateTimeB = DateTime.parse(
+      //       b.dateTime.split(" – ")[0] + " " + b.dateTime.split(" – ")[1]);
+      //   return dateTimeB.compareTo(dateTimeA);
+      // });
+      
+      // widget.items.sort((a, b) {
+      //   DateTime dateTimeA = DateTime.parse(
+      //       a.favAddTime.split(" – ")[0] + " " + a.favAddTime.split(" – ")[1]);
+      //   DateTime dateTimeB = DateTime.parse(
+      //       b.favAddTime.split(" – ")[0] + " " + b.favAddTime.split(" – ")[1]);
+
+      //   int dateCompare = dateTimeB.compareTo(dateTimeA);
+      //   if (dateCompare != 0) return dateCompare;
+
+      //   int hourCompare = dateTimeB.hour.compareTo(dateTimeA.hour);
+      //   if (hourCompare != 0) return hourCompare;
+
+      //   int secondCompare = dateTimeB.second.compareTo(dateTimeA.second);
+      //   return secondCompare;
+      // });
+      
+      // return Container();
+      
+      widget.items.sort((a, b) => DateTime.parse(b.dateTime.replaceAll(' – ', ' ')).compareTo(DateTime.parse(a.dateTime.replaceAll(' – ', ' '))));
+
+
+// print(dateStrings);
 
       return Container(
         child: Column(
@@ -229,17 +255,29 @@ class _SuggestionListState extends State<SuggestionList> {
 
   @override
   Widget build(BuildContext context) {
-    return (widget.title == "Nearby you")
-        ? FutureBuilder<DocumentSnapshot?>(
-            future: FirebaseFirestore.instance
-                .collection('properties')
-                .doc(userGlbData['location'])
-                .get(),
-            builder: getPropertiesInfo,
-          )
-        : FutureBuilder<QuerySnapshot?>(
+    // return (widget.title == "Nearby you")
+    //     ? FutureBuilder<DocumentSnapshot?>(
+    //         future: FirebaseFirestore.instance
+    //             .collection('properties')
+    //             .doc(userGlbData['location'])
+    //             .get(),
+    //         builder: getPropertiesInfo,
+    //       )
+    //     : FutureBuilder<QuerySnapshot?>(
+    //         future: FirebaseFirestore.instance.collection('properties').get(),
+    //         builder: getAllPropertiesInfo,
+    //       );
+    return FutureBuilder<QuerySnapshot?>(
             future: FirebaseFirestore.instance.collection('properties').get(),
             builder: getAllPropertiesInfo,
           );
+    
+    // return FutureBuilder<DocumentSnapshot?>(
+    //         future: FirebaseFirestore.instance
+    //             .collection('properties')
+    //             .doc(userGlbData['location'])
+    //             .get(),
+    //         builder: getPropertiesInfo,
+    //       );
   }
 }

@@ -130,6 +130,7 @@ class _ItemCardState extends State<ItemCard> {
                           'title': widget.item.title,
                           'uid': widget.item.tenantID,
                           'favAddTime': formattedDate,
+                          'images': widget.item.images,
                         };
                       } else {
                         setState(() {

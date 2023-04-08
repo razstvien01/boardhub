@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
+import 'package:rent_house/screens/home/components/view_images.dart';
 
 class DetailsSreen extends StatefulWidget {
   Item item;
@@ -49,16 +50,68 @@ class _DetailsSreenState extends State<DetailsSreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  height: 300.0,
-                  decoration: BoxDecoration(
-                    color: kAccentColor,
-                    borderRadius: BorderRadius.circular(16.0),
-                    image: DecorationImage(
-                      image: NetworkImage(widget.item.thumb_url!),
-                      fit: BoxFit.cover,
-                    ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ViewImages(images: widget.item.images)),
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 300.0,
+                        decoration: BoxDecoration(
+                          color: kAccentColor,
+                          borderRadius: BorderRadius.circular(16.0),
+                          image: DecorationImage(
+                            image: NetworkImage(widget.item.thumb_url!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Transform.translate(
+                            offset: Offset(0, 0),
+                            child: Container(
+                                        width: double.infinity, // Stretch container to cover entire width
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              child: Text(
+                                'View More',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                 textAlign: TextAlign.center, // Center the text horizontally
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                    // child: Container(
+                    //   width: double.infinity,
+                    //   height: 300.0,
+                    //   decoration: BoxDecoration(
+                    //     color: kAccentColor,
+                    //     borderRadius: BorderRadius.circular(16.0),
+                    //     image: DecorationImage(
+                    //       image: NetworkImage(widget.item.thumb_url!),
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    // ),
                   ),
                 ),
                 SizedBox(height: 8.0),
@@ -119,6 +172,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                             'title': widget.item.title,
                             'uid': widget.item.tenantID,
                             'favAddTime': formattedDate,
+                            'images': widget.item.images
                           };
                         } else {
                           userGlbData['bookmark'].remove(widget.item.dateTime);

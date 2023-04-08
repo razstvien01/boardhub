@@ -62,7 +62,11 @@ class _NavBarState extends State<NavBar> {
   List<String> titleList = [];
 
   @override
-  void initState() {}
+  void initState() {
+    
+    //* sorting cities
+    cities.sort((a, b) => a.city.compareTo(b.city));
+  }
 
   void onTap(int index) {
     setState(() {
