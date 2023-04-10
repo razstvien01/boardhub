@@ -58,6 +58,7 @@ class _NavBarState extends State<NavBar> {
 
   @override
   void initState() {
+    super.initState();
     
     //* sorting cities
     cities.sort((a, b) => a.city.compareTo(b.city));

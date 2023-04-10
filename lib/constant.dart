@@ -9,6 +9,7 @@ Map<String, dynamic> userGlbData = {};
 List<Item> favItems = [];
 
 Map<String, dynamic> propertyData = {};
+// var allPropData;
 bool enable = true;
 String? profileImageURL;
 String? theCurrLoc = "Cebu City, Cebu";

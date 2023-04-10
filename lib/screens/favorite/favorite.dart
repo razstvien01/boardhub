@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/ud_widgets/house_card.dart';
@@ -20,6 +21,7 @@ class Favorite extends StatefulWidget {
 
 class _FavoriteState extends State<Favorite> {
   bool _isEmpty = true;
+  Timer? _timer;
 
   SortOption? _selectedSortOption = SortOption.date_added;
   FilterOption? _selectedFilterOption = FilterOption.descending;
@@ -30,7 +32,21 @@ class _FavoriteState extends State<Favorite> {
   }
 
   @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer in the dispose() method
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        // Check if the object is still mounted before calling setState
+        setState(() {
+          // Update the state
+        });
+      }
+    });
     try {
       _isEmpty = userGlbData['bookmark'].isEmpty;
     } catch (e) {}
@@ -78,9 +94,7 @@ class _FavoriteState extends State<Favorite> {
             return dateTimeA.compareTo(dateTimeB);
           });
         }
-      }
-      else if(_selectedSortOption == SortOption.date_added)
-      {
+      } else if (_selectedSortOption == SortOption.date_added) {
         if (_selectedFilterOption == FilterOption.descending) {
           widget.items.sort((a, b) {
             DateTime dateTimeA = DateTime.parse(
@@ -98,13 +112,10 @@ class _FavoriteState extends State<Favorite> {
             return dateTimeA.compareTo(dateTimeB);
           });
         }
-      }
-      else if(_selectedSortOption == SortOption.name)
-      {
-        if(_selectedFilterOption == FilterOption.descending){
+      } else if (_selectedSortOption == SortOption.name) {
+        if (_selectedFilterOption == FilterOption.descending) {
           widget.items.sort((a, b) => b.title!.compareTo(a.title!));
-        }
-        else{
+        } else {
           widget.items.sort((a, b) => a.title!.compareTo(b.title!));
         }
       }
@@ -283,7 +294,8 @@ class _FavoriteState extends State<Favorite> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DetailsSreen(widget.items[index], () {
+                        builder: (context) =>
+                            DetailsSreen(widget.items[index], () {
                               setState(() {});
                             })),
                   );

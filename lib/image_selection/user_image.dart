@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 
 class UserImage extends StatefulWidget {
@@ -12,8 +11,7 @@ class UserImage extends StatefulWidget {
 }
 
 class _UserImageState extends State<UserImage> {
-  final ImagePicker _picker = ImagePicker();
-  
+
   String? imageURL;
   
   @override

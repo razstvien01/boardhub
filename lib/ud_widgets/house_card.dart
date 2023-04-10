@@ -133,16 +133,20 @@ class _ItemCardState extends State<ItemCard> {
                           'images': widget.item.images,
                         };
                       } else {
-                        setState(() {
+                        // setState(() {
                           userGlbData['bookmark'].remove(widget.item.dateTime);
-                        });
+                        // });
                       }
 
+                      widget.refresh();
+                      setState(() {
+                        
+                      });
                       user.update({
                         'bookmark': userGlbData['bookmark'],
                       });
 
-                      widget.refresh();
+                      
                     },
                     icon: Icon((!(widget.item.favorite!))
                         ? Icons.favorite_border_outlined

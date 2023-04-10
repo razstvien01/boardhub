@@ -1,26 +1,15 @@
-import 'dart:io';
-
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rent_house/constant.dart';
-import 'package:rent_house/screens/profile/components/update_profile.dart';
-import 'package:rent_house/ud_widgets/profile_menu.dart';
-import 'package:dropdown_button2/src/dropdown_button2.dart';
 
-import 'components/menu_item.dart';
-import 'package:path/path.dart' as p;
+import '../../models/item_model.dart';
+import '../home/components/details_screen.dart';
+import 'profile_setting.dart';
 
 class Profile extends StatefulWidget {
-  //final Function(String imageURL) onFileChanged;
-
-  //const Profile({super.key, required this.onFileChanged});
-
   const Profile({super.key});
 
   @override
@@ -30,9 +19,28 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final currUser = FirebaseAuth.instance.currentUser;
   Map<String, dynamic> data = {};
+  Timer? _timer;
+  List<Item> _items = [];
+  int total_post = 0;
 
-  final ImagePicker _picker = ImagePicker();
-  
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  List<String> imagesPost = [
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Cebu_City_%28Aerial%29.jpg/1280px-Cebu_City_%28Aerial%29.jpg',
+    'https://as2.ftcdn.net/v2/jpg/02/45/12/75/1000_F_245127528_7gZopPwmB8Uiey1gRy9NLmejKOdFtnbr.jpg',
+    'https://as1.ftcdn.net/v2/jpg/05/36/90/62/1000_F_536906217_zySORJiXroWbYVca6XlkNAysVuSebeKv.jpg',
+    'https://as1.ftcdn.net/v2/jpg/04/74/74/30/1000_F_474743011_kYbOiWraGtT6LeAuPfMNXmsEANinb7lK.jpg',
+    'https://philippineholidays.com.au/wp-content/uploads/2015/04/Talisay-Negros-Occidental.jpg',
+    'https://masbatecity.balinkbayan.gov.ph/wp-content/uploads/2016/09/thecityofmasbate.jpg',
+    'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/d0/92/bc/the-view.jpg?w=700&h=-1&s=1',
+    'https://www.karlaroundtheworld.com/wp-content/uploads/2017/08/Cobrador-Islad-2.png',
+    'https://greenglobaltravel.com/wp-content/uploads/2019/08/Palawan-Coron-Resorts-Coron-Westown-Resort.jpg'
+  ];
+
   final user = FirebaseFirestore.instance
       .collection("users")
       .doc("${FirebaseAuth.instance.currentUser?.uid}");
@@ -42,67 +50,51 @@ class _ProfileState extends State<Profile> {
       profileImageURL = await FirebaseStorage.instance
           .ref('profile/${currUser?.uid}' 'profile_pic')
           .getDownloadURL();
+
+      // print()
+    // ignore: empty_catches
     } catch (e) {}
-  }
-
-  Future _uploadFile(String path) async {
-    // final ref = FirebaseStorage.instance.ref().child('images').child('${DateTime.now().toIso8601String() + p.basename(path)}');
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child('profile')
-        .child('${currUser?.uid}' 'profile_pic');
-
-    final result = await ref.putFile(File(path));
-    final fileUrl = await result.ref.getDownloadURL();
-
-    setState(() {
-      profileImageURL = fileUrl;
-    });
-    
-    user.update({
-      'profile_url': profileImageURL
-    });
-    
-  }
-
-  Future<File> compressImage(String path, int quality) async {
-    final newPath = p.join((await getTemporaryDirectory()).path,
-        '${DateTime.now()}.${p.extension(path)}');
-
-    final result = await FlutterImageCompress.compressAndGetFile(path, newPath,
-        quality: quality);
-
-    return result!;
-  }
-
-  Future _pickImage(ImageSource source) async {
-    final pickedFile =
-        await _picker.pickImage(source: source, imageQuality: 50);
-
-    if (pickedFile == null) {
-      return;
-    }
-
-    var file = await ImageCropper().cropImage(
-      sourcePath: pickedFile.path,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-    );
-
-    if (file == null) {
-      return;
-    }
-
-    final imageFile = await compressImage(file.path, 35);
-
-    await _uploadFile(imageFile.path);
   }
 
   @override
   Widget build(BuildContext context) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        // Check if the object is still mounted before calling setState
+        setState(() {
+          // Update the state
+        });
+      }
+    });
+
     return Scaffold(
       backgroundColor: kBGColor,
-      // appBar: ,
-      // body: profileUI(context),
+      appBar: AppBar(
+        toolbarHeight: 80.0,
+        iconTheme: IconThemeData(
+          color: kPrimaryColor,
+        ),
+        backgroundColor: Colors.black,
+        elevation: 0.0,
+        title: const Text(
+          "Profile",
+          style: TextStyle(color: Colors.orange),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings, color: kPrimaryColor),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProfileSetting(() {
+                          setState(() {});
+                        })),
+              );
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<DocumentSnapshot?>(
         future: FirebaseFirestore.instance
             .collection("users")
@@ -119,7 +111,7 @@ class _ProfileState extends State<Profile> {
       data = snapshot.data!.data() as Map<String, dynamic>;
 
       userGlbData = data;
-      
+
       //print(userGlbData['bookmark']);
 
       try {
@@ -133,176 +125,207 @@ class _ProfileState extends State<Profile> {
         enable = data['enable'];
         FirebaseAuth.instance.signOut();
       }
-      profileImageURL = data['profile_url'] as String?;
-      
-      
-      return profileUI(context);
+      // profileImageURL = data['profile_url'] as String?;
+
+      // print(propertyData);
+
+      // for (var k in propertyData.keys) {
+      //   print("sdssd");
+      //   if (currUser?.uid == propertyData[k]['uid']) {
+
+      //     print("Inside");
+      //     _items.add(Item(
+      //       propertyData[k]['title'],
+      //       propertyData[k]['type'],
+      //       propertyData[k]['location'],
+      //       propertyData[k]['price'],
+      //       propertyData[k]['imageUrl'],
+      //       propertyData[k]['description'],
+      //       propertyData[k]['uid'],
+      //       k,
+      //       propertyData[k]['favorite'],
+      //       propertyData[k]['images'],
+      //     ));
+      //   }
+      // }
+
+      // _items.sort((a, b) {
+      //   DateTime dateTimeA = DateTime.parse(
+      //       "${a.dateTime.split(" – ")[0]} ${a.dateTime.split(" – ")[1]}");
+      //   DateTime dateTimeB = DateTime.parse(
+      //       "${b.dateTime.split(" – ")[0]} ${b.dateTime.split(" – ")[1]}");
+      //   return dateTimeB.compareTo(dateTimeA);
+      // });
+
+      // return profile(context);
+      return FutureBuilder<QuerySnapshot?>(
+        future: FirebaseFirestore.instance.collection('properties').get(),
+        builder: ((context, s) {
+          if (s.hasData) {
+            final allPropData = s.data!.docs
+                .map((doc) => doc.data() as Map<String, dynamic>)
+                .toList();
+
+            _items = [];
+            
+            total_post = 0;
+
+            for (var i in allPropData) {
+              for (var j in i.keys) {
+                if (currUser?.uid == i[j]['uid']) {
+                  ++total_post;
+                  _items.add(Item(
+                    i[j]['title'],
+                    i[j]['type'],
+                    i[j]['location'],
+                    i[j]['price'],
+                    i[j]['imageUrl'],
+                    i[j]['description'],
+                    i[j]['uid'],
+                    j,
+                    i[j]['favorite'],
+                    i[j]['images'],
+                  ));
+                }
+
+                // print(i[j]['images']);
+              }
+            }
+            return profile(context);
+            // return Text("Have data", style: kSubTextStyle);
+          } else {
+            return Container();
+          }
+        }),
+      );
     } else {
       return const Center(child: CircularProgressIndicator());
     }
   }
 
-  SingleChildScrollView profileUI(BuildContext context) {
-    return SingleChildScrollView(
+  Center profile(BuildContext context) {
+    return Center(
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
-            height: 50,
-          ),
-          Stack(
-            children: [
-              (profileImageURL == null)
-                  ? const Icon(
-                      Icons.person,
-                      size: 100,
-                      color: Colors.white,
-                    )
-                  : CircleAvatar(
-                      radius: 50.0,
-                      backgroundImage: NetworkImage(profileImageURL as String),
-                    ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: kLightColor,
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      customButton: Icon(
-                        Icons.edit,
-                        size: 30,
-                        color: kPrimaryColor,
-                      ),
-                      items: [
-                        ...MenuItems.firstItems.map(
-                          (item) => DropdownMenuItem<MenuItem>(
-                            value: item,
-                            child: MenuItems.buildItem(item),
-                          ),
-                        ),
-                        // const DropdownMenuItem<Divider>(
-                        //     enabled: false, child: Divider()),
-                        // ...MenuItems.secondItems.map(
-                        //   (item) => DropdownMenuItem<MenuItem>(
-                        //     value: item,
-                        //     child: MenuItems.buildItem(item),
-                        //   ),
-                        // ),
-                      ],
-                      onChanged: (value) {
-                        MenuItems.onChanged(
-                            context, value as MenuItem, _pickImage);
-                      },
-                      dropdownStyleData: DropdownStyleData(
-                        width: 160,
-                        padding: const EdgeInsets.symmetric(vertical: 6),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          // color: Colors.redAccent,
-                          color: kPrimaryColor,
-                        ),
-                        elevation: 8,
-                        offset: const Offset(0, 8),
-                      ),
-                      menuItemStyleData: MenuItemStyleData(
-                        customHeights: [
-                          ...List<double>.filled(
-                              MenuItems.firstItems.length, 48),
-                          // 8,
-                          // ...List<double>.filled(
-                          //     MenuItems.secondItems.length, 48),
-                        ],
-                        padding: const EdgeInsets.only(left: 16, right: 16),
-                      ),
-                    ),
-                  ),
-                ),
+          Container(
+            width: 130,
+            height: 130,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.white,
+                width: 5.0,
               ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            data['fullname'],
-            style: kTitleTextStyle,
-          ),
-          Text(
-            "@${data['username']}",
-            style: kSmallTextStyle,
-          ),
-          Text(
-            "${currUser?.email}",
-            style: kSmallTextStyle,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-
-          SizedBox(
-            width: 250,
-            height: 45,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpdateProfile(() {
-                            setState(() {});
-                          })),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimaryColor,
-                  side: BorderSide.none,
-                  shape: const StadiumBorder()),
-              child: const Text(
-                "Edit Profile",
-                style: kSubTextStyle,
+              boxShadow: [
+                BoxShadow(
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  color: Colors.black.withOpacity(0.1),
+                  offset: const Offset(0, 10),
+                )
+              ],
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage((profileImageURL != null)
+                    ? profileImageURL!
+                    : 'https://wallpapercave.com/wp/wp7151787.jpg'),
+                // image: NetworkImage(profileImageURL!),
               ),
             ),
           ),
           const SizedBox(
-            height: 30,
+            height: 8.0,
           ),
-          const Divider(),
+          Text(
+            data['fullname'],
+            style: TextStyle(
+              color: Colors.orange,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
           const SizedBox(
-            height: 10,
+            height: 12.0,
           ),
-
-          //* Menu
-          ProfileMenuWidget(
-            title: "Settings",
-            icon: Icons.settings,
-            onPress: () {},
-            textColor: kLightColor,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              statsWidget('Followers', '255K'),
+              statsWidget('Post', total_post.toString()),
+            ],
           ),
-
-          const Divider(),
-          const SizedBox(
-            height: 10,
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Divider(
+              height: 18.0,
+              thickness: 0.6,
+              color: Colors.orangeAccent,
+            ),
           ),
-          ProfileMenuWidget(
-            title: "Information",
-            icon: Icons.info,
-            onPress: () {},
-            textColor: kLightColor,
-          ),
-          ProfileMenuWidget(
-            title: "Logout",
-            icon: Icons.logout,
-            onPress: FirebaseAuth.instance.signOut,
-            textColor: kAccentColor,
+          Expanded(
+            // ignore: avoid_unnecessary_containers
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemCount: _items.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DetailsSreen(_items[index], () {
+                                  setState(() {});
+                                })),
+                      );
+                      },
+                      child: Center(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 4.0),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image:
+                                  NetworkImage(_items[index].thumb_url as String),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
           ),
         ],
       ),
     );
   }
+}
+
+Widget statsWidget(String title, String stat) {
+  return Expanded(
+    child: Column(
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Colors.orange,
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0),
+        ),
+        Text(
+          stat,
+          style: const TextStyle(
+            color: Colors.orange,
+          ),
+        ),
+      ],
+    ),
+  );
 }

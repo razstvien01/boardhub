@@ -190,6 +190,9 @@ class _AddPropertyState extends State<AddProperty> {
           'Add ${widget.property_type}',
           style: kSubTextStyle,
         ),
+        iconTheme: IconThemeData(
+          color: kPrimaryColor,
+        ),
       ),
       backgroundColor: kBGColor,
       body: SingleChildScrollView(
