@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,9 @@ class ItemCard extends StatefulWidget {
   Item item;
   VoidCallback onTap;
   VoidCallback refresh;
+  String screen;
 
-  ItemCard(this.item, this.onTap, this.refresh, {super.key});
+  ItemCard(this.item, this.onTap, this.refresh, this.screen, {super.key});
 
   @override
   State<ItemCard> createState() => _ItemCardState();
@@ -64,15 +67,16 @@ class _ItemCardState extends State<ItemCard> {
                   ),
                 ),
               ),
-              Text(
-                widget.item.category!,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: kPrimaryColor,
+              if (widget.screen != "category")
+                Text(
+                  widget.item.category!,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: kPrimaryColor,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                overflow: TextOverflow.ellipsis,
-              ),
               Text(
                 widget.item.title!,
                 style: const TextStyle(
@@ -115,6 +119,8 @@ class _ItemCardState extends State<ItemCard> {
                     onPressed: () {
                       setState(() {
                         widget.item.favorite = !(widget.item.favorite!);
+
+                        print(widget.item.favorite);
                       });
                       if (userGlbData['bookmark'][widget.item.dateTime] ==
                           null) {
@@ -133,20 +139,17 @@ class _ItemCardState extends State<ItemCard> {
                           'images': widget.item.images,
                         };
                       } else {
-                        // setState(() {
+                        setState(() {
                           userGlbData['bookmark'].remove(widget.item.dateTime);
-                        // });
+                        });
                       }
 
-                      widget.refresh();
-                      setState(() {
-                        
-                      });
                       user.update({
                         'bookmark': userGlbData['bookmark'],
                       });
 
-                      
+                      widget.refresh();
+                      setState(() {});
                     },
                     icon: Icon((!(widget.item.favorite!))
                         ? Icons.favorite_border_outlined

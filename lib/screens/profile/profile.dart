@@ -29,18 +29,6 @@ class _ProfileState extends State<Profile> {
     super.dispose();
   }
 
-  List<String> imagesPost = [
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Cebu_City_%28Aerial%29.jpg/1280px-Cebu_City_%28Aerial%29.jpg',
-    'https://as2.ftcdn.net/v2/jpg/02/45/12/75/1000_F_245127528_7gZopPwmB8Uiey1gRy9NLmejKOdFtnbr.jpg',
-    'https://as1.ftcdn.net/v2/jpg/05/36/90/62/1000_F_536906217_zySORJiXroWbYVca6XlkNAysVuSebeKv.jpg',
-    'https://as1.ftcdn.net/v2/jpg/04/74/74/30/1000_F_474743011_kYbOiWraGtT6LeAuPfMNXmsEANinb7lK.jpg',
-    'https://philippineholidays.com.au/wp-content/uploads/2015/04/Talisay-Negros-Occidental.jpg',
-    'https://masbatecity.balinkbayan.gov.ph/wp-content/uploads/2016/09/thecityofmasbate.jpg',
-    'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/d0/92/bc/the-view.jpg?w=700&h=-1&s=1',
-    'https://www.karlaroundtheworld.com/wp-content/uploads/2017/08/Cobrador-Islad-2.png',
-    'https://greenglobaltravel.com/wp-content/uploads/2019/08/Palawan-Coron-Resorts-Coron-Westown-Resort.jpg'
-  ];
-
   final user = FirebaseFirestore.instance
       .collection("users")
       .doc("${FirebaseAuth.instance.currentUser?.uid}");
@@ -52,7 +40,7 @@ class _ProfileState extends State<Profile> {
           .getDownloadURL();
 
       // print()
-    // ignore: empty_catches
+      // ignore: empty_catches
     } catch (e) {}
   }
 
@@ -167,7 +155,7 @@ class _ProfileState extends State<Profile> {
                 .toList();
 
             _items = [];
-            
+
             total_post = 0;
 
             for (var i in allPropData) {
@@ -191,6 +179,15 @@ class _ProfileState extends State<Profile> {
                 // print(i[j]['images']);
               }
             }
+
+            _items.sort((a, b) {
+              DateTime dateTimeA = DateTime.parse(
+                  "${a.dateTime.split(" – ")[0]} ${a.dateTime.split(" – ")[1]}");
+              DateTime dateTimeB = DateTime.parse(
+                  "${b.dateTime.split(" – ")[0]} ${b.dateTime.split(" – ")[1]}");
+              return dateTimeB.compareTo(dateTimeA);
+            });
+            
             return profile(context);
             // return Text("Have data", style: kSubTextStyle);
           } else {
@@ -277,13 +274,13 @@ class _ProfileState extends State<Profile> {
                     return InkWell(
                       onTap: () {
                         Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                DetailsSreen(_items[index], () {
-                                  setState(() {});
-                                })),
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailsSreen(_items[index], () {
+                                    setState(() {});
+                                  })),
+                        );
                       },
                       child: Center(
                         child: Container(
@@ -291,8 +288,8 @@ class _ProfileState extends State<Profile> {
                               horizontal: 4.0, vertical: 4.0),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image:
-                                  NetworkImage(_items[index].thumb_url as String),
+                              image: NetworkImage(
+                                  _items[index].thumb_url as String),
                               fit: BoxFit.cover,
                             ),
                           ),

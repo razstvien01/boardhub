@@ -110,6 +110,7 @@ class _SuggestionListState extends State<SuggestionList> {
                     () {
                       setState(() {});
                     },
+                    "",
                   );
                 },
               ),
@@ -241,6 +242,7 @@ class _SuggestionListState extends State<SuggestionList> {
                     () {
                       setState(() {});
                     },
+                    "",
                   );
                 },
               ),

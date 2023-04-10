@@ -303,6 +303,7 @@ class _FavoriteState extends State<Favorite> {
                 () {
                   setState(() {});
                 },
+                "",
               );
             },
           ),

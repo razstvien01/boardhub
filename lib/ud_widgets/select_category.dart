@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rent_house/constant.dart';
+import 'package:rent_house/screens/category/category.dart';
 
 class SelectCategory extends StatefulWidget {
   const SelectCategory({super.key});
@@ -19,7 +20,15 @@ class _SelectCategoryState extends State<SelectCategory> {
       //   border: Border.all(color: kAccentColor),
       // ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CategoryPage(text, () { setState(() {
+                      
+                    });}),
+              ));
+        },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
