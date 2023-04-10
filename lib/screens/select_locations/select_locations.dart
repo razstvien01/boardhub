@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
-import 'package:rent_house/models/cities.dart';
 
 class SelectLocation extends StatefulWidget {
   final VoidCallback refresh;
@@ -89,7 +87,7 @@ class _SelectLocationState extends State<SelectLocation> {
         Navigator.of(context).pop();
       },
       enabled: true,
-      trailing: Icon(Icons.place),
+      trailing: const Icon(Icons.place),
     );
   }
 
@@ -103,7 +101,7 @@ class _SelectLocationState extends State<SelectLocation> {
         iconTheme: IconThemeData(
           color: kPrimaryColor,
         ),
-        title: Text(
+        title: const Text(
           "Choose location",
           style: kSubTextStyle,
         ),
@@ -115,7 +113,7 @@ class _SelectLocationState extends State<SelectLocation> {
               itemCount: cities.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemBuilder: ((context, index) {
                 return placeTile(cities[index].pict, cities[index].city);
               })),

@@ -8,7 +8,7 @@ class ProfileMenuWidget extends StatelessWidget {
   final bool endIcon;
   final Color? textColor;
 
-  ProfileMenuWidget(
+  const ProfileMenuWidget(
       {super.key,
       required this.title,
       required this.icon,
@@ -20,7 +20,7 @@ class ProfileMenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onPress,
-      leading: Container(
+      leading: SizedBox(
         width: 30,
         height: 30,
         // decoration: BoxDecoration(
@@ -43,7 +43,7 @@ class ProfileMenuWidget extends StatelessWidget {
         
       ),
       trailing: endIcon
-          ? Container(
+          ? SizedBox(
               width: 30,
               height: 30,
               // decoration: BoxDecoration(

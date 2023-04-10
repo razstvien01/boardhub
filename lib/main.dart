@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:rent_house/drawer/nav_drawer.dart';
-import 'package:rent_house/navbar.dart';
 import 'package:rent_house/services/auth.dart';
 import 'package:rent_house/screens/signin/signin.dart';
 import 'package:rent_house/screens/signup/signup.dart';
@@ -40,7 +38,7 @@ class MyApp extends StatelessWidget {
       //   highlightColor: kTransparent,
       //   fontFamily: 'Jaapokki',
       // ),
-      home: AuthStateChange(),
+      home: const AuthStateChange(),
 
       //* App routes
       routes: {

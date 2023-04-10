@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/ud_widgets/default_button.dart';
 import 'package:rent_house/ud_widgets/clear_full_button.dart';
 import 'package:rent_house/ud_widgets/default_textfield.dart';
-import 'package:rent_house/ud_widgets/empty_appbar.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUp extends StatefulWidget {
@@ -58,6 +55,7 @@ class _SignUpState extends State<SignUp> {
       'bookmark': {},
       'role': 'user',
       'location': 'Cebu City, Cebu',
+      'profile_url': '',
     });
   }
 
@@ -100,7 +98,7 @@ class _SignUpState extends State<SignUp> {
       showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(content: Text("Mismatch passwords"));
+              return const AlertDialog(content: Text("Mismatch passwords"));
             });
     }
   }
@@ -113,8 +111,8 @@ class _SignUpState extends State<SignUp> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 40,),
-            Image(
+            const SizedBox(height: 40,),
+            const Image(
               image: AssetImage(logo),
               height: 190.0,
             ),
@@ -131,7 +129,7 @@ class _SignUpState extends State<SignUp> {
                   keyboardType: TextInputType.text,
                   obscureText: false,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kDefaultPadding,
                 ),
                 DefaultTextField(
@@ -142,7 +140,7 @@ class _SignUpState extends State<SignUp> {
                   keyboardType: TextInputType.text,
                   obscureText: false,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kDefaultPadding,
                 ),
                 DefaultTextField(
@@ -153,7 +151,7 @@ class _SignUpState extends State<SignUp> {
                   keyboardType: TextInputType.text,
                   obscureText: false,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kDefaultPadding,
                 ),
                 DefaultTextField(
@@ -164,7 +162,7 @@ class _SignUpState extends State<SignUp> {
                   keyboardType: TextInputType.emailAddress,
                   obscureText: false,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kDefaultPadding,
                 ),
                 
@@ -181,7 +179,7 @@ class _SignUpState extends State<SignUp> {
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kDefaultPadding,
                 ),
                 DefaultTextField(
@@ -200,7 +198,7 @@ class _SignUpState extends State<SignUp> {
               ],
             ),
             
-            SizedBox(height: kDefaultPadding,),
+            const SizedBox(height: kDefaultPadding,),
             
             Column(
               mainAxisAlignment: MainAxisAlignment.start,

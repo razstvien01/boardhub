@@ -29,7 +29,7 @@ class _PropertyImageState extends State<PropertyImage> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('images')
-        .child('${DateTime.now().toIso8601String() + p.basename(path)}');
+        .child(DateTime.now().toIso8601String() + p.basename(path));
 
     final result = await ref.putFile(File(path));
     final fileUrl = await result.ref.getDownloadURL();
@@ -59,7 +59,7 @@ class _PropertyImageState extends State<PropertyImage> {
 
     final file = await ImageCropper().cropImage(
       sourcePath: pickedFile.path,
-      aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9),
+      aspectRatio: const CropAspectRatio(ratioX: 16, ratioY: 9),
     );
 
     if (file == null) {
@@ -84,8 +84,8 @@ class _PropertyImageState extends State<PropertyImage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: Icon(Icons.camera, color: kLightColor),
-                title: Text(
+                leading: const Icon(Icons.camera, color: kLightColor),
+                title: const Text(
                   'Camera',
                   style: kSmallTextStyle,
                 ),
@@ -95,8 +95,8 @@ class _PropertyImageState extends State<PropertyImage> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.filter, color: kLightColor),
-                title: Text(
+                leading: const Icon(Icons.filter, color: kLightColor),
+                title: const Text(
                   'Pick a file',
                   style: kSmallTextStyle,
                 ),
@@ -137,7 +137,7 @@ class _PropertyImageState extends State<PropertyImage> {
         InkWell(
           onTap: () => _selectPhoto(),
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Text(
               (imageUrl != null) ? 'Change photo' : 'Select photo',
               style: kAccentTextStyle,

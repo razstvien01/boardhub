@@ -71,13 +71,13 @@ final List<Cities> cities = [
 
 
 // const kBGColor = Color.fromARGB(214, 0, 0, 0);
-Color kBGColor = (Colors.black as Color);
+Color kBGColor = Colors.black;
 // Color kBGColor = (Colors.red[500] as Color);
 
 
 const kLightColor = Colors.white;
-Color kAccentColor = (Color.fromARGB(143, 255, 153, 0) as Color);
-Color kPrimaryColor = Color.fromARGB(255, 197, 89, 17);
+Color kAccentColor = const Color.fromARGB(143, 255, 153, 0);
+Color kPrimaryColor = const Color.fromARGB(255, 197, 89, 17);
 // const kPrimaryColor = Color.fromARGB(255, 255, 152, 0);
 
 //* Default appbar height

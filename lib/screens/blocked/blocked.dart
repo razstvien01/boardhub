@@ -18,25 +18,25 @@ class _BlockedState extends State<Blocked> {
       backgroundColor: kBGColor,
       // appBar: EmptyAppBar(),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
+              const Expanded(
                 flex: 2,
                 child: Image(
                   image: AssetImage(logo),
                   height: 190.0,
                 ),
               ),
-              Expanded(
+              const Expanded(
                 flex: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: kDefaultPadding,
                       ),
                       child: Text(

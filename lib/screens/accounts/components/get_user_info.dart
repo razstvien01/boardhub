@@ -32,11 +32,11 @@ class _GetUserInfoState extends State<GetUserInfo> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 color: kBGColor,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     bottomRight: Radius.circular(10),
                     topRight: Radius.circular(10))),
-            margin: EdgeInsets.only(left: 10),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            margin: const EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Column(
               children: [
                 Text(
@@ -93,10 +93,10 @@ class _GetUserInfoState extends State<GetUserInfo> {
                                 : Icons.account_circle,
                             color: kBGColor,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
-                          (!data['enable']) ? Text('Unblock') : Text('Block')
+                          (!data['enable']) ? const Text('Unblock') : const Text('Block')
                         ],
                       ),
                     ),
@@ -189,7 +189,7 @@ class _GetUserInfoState extends State<GetUserInfo> {
 
           return accountTile(data, context);
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }

@@ -29,6 +29,13 @@
             {
               "client_id": "328938692821-g0a146c8e9ikaonjn2niqgiq9tfbpeg3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "328938692821-e9aoh4a9j573gdlcdem4omikhopd9gar.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.rentHouse"
+              }
             }
           ]
         }

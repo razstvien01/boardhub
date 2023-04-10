@@ -1,17 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
-import 'package:rent_house/drawer/nav_drawer.dart';
 import 'package:rent_house/screens/chat/chat.dart';
 import 'package:rent_house/screens/home/home.dart';
 import 'package:rent_house/screens/profile/profile.dart';
 import 'package:rent_house/screens/profile_admin/profile_admin.dart';
-import 'package:rent_house/screens/search/search.dart';
 
 import 'screens/favorite/favorite.dart';
 
@@ -31,18 +26,18 @@ class _NavBarState extends State<NavBar> {
   List<Widget> widgetOptions() {
     return (user?.email != "admin@boardhub.com")
         ? [
-            Home(),
+            const Home(),
             // Search(),
             Favorite(favItems),
-            Chat(),
-            Profile(),
+            const Chat(),
+            const Profile(),
           ]
         : [
-            Home(),
+            const Home(),
             // Search(),
             Favorite(favItems),
-            Chat(),
-            ProfileAdmin(),
+            const Chat(),
+            const ProfileAdmin(),
           ];
     // return (user?.email == "admin@gmail.com")
     //   ? [
@@ -78,11 +73,11 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     final items = <Widget>[
       // Icon(Icons.home, size: 25),
-      Icon(Icons.home, size: 25, color: kLightColor),
+      const Icon(Icons.home, size: 25, color: kLightColor),
       // Icon(Icons.search, size: 25, color: kLightColor),
-      Icon(CupertinoIcons.heart_fill, size: 25, color: kLightColor),
-      Icon(Icons.message, size: 25, color: kLightColor),
-      Icon(Icons.person_2, size: 25, color: kLightColor)
+      const Icon(CupertinoIcons.heart_fill, size: 25, color: kLightColor),
+      const Icon(Icons.message, size: 25, color: kLightColor),
+      const Icon(Icons.person_2, size: 25, color: kLightColor)
     ];
 
     // titleList = [
@@ -98,7 +93,7 @@ class _NavBarState extends State<NavBar> {
       backgroundColor: kBGColor,
       
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(5.0),
+        preferredSize: const Size.fromHeight(5.0),
         child: AppBar(
           elevation: 0.0,
           backgroundColor: kBGColor,

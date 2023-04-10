@@ -77,16 +77,16 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Transform.translate(
-                            offset: Offset(0, 0),
+                            offset: const Offset(0, 0),
                             child: Container(
                                         width: double.infinity, // Stretch container to cover entire width
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 8.0, horizontal: 16.0),
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
-                              child: Text(
+                              child: const Text(
                                 'View More',
                                 style: TextStyle(
                                   color: Colors.white,
@@ -114,12 +114,12 @@ class _DetailsSreenState extends State<DetailsSreen> {
                     // ),
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 Text(
                   widget.item.category!,
                   style: kPrimTextStyle,
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 Text(
                   widget.item.title!,
                   style: kSubTextStyle,
@@ -146,7 +146,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                   children: [
                     Text(
                       "${widget.item.price}\$ / Month",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22.0,
                         overflow: TextOverflow.ellipsis,
@@ -195,7 +195,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                 ),
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       'posted by ',
                       style: kSmallTextStyle,
                     ),
@@ -205,8 +205,9 @@ class _DetailsSreenState extends State<DetailsSreen> {
                             .doc('${widget.item.tenantID}')
                             .get(),
                         builder: (context, snapshot) {
-                          if (!snapshot.hasData)
-                            return CircularProgressIndicator();
+                          if (!snapshot.hasData) {
+                            return const CircularProgressIndicator();
+                          }
 
                           Map<String, dynamic> data =
                               snapshot.data!.data() as Map<String, dynamic>;
@@ -219,14 +220,14 @@ class _DetailsSreenState extends State<DetailsSreen> {
                   ],
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 8.0,
                 ),
                 Text(
                   widget.item.dateTime,
                   style: kSmallTextStyle,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8.0,
                 ),
                 Text(
@@ -234,7 +235,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                   style: kSmallTextStyle,
                 ),
                 // Expanded(child: Container()),
-                SizedBox(
+                const SizedBox(
                   height: 8.0,
                 ),
                 Container(
@@ -250,7 +251,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     fillColor: kPrimaryColor,
-                    child: Text(
+                    child: const Text(
                       "Contact Tenant",
                       style: kLightTextStyle,
                     ),

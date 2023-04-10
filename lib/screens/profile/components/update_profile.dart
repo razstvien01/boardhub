@@ -8,7 +8,7 @@ import 'package:rent_house/ud_widgets/default_textfield.dart';
 class UpdateProfile extends StatefulWidget {
   final VoidCallback refresh;
 
-  UpdateProfile(this.refresh, {super.key});
+  const UpdateProfile(this.refresh, {super.key});
 
   @override
   State<UpdateProfile> createState() => _UpdateProfileState();
@@ -42,7 +42,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         iconTheme: IconThemeData(
           color: kPrimaryColor,
         ),
-        title: Text(
+        title: const Text(
           "Edit Profile",
           style: kSubTextStyle,
         ),
@@ -61,7 +61,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   //       ),
                   // ),
                   (profileImageURL == null)
-                  ? Icon(
+                  ? const Icon(
                       Icons.person,
                       size: 100,
                       color: Colors.white,
@@ -87,7 +87,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Form(
@@ -103,7 +103,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       keyboardType: TextInputType.text,
                       obscureText: false,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kDefaultPadding,
                     ),
                     DefaultTextField(
@@ -116,7 +116,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       keyboardType: TextInputType.text,
                       obscureText: false,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kDefaultPadding,
                     ),
                     DefaultTextField(
@@ -129,7 +129,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       keyboardType: TextInputType.text,
                       obscureText: false,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kDefaultPadding,
                     ),
                     SizedBox(
@@ -165,14 +165,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: kPrimaryColor,
                             side: BorderSide.none,
-                            shape: StadiumBorder()),
-                        child: Text(
+                            shape: const StadiumBorder()),
+                        child: const Text(
                           "Confirm",
                           style: kSubTextStyle,
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kBigPadding,
                     ),
                     ElevatedButton(
@@ -185,10 +185,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         backgroundColor: kAccentColor,
                         elevation: 0,
                         foregroundColor: kLightColor,
-                        shape: StadiumBorder(),
+                        shape: const StadiumBorder(),
                         side: BorderSide.none,
                       ),
-                      child: Text(
+                      child: const Text(
                         "Delete Account",
                       ),
                     ),

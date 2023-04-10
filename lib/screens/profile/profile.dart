@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -10,7 +9,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rent_house/constant.dart';
-import 'package:rent_house/screens/blocked/blocked.dart';
 import 'package:rent_house/screens/profile/components/update_profile.dart';
 import 'package:rent_house/ud_widgets/profile_menu.dart';
 import 'package:dropdown_button2/src/dropdown_button2.dart';
@@ -34,11 +32,15 @@ class _ProfileState extends State<Profile> {
   Map<String, dynamic> data = {};
 
   final ImagePicker _picker = ImagePicker();
+  
+  final user = FirebaseFirestore.instance
+      .collection("users")
+      .doc("${FirebaseAuth.instance.currentUser?.uid}");
 
   Future<void> downloadURL() async {
     try {
       profileImageURL = await FirebaseStorage.instance
-          .ref('profile/${currUser?.uid}' + 'profile_pic')
+          .ref('profile/${currUser?.uid}' 'profile_pic')
           .getDownloadURL();
     } catch (e) {}
   }
@@ -48,7 +50,7 @@ class _ProfileState extends State<Profile> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('profile')
-        .child('${currUser?.uid}' + 'profile_pic');
+        .child('${currUser?.uid}' 'profile_pic');
 
     final result = await ref.putFile(File(path));
     final fileUrl = await result.ref.getDownloadURL();
@@ -56,6 +58,11 @@ class _ProfileState extends State<Profile> {
     setState(() {
       profileImageURL = fileUrl;
     });
+    
+    user.update({
+      'profile_url': profileImageURL
+    });
+    
   }
 
   Future<File> compressImage(String path, int quality) async {
@@ -78,7 +85,7 @@ class _ProfileState extends State<Profile> {
 
     var file = await ImageCropper().cropImage(
       sourcePath: pickedFile.path,
-      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
     );
 
     if (file == null) {
@@ -126,10 +133,12 @@ class _ProfileState extends State<Profile> {
         enable = data['enable'];
         FirebaseAuth.instance.signOut();
       }
-
+      profileImageURL = data['profile_url'] as String?;
+      
+      
       return profileUI(context);
     } else {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
   }
 
@@ -139,13 +148,13 @@ class _ProfileState extends State<Profile> {
         // mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           Stack(
             children: [
               (profileImageURL == null)
-                  ? Icon(
+                  ? const Icon(
                       Icons.person,
                       size: 100,
                       color: Colors.white,
@@ -218,7 +227,7 @@ class _ProfileState extends State<Profile> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
@@ -233,7 +242,7 @@ class _ProfileState extends State<Profile> {
             "${currUser?.email}",
             style: kSmallTextStyle,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
 
@@ -253,18 +262,18 @@ class _ProfileState extends State<Profile> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: kPrimaryColor,
                   side: BorderSide.none,
-                  shape: StadiumBorder()),
-              child: Text(
+                  shape: const StadiumBorder()),
+              child: const Text(
                 "Edit Profile",
                 style: kSubTextStyle,
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
-          Divider(),
-          SizedBox(
+          const Divider(),
+          const SizedBox(
             height: 10,
           ),
 
@@ -276,8 +285,8 @@ class _ProfileState extends State<Profile> {
             textColor: kLightColor,
           ),
 
-          Divider(),
-          SizedBox(
+          const Divider(),
+          const SizedBox(
             height: 10,
           ),
           ProfileMenuWidget(

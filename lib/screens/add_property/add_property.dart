@@ -9,16 +9,13 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
-import 'package:rent_house/ud_widgets/clear_full_button.dart';
 import 'package:rent_house/ud_widgets/default_button.dart';
 import 'package:rent_house/ud_widgets/default_textfield.dart';
 
-import 'components/property_image.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:intl/intl.dart';
@@ -45,7 +42,7 @@ class _AddPropertyState extends State<AddProperty> {
   String? selectedLocation;
 
   final ImagePicker _picker = ImagePicker();
-  List<File> _imageList = [];
+  final List<File> _imageList = [];
 
   String? imageUrl;
   List<String?> imageUrls = [];
@@ -55,7 +52,7 @@ class _AddPropertyState extends State<AddProperty> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('properties')
-        .child('${DateTime.now().toIso8601String() + p.basename(path)}');
+        .child(DateTime.now().toIso8601String() + p.basename(path));
 
     final result = await ref.putFile(File(path));
     final fileUrl = await result.ref.getDownloadURL();
@@ -116,8 +113,8 @@ class _AddPropertyState extends State<AddProperty> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: Icon(Icons.camera, color: kLightColor),
-                title: Text(
+                leading: const Icon(Icons.camera, color: kLightColor),
+                title: const Text(
                   'Camera',
                   style: kSmallTextStyle,
                 ),
@@ -130,8 +127,8 @@ class _AddPropertyState extends State<AddProperty> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.filter, color: kLightColor),
-                title: Text(
+                leading: const Icon(Icons.filter, color: kLightColor),
+                title: const Text(
                   'Pick a file',
                   style: kSmallTextStyle,
                 ),
@@ -143,22 +140,6 @@ class _AddPropertyState extends State<AddProperty> {
                       : selectImages(ImageSource.gallery);
                 },
               ),
-              // if (!isThumbnail)
-              //   Expanded(
-              //     child: GridView.builder(
-              //       gridDelegate:
-              //           const SliverGridDelegateWithFixedCrossAxisCount(
-              //         crossAxisCount: 3,
-              //       ),
-              //       itemCount: _imageList.length,
-              //       itemBuilder: (context, index) {
-              //         return Padding(
-              //           padding: const EdgeInsets.all(2.0),
-              //           child: Stack(),
-              //         );
-              //       },
-              //     ),
-              //   ),
             ],
           );
         });
@@ -242,7 +223,7 @@ class _AddPropertyState extends State<AddProperty> {
                                   right: -4,
                                   top: -4,
                                   child: IconButton(
-                                    icon: Icon(Icons.delete),
+                                    icon: const Icon(Icons.delete),
                                     color: kPrimaryColor,
                                     onPressed: () {
                                       _imageList.removeAt(index);
@@ -256,10 +237,10 @@ class _AddPropertyState extends State<AddProperty> {
                         },
                       ),
                     )
-                  : SizedBox(
+                  : const SizedBox(
                       height: kDefaultPadding,
                     ),
-              SizedBox(
+              const SizedBox(
                 height: kDefaultPadding,
               ),
               Container(
@@ -279,13 +260,13 @@ class _AddPropertyState extends State<AddProperty> {
                         maxLines: 4,
                         obscureText: false,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       DropdownButtonHideUnderline(
                         child: DropdownButton2(
                           isExpanded: true,
-                          hint: Row(
+                          hint: const Row(
                             children: [
                               Icon(
                                 Icons.place,
@@ -371,7 +352,7 @@ class _AddPropertyState extends State<AddProperty> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       DefaultTextField(
@@ -385,7 +366,7 @@ class _AddPropertyState extends State<AddProperty> {
                         maxLines: 8,
                         obscureText: false,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       DefaultTextField(
@@ -399,94 +380,86 @@ class _AddPropertyState extends State<AddProperty> {
                         maxLines: 50,
                         obscureText: false,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       DefaultButton(
                           btnText: 'Add Property',
                           onPressed: () async {
-                            if (_titleController.text.trim() != null) {
-                              // print(_titleController.text.trim());
-                              // print(selectedLocation);
-                              // print(_priceController.text.trim());
-                              // print(_descriptionController.text.trim());
-                              // print(widget.property_type);
+                            String? uid =
+                                FirebaseAuth.instance.currentUser?.uid;
 
-                              String? uid =
-                                  FirebaseAuth.instance.currentUser?.uid;
+                            final properties = FirebaseFirestore.instance
+                                .collection('properties')
+                                .doc(selectedLocation);
 
-                              final properties = FirebaseFirestore.instance
-                                  .collection('properties')
-                                  .doc(selectedLocation);
+                            await _uploadFile(imageFile.path, true);
 
-                              await _uploadFile(imageFile.path, true);
-
-                              for (File f in _imageList) {
-                                await _uploadFile(f.path, false);
-                              }
-
-                              DateTime now = DateTime.now();
-                              String formattedDate =
-                                  DateFormat('yyyy-MM-dd – kk:mm:ss')
-                                      .format(now);
-
-                              Item.recommendation.add(Item(
-                                _titleController.text.trim(),
-                                widget.property_type,
-                                selectedLocation,
-                                double.parse(_priceController.text.trim()),
-                                imageUrl,
-                                _descriptionController.text.trim(),
-                                uid,
-                                formattedDate,
-                                false,
-                                imageUrls,
-                              ));
-
-                              Item newProperty = Item(
-                                _titleController.text.trim(),
-                                widget.property_type,
-                                selectedLocation,
-                                double.parse(_priceController.text.trim()),
-                                imageUrl,
-                                _descriptionController.text.trim(),
-                                uid,
-                                formattedDate,
-                                false,
-                                imageUrls,
-                              );
-
-                              Item.nearby.add(newProperty);
-
-                              properties.update({
-                                newProperty.dateTime: {
-                                  'title': newProperty.title,
-                                  'type': newProperty.category,
-                                  'location': newProperty.location,
-                                  'price': newProperty.price,
-                                  'imageUrl': newProperty.thumb_url,
-                                  'description': newProperty.description,
-                                  'uid': newProperty.tenantID,
-                                  'favorite': false,
-                                  'images': newProperty.images,
-                                }
-                              });
-
-                              Fluttertoast.showToast(
-                                msg: "Posting property . . .",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: kAccentColor,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
-                              );
-
-                              if (mounted) {
-                                widget.refresh();
-                              }
-                              Navigator.of(context).pop();
+                            for (File f in _imageList) {
+                              await _uploadFile(f.path, false);
                             }
+
+                            DateTime now = DateTime.now();
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd – kk:mm:ss')
+                                    .format(now);
+
+                            Item.recommendation.add(Item(
+                              _titleController.text.trim(),
+                              widget.property_type,
+                              selectedLocation,
+                              double.parse(_priceController.text.trim()),
+                              imageUrl,
+                              _descriptionController.text.trim(),
+                              uid,
+                              formattedDate,
+                              false,
+                              imageUrls,
+                            ));
+
+                            Item newProperty = Item(
+                              _titleController.text.trim(),
+                              widget.property_type,
+                              selectedLocation,
+                              double.parse(_priceController.text.trim()),
+                              imageUrl,
+                              _descriptionController.text.trim(),
+                              uid,
+                              formattedDate,
+                              false,
+                              imageUrls,
+                            );
+
+                            Item.nearby.add(newProperty);
+
+                            properties.update({
+                              newProperty.dateTime: {
+                                'title': newProperty.title,
+                                'type': newProperty.category,
+                                'location': newProperty.location,
+                                'price': newProperty.price,
+                                'imageUrl': newProperty.thumb_url,
+                                'description': newProperty.description,
+                                'uid': newProperty.tenantID,
+                                'favorite': false,
+                                'images': newProperty.images,
+                              }
+                            });
+
+                            Fluttertoast.showToast(
+                              msg: "Posting property . . .",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: kAccentColor,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+
+                            if (mounted) {
+                              widget.refresh();
+                            }
+                            Navigator.of(context).pop();
                           }),
                     ],
                   ),
@@ -527,7 +500,7 @@ class _AddPropertyState extends State<AddProperty> {
         InkWell(
           onTap: () => _selectPhoto(isThumbnail),
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Text(
               (imageFile.path != '' && isThumbnail)
                   ? 'Change thumbnail'

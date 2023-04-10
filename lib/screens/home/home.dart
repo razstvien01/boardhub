@@ -1,9 +1,6 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rent_house/constant.dart';
@@ -11,7 +8,6 @@ import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/add_property/add_property.dart';
 import 'package:rent_house/screens/notification/notification.dart';
 import 'package:rent_house/screens/select_locations/select_locations.dart';
-import 'package:rent_house/ud_widgets/default_button.dart';
 import 'package:rent_house/ud_widgets/search_field.dart';
 import 'package:rent_house/ud_widgets/select_category.dart';
 import 'package:rent_house/ud_widgets/suggestion_list.dart';
@@ -49,7 +45,7 @@ class _HomeState extends State<Home> {
     // Future.delayed(Duration(seconds: 1), () {
     //   setState(() {});
     // });
-        _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (mounted) { // Check if the object is still mounted before calling setState
         setState(() {
           // Update the state
@@ -88,7 +84,7 @@ class _HomeState extends State<Home> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NotificationUI()),
+                MaterialPageRoute(builder: (context) => const NotificationUI()),
               );
             },
             icon: Icon(
@@ -101,11 +97,11 @@ class _HomeState extends State<Home> {
 
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              SearchField(),
-              SelectCategory(),
+              const SearchField(),
+              const SelectCategory(),
               // SizedBox(
               //   height: 10.0,
               // ),
@@ -115,7 +111,7 @@ class _HomeState extends State<Home> {
               ),
               SuggestionList(
                 "Nearby you",
-                [],
+                const [],
               ),
             ],
           ),

@@ -32,7 +32,7 @@ class _ForgotState extends State<Forgot> {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: Text('Password reset link sent! Check your email.'),
           );
         },
@@ -56,12 +56,12 @@ class _ForgotState extends State<Forgot> {
       backgroundColor: kBGColor,
       // appBar: EmptyAppBar(),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
+              const Expanded(
                 flex: 2,
                 child: Image(
                   image: AssetImage(logo),
@@ -73,8 +73,8 @@ class _ForgotState extends State<Forgot> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
                         horizontal: kDefaultPadding,
                       ),
                       child: Text(
@@ -82,7 +82,7 @@ class _ForgotState extends State<Forgot> {
                         style: kSubTextStyle,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kDefaultPadding,
                     ),
                     DefaultTextField(

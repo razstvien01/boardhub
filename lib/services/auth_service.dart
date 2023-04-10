@@ -13,7 +13,7 @@ class AuthService {
       await DatabaseService(uid: currUser!.uid).deleteUser();
       await currUser!.delete();
       
-      return AuthStateChange();
+      return const AuthStateChange();
     } catch (e) {
       print(e.toString());
       return false;

@@ -1,15 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/screens/forgot/forgot.dart';
-import 'package:rent_house/services/auth.dart';
 import 'package:rent_house/ud_widgets/clear_full_button.dart';
 import 'package:rent_house/ud_widgets/default_button.dart';
 import 'package:rent_house/ud_widgets/default_textfield.dart';
-import 'package:rent_house/ud_widgets/empty_appbar.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -61,11 +56,11 @@ class _SignInState extends State<SignIn> {
       // appBar: EmptyAppBar(),
       backgroundColor: kBGColor,
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              Expanded(
+              const Expanded(
                 flex: 1,
                 child: Image(
                   image: AssetImage(logo),
@@ -88,7 +83,7 @@ class _SignInState extends State<SignIn> {
                         keyboardType: TextInputType.emailAddress,
                         obscureText: false,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: kFixPadding,
                       ),
                       DefaultTextField(
@@ -106,7 +101,7 @@ class _SignInState extends State<SignIn> {
                           });
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: kFixPadding,
                       ),
                       ClearFullButton(
@@ -116,7 +111,7 @@ class _SignInState extends State<SignIn> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) {
-                                return Forgot();
+                                return const Forgot();
                               },
                             ),
                           );
@@ -133,7 +128,7 @@ class _SignInState extends State<SignIn> {
                                 Navigator.of(context)
                                     .pushReplacementNamed('/signup');
                               },
-                              whiteText: "Don\'t have an account? ",
+                              whiteText: "Don't have an account? ",
                             ),
                             DefaultButton(
                               btnText: "Sign In",

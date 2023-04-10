@@ -12,7 +12,7 @@ class SelectCategory extends StatefulWidget {
 class _SelectCategoryState extends State<SelectCategory> {
   Widget categoryButton(IconData icon, String? text) {
     return Container(
-      margin: EdgeInsets.all(18.0),
+      margin: const EdgeInsets.all(18.0),
       width: 80.0,
       height: 80.0,
       // decoration: BoxDecoration(
@@ -27,7 +27,7 @@ class _SelectCategoryState extends State<SelectCategory> {
             Icon(icon, size: 32, color: kPrimaryColor),
             Text(
               "$text",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 color: kLightColor,
                 fontWeight: FontWeight.bold,
@@ -41,7 +41,7 @@ class _SelectCategoryState extends State<SelectCategory> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 90.0,
       width: double.infinity,
       child: ListView(

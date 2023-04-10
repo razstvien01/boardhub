@@ -16,10 +16,11 @@ class _AccountsState extends State<Accounts> {
 
   Future getDocId() async {
     await FirebaseFirestore.instance.collection('users').get().then((value) {
-      value.docs.forEach((element) {
-        if(element.reference.id != "9diQIudm2kfsnUtjn0xhLc0kczp1")
+      for (var element in value.docs) {
+        if(element.reference.id != "9diQIudm2kfsnUtjn0xhLc0kczp1") {
           docIds.add(element.reference.id);
-      });
+        }
+      }
     });
   }
 
@@ -36,7 +37,7 @@ class _AccountsState extends State<Accounts> {
         elevation: 0.0,
         backgroundColor: kBGColor,
         toolbarHeight: 80.0,
-        title: Text(
+        title: const Text(
           "Manage Accounts",
           style: kSubTextStyle,
         ),

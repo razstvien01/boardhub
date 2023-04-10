@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
@@ -20,9 +19,9 @@ class _AuthStateChangeState extends State<AuthStateChange> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Basic dialog title'),
-          content: const Text('A dialog is a type of modal window that\n'
+        return const AlertDialog(
+          title: Text('Basic dialog title'),
+          content: Text('A dialog is a type of modal window that\n'
               'appears in front of app content to\n'
               'provide critical information, or prompt\n'
               'for a decision to be made.'),
@@ -57,7 +56,7 @@ class _AuthStateChangeState extends State<AuthStateChange> {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasData) {
@@ -90,16 +89,16 @@ class _AuthStateChangeState extends State<AuthStateChange> {
           //   ),
           // );
           
-          return NavBar();
+          return const NavBar();
         } else {
           
           if(enable)
           {
-            return SignIn();
+            return const SignIn();
           }
           
           enable = !enable;
-          return Blocked();
+          return const Blocked();
           
         }
       },

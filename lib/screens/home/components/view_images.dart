@@ -53,7 +53,7 @@ class ViewImages extends StatelessWidget {
         iconTheme: IconThemeData(
           color: kPrimaryColor,
         ),
-        title: Text('View Images', style: kSubTextStyle,),
+        title: const Text('View Images', style: kSubTextStyle,),
       ),
       backgroundColor: kBGColor,
       body: Padding(
@@ -65,7 +65,7 @@ class ViewImages extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             return Card(
-              margin: EdgeInsets.only(bottom: 20.0),
+              margin: const EdgeInsets.only(bottom: 20.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
                 // Add a border color here

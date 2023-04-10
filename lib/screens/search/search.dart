@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:rent_house/constant.dart';
 
 class Search extends StatefulWidget {
@@ -15,7 +13,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBGColor,
-      body: Center(
+      body: const Center(
         child: Center(
           child: Text(
             'Search',

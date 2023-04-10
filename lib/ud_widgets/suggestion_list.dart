@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/home/components/details_screen.dart';
 import 'package:rent_house/screens/test/multiple_images.dart';
-import 'package:rent_house/ud_widgets/clear_full_button.dart';
 import 'package:rent_house/ud_widgets/house_card.dart';
+
+import '../screens/test/sortbutton.dart';
 
 class SuggestionList extends StatefulWidget {
   String? title;
@@ -21,18 +21,17 @@ class SuggestionList extends StatefulWidget {
 class _SuggestionListState extends State<SuggestionList> {
   Widget getPropertiesInfo(context, snapshot) {
     if (snapshot.hasData) {
-      
       try {
         propertyData = snapshot.data!.data() as Map<String, dynamic>;
       } catch (e) {
-        return Container(color: kBGColor,);
+        return Container(
+          color: kBGColor,
+        );
       }
-      
 
       widget.items = [];
 
       for (var k in propertyData.keys) {
-        
         widget.items.add(Item(
           propertyData[k]['title'],
           propertyData[k]['type'],
@@ -53,9 +52,9 @@ class _SuggestionListState extends State<SuggestionList> {
 
       widget.items.sort((a, b) {
         DateTime dateTimeA = DateTime.parse(
-            a.dateTime.split(" – ")[0] + " " + a.dateTime.split(" – ")[1]);
+            "${a.dateTime.split(" – ")[0]} ${a.dateTime.split(" – ")[1]}");
         DateTime dateTimeB = DateTime.parse(
-            b.dateTime.split(" – ")[0] + " " + b.dateTime.split(" – ")[1]);
+            "${b.dateTime.split(" – ")[0]} ${b.dateTime.split(" – ")[1]}");
         return dateTimeB.compareTo(dateTimeA);
       });
 
@@ -71,12 +70,12 @@ class _SuggestionListState extends State<SuggestionList> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Test(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const SortTest(),
+                    //   ),
+                    // );
                   },
                   child: Text(
                     "See All",
@@ -87,7 +86,7 @@ class _SuggestionListState extends State<SuggestionList> {
             ),
             // SizedBox(height: 12.0),
 
-            Container(
+            SizedBox(
               height: 300.0,
               width: double.infinity,
               child: ListView.builder(
@@ -119,7 +118,7 @@ class _SuggestionListState extends State<SuggestionList> {
         ),
       );
     } else {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -147,7 +146,7 @@ class _SuggestionListState extends State<SuggestionList> {
             i[j]['favorite'],
             i[j]['images'],
           ));
-          
+
           // print(i[j]['images']);
         }
       }
@@ -163,7 +162,7 @@ class _SuggestionListState extends State<SuggestionList> {
       //       b.dateTime.split(" – ")[0] + " " + b.dateTime.split(" – ")[1]);
       //   return dateTimeB.compareTo(dateTimeA);
       // });
-      
+
       // widget.items.sort((a, b) {
       //   DateTime dateTimeA = DateTime.parse(
       //       a.favAddTime.split(" – ")[0] + " " + a.favAddTime.split(" – ")[1]);
@@ -179,12 +178,15 @@ class _SuggestionListState extends State<SuggestionList> {
       //   int secondCompare = dateTimeB.second.compareTo(dateTimeA.second);
       //   return secondCompare;
       // });
-      
+
       // return Container();
-      
-      widget.items.sort((a, b) => DateTime.parse(b.dateTime.replaceAll(' – ', ' ')).compareTo(DateTime.parse(a.dateTime.replaceAll(' – ', ' '))));
 
+      widget.items.sort((a, b) =>
+          DateTime.parse(b.dateTime.replaceAll(' – ', ' '))
+              .compareTo(DateTime.parse(a.dateTime.replaceAll(' – ', ' '))));
 
+      // Icons.
+      // LineIcons.sortUp
 // print(dateStrings);
 
       return Container(
@@ -202,7 +204,7 @@ class _SuggestionListState extends State<SuggestionList> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Test(),
+                        builder: (context) => const Test(),
                       ),
                     );
                   },
@@ -215,7 +217,7 @@ class _SuggestionListState extends State<SuggestionList> {
             ),
             // SizedBox(height: 12.0),
 
-            Container(
+            SizedBox(
               height: 300.0,
               width: double.infinity,
               child: ListView.builder(
@@ -247,7 +249,7 @@ class _SuggestionListState extends State<SuggestionList> {
         ),
       );
     } else {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -255,23 +257,23 @@ class _SuggestionListState extends State<SuggestionList> {
 
   @override
   Widget build(BuildContext context) {
-    // return (widget.title == "Nearby you")
-    //     ? FutureBuilder<DocumentSnapshot?>(
-    //         future: FirebaseFirestore.instance
-    //             .collection('properties')
-    //             .doc(userGlbData['location'])
-    //             .get(),
-    //         builder: getPropertiesInfo,
-    //       )
-    //     : FutureBuilder<QuerySnapshot?>(
-    //         future: FirebaseFirestore.instance.collection('properties').get(),
-    //         builder: getAllPropertiesInfo,
-    //       );
-    return FutureBuilder<QuerySnapshot?>(
+    return (widget.title == "Nearby you")
+        ? FutureBuilder<DocumentSnapshot?>(
+            future: FirebaseFirestore.instance
+                .collection('properties')
+                .doc(userGlbData['location'])
+                .get(),
+            builder: getPropertiesInfo,
+          )
+        : FutureBuilder<QuerySnapshot?>(
             future: FirebaseFirestore.instance.collection('properties').get(),
             builder: getAllPropertiesInfo,
           );
-    
+    // return FutureBuilder<QuerySnapshot?>(
+    //         future: FirebaseFirestore.instance.collection('properties').get(),
+    //         builder: getAllPropertiesInfo,
+    //       );
+
     // return FutureBuilder<DocumentSnapshot?>(
     //         future: FirebaseFirestore.instance
     //             .collection('properties')

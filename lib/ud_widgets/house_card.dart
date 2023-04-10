@@ -38,7 +38,7 @@ class _ItemCardState extends State<ItemCard> {
 
     return Container(
       width: 300.0,
-      margin: EdgeInsets.only(right: 20.0),
+      margin: const EdgeInsets.only(right: 20.0),
       decoration: BoxDecoration(
         // color: Color
         borderRadius: BorderRadius.circular(8.0),
@@ -47,7 +47,7 @@ class _ItemCardState extends State<ItemCard> {
       child: InkWell(
         onTap: widget.onTap,
         child: Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +75,7 @@ class _ItemCardState extends State<ItemCard> {
               ),
               Text(
                 widget.item.title!,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
                   color: kLightColor,
@@ -104,7 +104,7 @@ class _ItemCardState extends State<ItemCard> {
                 children: [
                   Text(
                     "${widget.item.price}\$ / Month",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22.0,
                       overflow: TextOverflow.ellipsis,

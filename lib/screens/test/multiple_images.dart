@@ -13,7 +13,7 @@ class Test extends StatefulWidget {
 
 class _TestState extends State<Test> {
   final ImagePicker _picker = ImagePicker();
-  List<XFile> _imageList = [];
+  final List<XFile> _imageList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +23,12 @@ class _TestState extends State<Test> {
         child: Column(children: [
           OutlinedButton(
             onPressed: imageSelect,
-            child: Text(
-              "Select Image",
-              style: kSubTextStyle,
-            ),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(kPrimaryColor),
+            ),
+            child: const Text(
+              "Select Image",
+              style: kSubTextStyle,
             ),
           ),
           Expanded(
@@ -56,7 +56,7 @@ class _TestState extends State<Test> {
                         //   child: Icon(Icons.delete, color: kPrimaryColor),
                         // ),
                         child: IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           color: kPrimaryColor,
                           onPressed: () {
                             _imageList.removeAt(index);

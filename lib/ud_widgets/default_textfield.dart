@@ -25,10 +25,10 @@ class DefaultTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(kShape)),
+        borderRadius: const BorderRadius.all(Radius.circular(kShape)),
         color: kAccentColor,
       ),
       child: TextFormField(
@@ -55,7 +55,7 @@ class DefaultTextField extends StatelessWidget {
                   icon: Icon(
                     obscureText ? Icons.visibility : Icons.visibility_off,
                   ),
-                  onPressed: this.isObscure,
+                  onPressed: isObscure,
                 )
               : null,
         ),

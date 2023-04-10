@@ -4,7 +4,6 @@ import 'package:rent_house/constant.dart';
 import 'dart:math';
 
 import 'package:rent_house/screens/home/home.dart';
-import 'package:rent_house/navbar.dart';
 
 class NavDrawer extends StatefulWidget {
   const NavDrawer({super.key});
@@ -54,10 +53,10 @@ class _NavDrawerState extends State<NavDrawer> {
           SafeArea(
             child: Container(
               width: 200.0,
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                Expanded(
+                const Expanded(
                   flex: 1,
                   child: DrawerHeader(
                     child: Column(
@@ -100,7 +99,7 @@ class _NavDrawerState extends State<NavDrawer> {
           //* main screen
           TweenAnimationBuilder(
             tween: Tween<double>(begin: 0, end: value),
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeIn,
             builder: (_, double val, __) {
               return (Transform(
@@ -119,7 +118,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 //   ),
                 // ),
                 // child: NavBar(),
-                child: Home(),
+                child: const Home(),
               ));
             },
           ),

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/screens/accounts/accounts.dart';
-import 'package:rent_house/screens/profile/components/update_profile.dart';
 import 'package:rent_house/ud_widgets/profile_menu.dart';
 
 class ProfileAdmin extends StatefulWidget {
@@ -16,6 +15,9 @@ class ProfileAdmin extends StatefulWidget {
 class _ProfileAdminState extends State<ProfileAdmin> {
   final currUser = FirebaseAuth.instance.currentUser;
   Map<String, dynamic> data = {};
+  final user = FirebaseFirestore.instance
+      .collection("users")
+      .doc("${FirebaseAuth.instance.currentUser?.uid}");
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
 
       return profileUI(context);
     } else {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
   }
 
@@ -50,12 +52,12 @@ class _ProfileAdminState extends State<ProfileAdmin> {
         // mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           Stack(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 50.0,
                 backgroundImage: NetworkImage(
                   "https://scontent.fceb1-1.fna.fbcdn.net/v/t1.6435-9/106585158_747287316016240_935640362906304336_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=174925&_nc_eui2=AeHI1dgAXfNzynblv1fAew8rZ-2h2Sez125n7aHZJ7PXbgYTqVjRLlnzxjcQ78R61bdQdJiYymZ7zKBZ7SSUA5IQ&_nc_ohc=fiURfHCH8-YAX8TltIw&_nc_ht=scontent.fceb1-1.fna&oh=00_AfBcfbVmjbwb8UiYl28i_Ueg_NPYAICHo6TTNUTkO6-Ivw&oe=640459AD",
@@ -78,7 +80,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
@@ -93,7 +95,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
             "${currUser?.email}",
             style: kSmallTextStyle,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
 
@@ -121,7 +123,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
           //     ),
           //   ),
           // ),
-          Divider(),
+          const Divider(),
 
           //* Menu
           ProfileMenuWidget(
@@ -131,7 +133,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
             textColor: kLightColor,
           ),
 
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
 
@@ -140,12 +142,12 @@ class _ProfileAdminState extends State<ProfileAdmin> {
             icon: Icons.manage_accounts,
             onPress: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Accounts()));
+                  context, MaterialPageRoute(builder: (context) => const Accounts()));
             },
             textColor: kLightColor,
           ),
 
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
 
@@ -156,7 +158,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
             textColor: kLightColor,
           ),
 
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
 
@@ -167,8 +169,8 @@ class _ProfileAdminState extends State<ProfileAdmin> {
             textColor: kLightColor,
           ),
 
-          Divider(),
-          SizedBox(
+          const Divider(),
+          const SizedBox(
             height: 10,
           ),
           ProfileMenuWidget(
