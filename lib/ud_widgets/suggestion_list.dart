@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/home/components/details_screen.dart';
+import 'package:rent_house/screens/see_all/see_all.dart';
 import 'package:rent_house/screens/test/multiple_images.dart';
 import 'package:rent_house/ud_widgets/house_card.dart';
 
@@ -47,8 +48,6 @@ class _SuggestionListState extends State<SuggestionList> {
       }
 
       //* sorting a properties based on their DateTime
-      // widget.items.sort((a, b) => DateTime.parse(b.dateTime.split(" – ")[0])
-      //     .compareTo(DateTime.parse(a.dateTime.split(" – ")[0])));
 
       widget.items.sort((a, b) {
         DateTime dateTimeA = DateTime.parse(
@@ -70,12 +69,12 @@ class _SuggestionListState extends State<SuggestionList> {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const SortTest(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MasonryGV(widget.title as String),
+                      ),
+                    );
                   },
                   child: Text(
                     "See All",
@@ -205,7 +204,7 @@ class _SuggestionListState extends State<SuggestionList> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Test(),
+                        builder: (context) => MasonryGV(widget.title as String),
                       ),
                     );
                   },

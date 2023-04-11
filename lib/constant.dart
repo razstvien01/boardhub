@@ -116,6 +116,12 @@ const kSmallTextStyle = TextStyle(
   color: kLightColor,
 );
 
+TextStyle kSmallPrimTextStyle = TextStyle(
+  // fontWeight: FontWeight.bold,
+  fontSize: 14,
+  color: kPrimaryColor,
+  // overflow: TextOverflow.ellipsis,
+);
 
 const kMidItalicTextStyle = TextStyle(
   fontSize: 16.0,

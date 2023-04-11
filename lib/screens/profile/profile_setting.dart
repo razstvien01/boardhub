@@ -20,7 +20,7 @@ import '../../constant.dart';
 
 class ProfileSetting extends StatefulWidget {
   VoidCallback refresh;
-  ProfileSetting(this.refresh,{super.key});
+  ProfileSetting(this.refresh, {super.key});
 
   @override
   State<ProfileSetting> createState() => _ProfileSettingState();
@@ -57,7 +57,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
     setState(() {
       profileImageURL = fileUrl;
     });
-    
+
     widget.refresh();
     print("REFRESH!!!!");
     // user.update({'profile_url': profileImageURL});
@@ -301,7 +301,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
           ProfileMenuWidget(
             title: "Logout",
             icon: Icons.logout,
-            onPress: FirebaseAuth.instance.signOut,
+            onPress: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.of(context).pop();
+            },
             textColor: kAccentColor,
           ),
         ],

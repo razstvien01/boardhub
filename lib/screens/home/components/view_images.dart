@@ -40,10 +40,15 @@
 import 'package:flutter/material.dart';
 import 'package:rent_house/constant.dart';
 
-class ViewImages extends StatelessWidget {
+class ViewImages extends StatefulWidget {
   List<dynamic> images;
   ViewImages({super.key, required this.images});
 
+  @override
+  State<ViewImages> createState() => _ViewImagesState();
+}
+
+class _ViewImagesState extends State<ViewImages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,10 +61,10 @@ class ViewImages extends StatelessWidget {
         title: const Text('View Images', style: kSubTextStyle,),
       ),
       backgroundColor: kBGColor,
-      body: Padding(
+      body: (widget.images.isNotEmpty) ? Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView.builder(
-          itemCount: images.length,
+          itemCount: widget.images.length,
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           physics: const BouncingScrollPhysics(),
@@ -77,14 +82,14 @@ class ViewImages extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16.0),
                 child: Image.network(
-                  images[index],
+                  widget.images[index],
                   fit: BoxFit.cover,
                 ),
               ),
             );
           },
         ),
-      ),
+      ) : Text("There are no pictures.", style: kSubTextStyle,),
     );
   }
 }

@@ -9,7 +9,6 @@ import '../../ud_widgets/house_card.dart';
 import '../home/components/details_screen.dart';
 
 enum SortOption { name, date }
-
 enum FilterOption { ascending, descending }
 
 class CategoryPage extends StatefulWidget {
@@ -224,8 +223,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 _items.sort((a, b) => a.title!.compareTo(b.title!));
               }
             }
-            // return profile(context);
-            // return Text("Have data", style: kSubTextStyle);
+            
             return SingleChildScrollView(
               child: Column(
                 children: [
