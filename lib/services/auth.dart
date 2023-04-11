@@ -5,6 +5,8 @@ import 'package:rent_house/navbar.dart';
 import 'package:rent_house/screens/blocked/blocked.dart';
 import 'package:rent_house/screens/signin/signin.dart';
 
+import '../screens/onboard/onboard.dart';
+
 class AuthStateChange extends StatefulWidget {
   const AuthStateChange({super.key});
 
@@ -25,26 +27,6 @@ class _AuthStateChangeState extends State<AuthStateChange> {
               'appears in front of app content to\n'
               'provide critical information, or prompt\n'
               'for a decision to be made.'),
-          // actions: <Widget>[
-          //   TextButton(
-          //     style: TextButton.styleFrom(
-          //       textStyle: Theme.of(context).textTheme.labelLarge,
-          //     ),
-          //     child: const Text('Disable'),
-          //     onPressed: () {
-          //       Navigator.of(context).pop();
-          //     },
-          //   ),
-          //   TextButton(
-          //     style: TextButton.styleFrom(
-          //       textStyle: Theme.of(context).textTheme.labelLarge,
-          //     ),
-          //     child: const Text('Enable'),
-          //     onPressed: () {
-          //       Navigator.of(context).pop();
-          //     },
-          //   ),
-          // ],
         );
       },
     );
@@ -60,41 +42,14 @@ class _AuthStateChangeState extends State<AuthStateChange> {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasData) {
-
-
-          // return SignIn();
-
-          // return Scaffold(
-          //   body: FutureBuilder<DocumentSnapshot?>(
-          //     future: FirebaseFirestore.instance
-          //         .collection("users")
-          //         .doc("${snapshot.data!.uid}")
-          //         .get(),
-          //     builder: (context, ss) {
-
-          //       print("sfjwefiewfej");
-
-          //       Map<String, dynamic> data = ss.data?.data() as Map<String, dynamic>;
-
-          //       if (!data["enable"]) {
-          //         print("PART 11111111111111111");
-          //         _dialogBuilder(context);
-
-          //         return SignIn();
-          //       }
-
-          //       print("PART 222222222222222");
-          //       return NavBar();
-          //     },
-          //   ),
-          // );
           
           return const NavBar();
         } else {
           
           if(enable)
           {
-            return const SignIn();
+            // return const SignIn();
+            return OnboardingPage();
           }
           
           enable = !enable;

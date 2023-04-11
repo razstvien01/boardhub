@@ -208,6 +208,10 @@ class _SignUpState extends State<SignUp> {
                   onPressed: ()
                   {
                     Navigator.of(context).pushReplacementNamed('/signin');
+                    
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(builder: (context) => SignIn()),
+                    // );
                   },
                   whiteText: 'Already have an account? ',
                 ),
