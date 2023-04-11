@@ -61,7 +61,7 @@ class _SelectCategoryState extends State<SelectCategory> {
           categoryButton(Icons.apartment_rounded, "Apartment"),
           categoryButton(LineIcons.building, 'Condo'),
           categoryButton(Icons.villa_rounded, "Villa"),
-          categoryButton(Icons.castle_rounded, "Castles"),
+          categoryButton(Icons.castle_rounded, "Castle"),
           
         ],
       ),

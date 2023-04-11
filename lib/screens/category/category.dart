@@ -8,7 +8,7 @@ import '../../models/item_model.dart';
 import '../../ud_widgets/house_card.dart';
 import '../home/components/details_screen.dart';
 
-enum SortOption { name, date, date_added }
+enum SortOption { name, date }
 
 enum FilterOption { ascending, descending }
 
@@ -24,7 +24,7 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   List<Item> _items = [];
   Timer? _timer;
-  SortOption? _selectedSortOption = SortOption.date_added;
+  SortOption? _selectedSortOption = SortOption.date;
   FilterOption? _selectedFilterOption = FilterOption.descending;
 
   @override
@@ -77,24 +77,6 @@ class _CategoryPageState extends State<CategoryPage> {
                       RadioListTile<SortOption>(
                         title: Text('Name', style: kSmallTextStyle),
                         value: SortOption.name,
-                        groupValue: _selectedSortOption,
-                        onChanged: (SortOption? value) {
-                          setState(() {
-                            _selectedSortOption = value;
-                          });
-
-                          Navigator.pop(context);
-                        },
-                        activeColor: Colors.white,
-                        selectedTileColor: Colors.transparent,
-                        tileColor: kPrimaryColor,
-                      ),
-                      RadioListTile<SortOption>(
-                        title: Text(
-                          'Date Added',
-                          style: kSmallTextStyle,
-                        ),
-                        value: SortOption.date_added,
                         groupValue: _selectedSortOption,
                         onChanged: (SortOption? value) {
                           setState(() {
@@ -232,24 +214,6 @@ class _CategoryPageState extends State<CategoryPage> {
                       "${a.dateTime.split(" – ")[0]} ${a.dateTime.split(" – ")[1]}");
                   DateTime dateTimeB = DateTime.parse(
                       "${b.dateTime.split(" – ")[0]} ${b.dateTime.split(" – ")[1]}");
-                  return dateTimeA.compareTo(dateTimeB);
-                });
-              }
-            } else if (_selectedSortOption == SortOption.date_added) {
-              if (_selectedFilterOption == FilterOption.descending) {
-                _items.sort((a, b) {
-                  DateTime dateTimeA = DateTime.parse(
-                      "${a.favAddTime.split(" – ")[0]} ${a.favAddTime.split(" – ")[1]}");
-                  DateTime dateTimeB = DateTime.parse(
-                      "${b.favAddTime.split(" – ")[0]} ${b.favAddTime.split(" – ")[1]}");
-                  return dateTimeB.compareTo(dateTimeA);
-                });
-              } else {
-                _items.sort((a, b) {
-                  DateTime dateTimeA = DateTime.parse(
-                      "${a.favAddTime.split(" – ")[0]} ${a.favAddTime.split(" – ")[1]}");
-                  DateTime dateTimeB = DateTime.parse(
-                      "${b.favAddTime.split(" – ")[0]} ${b.favAddTime.split(" – ")[1]}");
                   return dateTimeA.compareTo(dateTimeB);
                 });
               }

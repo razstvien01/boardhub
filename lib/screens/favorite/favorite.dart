@@ -132,13 +132,6 @@ class _FavoriteState extends State<Favorite> {
           style: kHeadTextStyle,
         ),
         actions: [
-          // IconButton(
-          //   onPressed: ,
-          //   icon: Icon(
-          //     Icons.sort,
-          //     color: kPrimaryColor,
-          //   ),
-          // )
           Theme(
             data: Theme.of(context).copyWith(
               unselectedWidgetColor: Colors.white,
