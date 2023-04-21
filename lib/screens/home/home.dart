@@ -29,9 +29,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // Future.delayed(Duration(seconds: 3), () {
-    //   setState(() {});
-    // });
   }
 
   @override
@@ -42,9 +39,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // Future.delayed(Duration(seconds: 1), () {
-    //   setState(() {});
-    // });
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (mounted) { // Check if the object is still mounted before calling setState
         setState(() {
@@ -102,9 +96,6 @@ class _HomeState extends State<Home> {
             children: [
               const SearchField(),
               const SelectCategory(),
-              // SizedBox(
-              //   height: 10.0,
-              // ),
               SuggestionList(
                 "Recommendation for you",
                 Item.recommendation,

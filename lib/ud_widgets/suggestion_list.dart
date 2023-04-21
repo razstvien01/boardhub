@@ -4,10 +4,8 @@ import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/home/components/details_screen.dart';
 import 'package:rent_house/screens/see_all/see_all.dart';
-import 'package:rent_house/screens/test/multiple_images.dart';
 import 'package:rent_house/ud_widgets/house_card.dart';
 
-import '../screens/test/sortbutton.dart';
 
 class SuggestionList extends StatefulWidget {
   String? title;

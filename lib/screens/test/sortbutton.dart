@@ -17,12 +17,12 @@ class _SortFilterButtonState extends State<SortFilterButton> {
         showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
-            return Container(
+            return SizedBox(
               height: 400,
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       'Sort/Filter By',
                       style: TextStyle(
@@ -35,7 +35,7 @@ class _SortFilterButtonState extends State<SortFilterButton> {
                     child: ListView(
                       children: [
                         RadioListTile<String>(
-                          title: Text('All'),
+                          title: const Text('All'),
                           value: 'All',
                           groupValue: _selectedOption,
                           onChanged: (String? value) {
@@ -51,7 +51,7 @@ class _SortFilterButtonState extends State<SortFilterButton> {
                           },
                         ),
                         RadioListTile<String>(
-                          title: Text('Option 1'),
+                          title: const Text('Option 1'),
                           value: 'Option 1',
                           groupValue: _selectedOption,
                           onChanged: (String? value) {
@@ -61,7 +61,7 @@ class _SortFilterButtonState extends State<SortFilterButton> {
                           },
                         ),
                         RadioListTile<String>(
-                          title: Text('Option 2'),
+                          title: const Text('Option 2'),
                           value: 'Option 2',
                           groupValue: _selectedOption,
                           onChanged: (String? value) {
@@ -71,7 +71,7 @@ class _SortFilterButtonState extends State<SortFilterButton> {
                           },
                         ),
                         RadioListTile<String>(
-                          title: Text('Option 3'),
+                          title: const Text('Option 3'),
                           value: 'Option 3',
                           groupValue: _selectedOption,
                           onChanged: (String? value) {
@@ -92,7 +92,7 @@ class _SortFilterButtonState extends State<SortFilterButton> {
                       
                       Navigator.pop(context, _selectedOption);
                     },
-                    child: Text('Apply'),
+                    child: const Text('Apply'),
                   ),
                 ],
               ),
@@ -105,7 +105,7 @@ class _SortFilterButtonState extends State<SortFilterButton> {
           }
         });
       },
-      child: Icon(Icons.sort),
+      child: const Icon(Icons.sort),
     );
   }
 }

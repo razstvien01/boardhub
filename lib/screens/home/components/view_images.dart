@@ -89,7 +89,7 @@ class _ViewImagesState extends State<ViewImages> {
             );
           },
         ),
-      ) : Text("There are no pictures.", style: kSubTextStyle,),
+      ) : const Center(child: Text("There are no pictures.", style: kSubTextStyle,)),
     );
   }
 }

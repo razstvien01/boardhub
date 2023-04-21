@@ -139,18 +139,18 @@ class _FavoriteState extends State<Favorite> {
             child: PopupMenuButton(
               shadowColor: kBGColor,
               color: kPrimaryColor,
-              icon: Icon(Icons.sort),
+              icon: const Icon(Icons.sort),
               itemBuilder: (context) => [
                 PopupMenuItem(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Sort by',
                         style: kSubTextStyle,
                       ),
                       RadioListTile<SortOption>(
-                        title: Text('Name', style: kSmallTextStyle),
+                        title: const Text('Name', style: kSmallTextStyle),
                         value: SortOption.name,
                         groupValue: _selectedSortOption,
                         onChanged: (SortOption? value) {
@@ -165,7 +165,7 @@ class _FavoriteState extends State<Favorite> {
                         tileColor: kPrimaryColor,
                       ),
                       RadioListTile<SortOption>(
-                        title: Text(
+                        title: const Text(
                           'Date Added',
                           style: kSmallTextStyle,
                         ),
@@ -183,7 +183,7 @@ class _FavoriteState extends State<Favorite> {
                         tileColor: kPrimaryColor,
                       ),
                       RadioListTile<SortOption>(
-                        title: Text(
+                        title: const Text(
                           'Date',
                           style: kSmallTextStyle,
                         ),
@@ -207,7 +207,7 @@ class _FavoriteState extends State<Favorite> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Filter by',
                         // style: TextStyle(
                         //   fontWeight: FontWeight.bold,
@@ -217,7 +217,7 @@ class _FavoriteState extends State<Favorite> {
                         style: kSubTextStyle,
                       ),
                       RadioListTile<FilterOption>(
-                        title: Text(
+                        title: const Text(
                           'Ascending',
                           style: kSmallTextStyle,
                         ),
@@ -235,7 +235,7 @@ class _FavoriteState extends State<Favorite> {
                         tileColor: kPrimaryColor,
                       ),
                       RadioListTile<FilterOption>(
-                        title: Text(
+                        title: const Text(
                           'Descending',
                           style: kSmallTextStyle,
                         ),

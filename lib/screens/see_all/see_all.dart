@@ -14,7 +14,7 @@ enum FilterOption { ascending, descending }
 
 class MasonryGV extends StatefulWidget {
   final String type;
-  MasonryGV(this.type, {super.key});
+  const MasonryGV(this.type, {super.key});
 
   @override
   State<MasonryGV> createState() => _MasonryGVState();
@@ -43,7 +43,7 @@ class _MasonryGVState extends State<MasonryGV> {
           color: kPrimaryColor,
         ),
         title: Text(
-          widget.type as String,
+          widget.type,
           style: kSubTextStyle,
         ),
         actions: [
@@ -54,18 +54,18 @@ class _MasonryGVState extends State<MasonryGV> {
             child: PopupMenuButton(
               shadowColor: kBGColor,
               color: kPrimaryColor,
-              icon: Icon(Icons.sort),
+              icon: const Icon(Icons.sort),
               itemBuilder: (context) => [
                 PopupMenuItem(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Sort by',
                         style: kSubTextStyle,
                       ),
                       RadioListTile<SortOption>(
-                        title: Text('Name', style: kSmallTextStyle),
+                        title: const Text('Name', style: kSmallTextStyle),
                         value: SortOption.name,
                         groupValue: _selectedSortOption,
                         onChanged: (SortOption? value) {
@@ -80,7 +80,7 @@ class _MasonryGVState extends State<MasonryGV> {
                         tileColor: kPrimaryColor,
                       ),
                       RadioListTile<SortOption>(
-                        title: Text(
+                        title: const Text(
                           'Date',
                           style: kSmallTextStyle,
                         ),
@@ -104,7 +104,7 @@ class _MasonryGVState extends State<MasonryGV> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Filter by',
                         // style: TextStyle(
                         //   fontWeight: FontWeight.bold,
@@ -114,7 +114,7 @@ class _MasonryGVState extends State<MasonryGV> {
                         style: kSubTextStyle,
                       ),
                       RadioListTile<FilterOption>(
-                        title: Text(
+                        title: const Text(
                           'Ascending',
                           style: kSmallTextStyle,
                         ),
@@ -132,7 +132,7 @@ class _MasonryGVState extends State<MasonryGV> {
                         tileColor: kPrimaryColor,
                       ),
                       RadioListTile<FilterOption>(
-                        title: Text(
+                        title: const Text(
                           'Descending',
                           style: kSmallTextStyle,
                         ),

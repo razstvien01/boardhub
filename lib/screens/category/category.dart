@@ -63,18 +63,18 @@ class _CategoryPageState extends State<CategoryPage> {
             child: PopupMenuButton(
               shadowColor: kBGColor,
               color: kPrimaryColor,
-              icon: Icon(Icons.sort),
+              icon: const Icon(Icons.sort),
               itemBuilder: (context) => [
                 PopupMenuItem(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Sort by',
                         style: kSubTextStyle,
                       ),
                       RadioListTile<SortOption>(
-                        title: Text('Name', style: kSmallTextStyle),
+                        title: const Text('Name', style: kSmallTextStyle),
                         value: SortOption.name,
                         groupValue: _selectedSortOption,
                         onChanged: (SortOption? value) {
@@ -89,7 +89,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         tileColor: kPrimaryColor,
                       ),
                       RadioListTile<SortOption>(
-                        title: Text(
+                        title: const Text(
                           'Date',
                           style: kSmallTextStyle,
                         ),
@@ -113,7 +113,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Filter by',
                         // style: TextStyle(
                         //   fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         style: kSubTextStyle,
                       ),
                       RadioListTile<FilterOption>(
-                        title: Text(
+                        title: const Text(
                           'Ascending',
                           style: kSmallTextStyle,
                         ),
@@ -141,7 +141,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         tileColor: kPrimaryColor,
                       ),
                       RadioListTile<FilterOption>(
-                        title: Text(
+                        title: const Text(
                           'Descending',
                           style: kSmallTextStyle,
                         ),
