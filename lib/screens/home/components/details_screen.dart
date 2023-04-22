@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
@@ -8,9 +9,9 @@ import 'package:rent_house/screens/home/components/edit_post.dart';
 import 'package:rent_house/screens/home/components/view_images.dart';
 
 class DetailsSreen extends StatefulWidget {
-  Item item;
-  VoidCallback refresh;
-  DetailsSreen(this.item, this.refresh, {super.key});
+  final Item item;
+  final VoidCallback refresh;
+  const DetailsSreen(this.item, this.refresh, {super.key});
 
   @override
   State<DetailsSreen> createState() => _DetailsSreenState();
@@ -24,6 +25,11 @@ class _DetailsSreenState extends State<DetailsSreen> {
   final currUser = FirebaseAuth.instance.currentUser;
 
   Map<String, dynamic> posts = {};
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void _showDialogBox(BuildContext context) {
     showDialog(
@@ -48,12 +54,32 @@ class _DetailsSreenState extends State<DetailsSreen> {
             ),
             TextButton(
               onPressed: () {
+                Fluttertoast.showToast(
+                  msg: "Deleting post . . .",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: kAccentColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+
                 FirebaseFirestore.instance
                     .collection('properties')
                     .doc('${widget.item.location}')
                     .update({
                   widget.item.dateTime.toString(): FieldValue.delete(),
                 });
+
+                Fluttertoast.showToast(
+                  msg: "Deleting completed",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: kAccentColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
 
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 // Perform confirm action here
@@ -88,6 +114,18 @@ class _DetailsSreenState extends State<DetailsSreen> {
         //   widget.category_name as String,
         //   style: kSubTextStyle,
         // ),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+                onPressed: () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: kPrimaryColor,
+                ));
+          },
+        ),
         actions: [
           if (currUser!.uid == widget.item.tenantID)
             Row(
@@ -98,7 +136,10 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const EditPosts()),
+                        MaterialPageRoute(
+                            builder: (context) => EditPosts(
+                                  item: widget.item,
+                                )),
                       );
                     },
                     icon: const Icon(Icons.edit)),

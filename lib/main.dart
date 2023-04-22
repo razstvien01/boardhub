@@ -32,12 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       //* Setting up themedata of the app
-      // theme: ThemeData(
-      //   primaryColor: kPrimaryColor,
-      //   colorScheme: ColorScheme.fromSwatch().copyWith(secondary: kDarkColor),
-      //   highlightColor: kTransparent,
-      //   fontFamily: 'Jaapokki',
-      // ),
+     
       home: const AuthStateChange(),
 
       //* App routes
@@ -47,6 +42,7 @@ class MyApp extends StatelessWidget {
       //   '/onboard': (context) => const Onboard(),
         '/signin': (context) => const SignIn(),
         '/signup': (context) => const SignUp(),
+        // '/home'
       },
     );
   }

@@ -23,6 +23,8 @@ import 'package:intl/intl.dart';
 class AddProperty extends StatefulWidget {
   final String property_type;
   final VoidCallback refresh;
+  
+  
 
   const AddProperty(
       {super.key, required this.property_type, required this.refresh});
@@ -38,7 +40,7 @@ class _AddPropertyState extends State<AddProperty> {
 
   final currUser = FirebaseAuth.instance.currentUser;
 
-  final List<String> locations = ['Cebu City, Cebu', 'Talisay City, Cebu'];
+  // final List<String> locations = ['Cebu City, Cebu', 'Talisay City, Cebu'];
   String? selectedLocation;
 
   final ImagePicker _picker = ImagePicker();
@@ -389,6 +391,16 @@ class _AddPropertyState extends State<AddProperty> {
                       DefaultButton(
                           btnText: 'Add Property',
                           onPressed: () async {
+                            Fluttertoast.showToast(
+                              msg: "Posting property . . .",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: kAccentColor,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                            
                             String? uid =
                                 FirebaseAuth.instance.currentUser?.uid;
 
@@ -434,7 +446,8 @@ class _AddPropertyState extends State<AddProperty> {
                             );
 
                             Item.nearby.add(newProperty);
-
+                            
+                            
                             properties.update({
                               newProperty.dateTime: {
                                 'title': newProperty.title,
@@ -450,7 +463,7 @@ class _AddPropertyState extends State<AddProperty> {
                             });
 
                             Fluttertoast.showToast(
-                              msg: "Posting property . . .",
+                              msg: "Posting property completed",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               timeInSecForIosWeb: 1,
@@ -462,6 +475,9 @@ class _AddPropertyState extends State<AddProperty> {
                             if (mounted) {
                               widget.refresh();
                             }
+                            
+                            
+                            
                             Navigator.of(context).pop();
                           }),
                     ],
@@ -485,19 +501,37 @@ class _AddPropertyState extends State<AddProperty> {
                 color: kPrimaryColor,
               )
             : (isThumbnail)
-                ? InkWell(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () => _selectPhoto(true),
-                    // child: Image.network(
-                    //   imageUrl as String,
-                    //   width: 400,
-                    //   height: 200,
-                    // ),
-                    child: Image.file(
-                      imageFile,
-                      fit: BoxFit.fill,
-                    ),
+                ? Stack(
+                    children: [
+                      InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () => _selectPhoto(true),
+                        // child: Image.network(
+                        //   imageUrl as String,
+                        //   width: 400,
+                        //   height: 200,
+                        // ),
+                        child: Image.file(
+                          imageFile,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Positioned(
+                        right: -4,
+                        top: -4,
+                        child: IconButton(
+                          icon: const Icon(Icons.delete),
+                          color: kPrimaryColor,
+                          onPressed: () {
+                            //_imageList.removeAt(index);
+                            imageFile = File('');
+                            setState(() {});
+                            
+                          },
+                        ),
+                      ),
+                    ],
                   )
                 : Container(),
         InkWell(
