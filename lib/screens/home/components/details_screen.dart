@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/home/components/edit_post.dart';
@@ -18,6 +19,8 @@ class DetailsSreen extends StatefulWidget {
 }
 
 class _DetailsSreenState extends State<DetailsSreen> {
+  TextEditingController commentController = TextEditingController();
+
   final user = FirebaseFirestore.instance
       .collection("users")
       .doc("${FirebaseAuth.instance.currentUser?.uid}");
@@ -28,6 +31,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
   @override
   void dispose() {
+    commentController.dispose();
     super.dispose();
   }
 
@@ -252,43 +256,57 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         color: kLightColor,
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          widget.item.favorite = !(widget.item.favorite!);
-                        });
-                        DateTime now = DateTime.now();
-                        String formattedDate =
-                            DateFormat('yyyy-MM-dd – kk:mm:ss').format(now);
-                        if (userGlbData['bookmark'][widget.item.dateTime] ==
-                            null) {
-                          userGlbData['bookmark'][widget.item.dateTime] = {
-                            'description': widget.item.description,
-                            'imageUrl': widget.item.thumb_url,
-                            'location': widget.item.location,
-                            'price': widget.item.price,
-                            'type': widget.item.category,
-                            'title': widget.item.title,
-                            'uid': widget.item.tenantID,
-                            'favAddTime': formattedDate,
-                            'images': widget.item.images
-                          };
-                        } else {
-                          userGlbData['bookmark'].remove(widget.item.dateTime);
-                        }
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              widget.item.favorite = !(widget.item.favorite!);
+                            });
+                            DateTime now = DateTime.now();
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd – kk:mm:ss').format(now);
+                            if (userGlbData['bookmark'][widget.item.dateTime] ==
+                                null) {
+                              userGlbData['bookmark'][widget.item.dateTime] = {
+                                'description': widget.item.description,
+                                'imageUrl': widget.item.thumb_url,
+                                'location': widget.item.location,
+                                'price': widget.item.price,
+                                'type': widget.item.category,
+                                'title': widget.item.title,
+                                'uid': widget.item.tenantID,
+                                'favAddTime': formattedDate,
+                                'images': widget.item.images
+                              };
+                            } else {
+                              userGlbData['bookmark']
+                                  .remove(widget.item.dateTime);
+                            }
 
-                        //print(userGlbData['bookmark']);
+                            //print(userGlbData['bookmark']);
 
-                        user.update({
-                          'bookmark': userGlbData['bookmark'],
-                        });
+                            user.update({
+                              'bookmark': userGlbData['bookmark'],
+                            });
 
-                        widget.refresh();
-                      },
-                      icon: Icon((!(widget.item.favorite!))
-                          ? Icons.favorite_border_outlined
-                          : Icons.favorite_outlined),
-                      color: kPrimaryColor,
+                            widget.refresh();
+                          },
+                          icon: Icon((!(widget.item.favorite!))
+                              ? Icons.favorite_border_outlined
+                              : Icons.favorite_outlined),
+                          color: kPrimaryColor,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              // showComments(context);
+                              showCommentsSheet(context);
+                            },
+                            icon: Icon(
+                              LineIcon.comments().icon,
+                              color: kPrimaryColor,
+                            )),
+                      ],
                     ),
                   ],
                 ),
@@ -359,6 +377,276 @@ class _DetailsSreenState extends State<DetailsSreen> {
               ],
             )),
       ),
+    );
+  }
+
+  // showComments(BuildContext context) {
+  //   return showModalBottomSheet(
+  //       isScrollControlled: true,
+  //       context: context,
+  //       builder: (context) {
+  //         return Container(
+  //           height: MediaQuery.of(context).size.height * 0.6,
+  //           width: MediaQuery.of(context).size.width,
+  //           decoration: BoxDecoration(
+  //             color: kBGColor,
+  //             borderRadius: const BorderRadius.only(
+  //               topLeft: Radius.circular(20.0),
+  //               topRight: Radius.circular(20.0),
+  //             ),
+  //             border: Border.all(
+  //               color: kPrimaryColor,
+  //               width: 2.0,
+  //             ),
+  //           ),
+
+  //           // decoration: BoxDecoration(
+  //           //   border: Border.all(
+  //           //     color: kPrimaryColor,
+  //           //     width: 10.0,
+  //           //   ),
+  //           //   color: kBGColor,
+  //           //   borderRadius: BorderRadius.circular(10.0),
+  //           // ),
+  //           child: Column(
+  //             children: [
+  //               const Padding(
+  //                 padding: EdgeInsets.symmetric(horizontal: 150.0),
+  //                 child: Divider(
+  //                   thickness: 4.0,
+  //                   color: kLightColor,
+  //                 ),
+  //               ),
+  //               Container(
+  //                 width: 120.0,
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: kPrimaryColor),
+  //                   borderRadius: BorderRadius.circular(5.0),
+  //                 ),
+  //                 child: Center(
+  //                   child: Text(
+  //                     'Comments',
+  //                     style: kPrimTextStyle,
+  //                   ),
+  //                 ),
+  //               ),
+  //               ListView.builder(
+  //                 itemCount: 3,
+  //                 itemBuilder: (context, index) {
+  //                   return Column(
+  //                     mainAxisAlignment: MainAxisAlignment.start,
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       Row(
+  //                         children: [
+  //                           GestureDetector(
+  //                             child: CircleAvatar(
+  //                               backgroundColor: kPrimaryColor,
+  //                               radius: 15.0,
+  //                               backgroundImage: NetworkImage(
+  //                                   'https://i.pinimg.com/736x/ae/b1/43/aeb143366a35e1bcade5a6423b1d0aa2.jpg'),
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ],
+  //                   );
+  //                 },
+  //               )
+  //             ],
+  //           ),
+  //         );
+  //       });
+  // }
+
+  showCommentsSheet(BuildContext context) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.65,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            decoration: BoxDecoration(
+              color: kBGColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12.0),
+                topRight: Radius.circular(12.0),
+              ),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 150.0),
+                  child: Divider(
+                    thickness: 4.0,
+                    color: kLightColor,
+                  ),
+                ),
+                Container(
+                  width: 120,
+                  decoration: BoxDecoration(
+                    // border: Border.all(
+                    //   color: kLightColor,
+                    // ),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Comments',
+                      style: kPrimTextStyle,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    child: CircleAvatar(
+                                      backgroundColor: kPrimaryColor,
+                                      radius: 15.0,
+                                      backgroundImage: NetworkImage(
+                                          'https://i.pinimg.com/736x/ae/b1/43/aeb143366a35e1bcade5a6423b1d0aa2.jpg'),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'USERNAME',
+                                      style: kSmallTextStyle,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(LineIcon.arrowUp().icon,
+                                              color: kPrimaryColor),
+                                        ),
+                                        Text(
+                                          '0',
+                                          style: kSmallTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.delete,
+                                              color: kPrimaryColor),
+                                        ),
+                                        Text(
+                                          '0',
+                                          style: kSmallTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      color: kPrimaryColor,
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Sample Comment afeafehunfiosnds',
+                                      style: kSmallTextStyle,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Divider(
+                                color: kLightColor.withOpacity(0.2),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: commentController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: 'Type a message',
+                          hintStyle: kSmallPrimTextStyle,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: kPrimaryColor,
+                            ),
+                            borderRadius: BorderRadius.circular(32.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: kPrimaryColor,
+                              
+                            ),
+                            borderRadius: BorderRadius.circular(32.0),
+                            
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: kPrimaryColor,
+                            ),
+                            borderRadius: BorderRadius.circular(32.0),
+                            
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.send, color: kPrimaryColor),
+                            onPressed: () {
+                              // Send message logic here
+                              commentController.clear();
+                            },
+                          ),
+                        ),
+                        style: kSmallTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
                 );
               },
             ),
-            Text(
+            (userGlbData['location'] == null) ? const CircularProgressIndicator() : Text(
               userGlbData['location'],
               style: kSubTextStyle,
             ),

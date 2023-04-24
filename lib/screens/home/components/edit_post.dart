@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rent_house/screens/home/components/details_screen.dart';
@@ -25,7 +24,7 @@ import '../../../ud_widgets/default_textfield.dart';
 
 class EditPosts extends StatefulWidget {
   final Item item;
-  EditPosts({
+  const EditPosts({
     super.key,
     required this.item,
   });
