@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:rent_house/constant.dart';
+import 'package:rent_house/models/comment.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/home/components/edit_post.dart';
 import 'package:rent_house/screens/home/components/view_images.dart';
@@ -27,18 +28,9 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
   final currUser = FirebaseAuth.instance.currentUser;
 
-  // Map<String, dynamic> posts = {};
-  Map<String, dynamic> comments = {
-    // 'id': {
-    //   'name': 'Nicolen Evanz Aricayos',
-    //   'thumb_url':
-    //       'https://i.pinimg.com/736x/ae/b1/43/aeb143366a35e1bcade5a6423b1d0aa2.jpg',
-    //   'comment':
-    //       'This is a long text that needs to be displayed in multiple lines.',
-    // },
-  };
+  late String commentId;
 
-  // List<String> commentsList = [];
+  Map<String, dynamic> data = {};
 
   @override
   void dispose() {
@@ -392,65 +384,112 @@ class _DetailsSreenState extends State<DetailsSreen> {
   }
 
   showCommentsSheet(BuildContext context) {
+    commentId = '${widget.item.dateTime}|${widget.item.tenantID as String}';
+
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('comments')
-                .doc(
-                    '${widget.item.dateTime}|${widget.item.tenantID as String}')
-                .snapshots(),
-            builder: (context, snapshot) {
-              return SingleChildScrollView(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.65,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
+        return SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.65,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            decoration: BoxDecoration(
+              color: kBGColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12.0),
+                topRight: Radius.circular(12.0),
+              ),
+            ),
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 150.0),
+                  child: Divider(
+                    thickness: 4.0,
+                    color: kLightColor,
                   ),
+                ),
+                Container(
+                  width: 120,
                   decoration: BoxDecoration(
-                    color: kBGColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12.0),
-                      topRight: Radius.circular(12.0),
+                    // border: Border.all(
+                    //   color: kLightColor,
+                    // ),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Comments',
+                      style: kPrimTextStyle,
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 150.0),
-                        child: Divider(
-                          thickness: 4.0,
-                          color: kLightColor,
-                        ),
-                      ),
-                      Container(
-                        width: 120,
-                        decoration: BoxDecoration(
-                          // border: Border.all(
-                          //   color: kLightColor,
-                          // ),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Center(
+                ),
+                StreamBuilder<DocumentSnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('comments')
+                        .doc(commentId)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      // if (snapshot.connectionState == ConnectionState.waiting) {
+                      //   return Center(
+                      //     child: CircularProgressIndicator(),
+                      //   );
+                      // }
+
+                      if (snapshot.hasError) {
+                        return Center(
                           child: Text(
-                            'Comments',
-                            style: kPrimTextStyle,
+                            'Error: ${snapshot.error}',
+                            style: kSubTextStyle,
                           ),
-                        ),
-                      ),
-                      Expanded(
+                        );
+                      }
+
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: Text(
+                            'No Comment Posts Yet',
+                            style: kSubTextStyle,
+                          ),
+                        );
+                      }
+
+                      List<UserComment> comments = [];
+
+                      data = snapshot.data!.data()! as Map<String, dynamic>;
+
+                      for (var k in data.keys) {
+                        UserComment newComment = UserComment(
+                          name: data[k]['name'],
+                          comment: data[k]['comment'],
+                          datePosted: data[k]['datePosted'],
+                          profile_url: data[k]['profile_url'],
+                        );
+
+                        comments.add(newComment);
+                      }
+
+                      comments.sort((a, b) {
+                        DateTime dateTimeA = DateTime.parse(
+                            "${a.datePosted!.split(" – ")[0]} ${a.datePosted!.split(" – ")[1]}");
+                        DateTime dateTimeB = DateTime.parse(
+                            "${b.datePosted!.split(" – ")[0]} ${b.datePosted!.split(" – ")[1]}");
+                        return dateTimeB.compareTo(dateTimeA);
+                      });
+
+
+                      return Expanded(
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: comments.length,
                           itemBuilder: (context, index) {
-                            String commentId = comments.keys.elementAt(index);
+                            String id = data.keys.elementAt(index);
 
                             // commentsList = comments.entries.toList();
-
-                            // print()
 
                             return Expanded(
                               child: Container(
@@ -468,14 +507,15 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                             backgroundColor: kPrimaryColor,
                                             radius: 15.0,
                                             backgroundImage: NetworkImage(
-                                                comments[commentId]
-                                                    ['thumb_url']),
+                                              comments[index].profile_url as String,
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: Text(
-                                            comments[commentId]['name'],
+                                            // data['name'],
+                                            comments[index].name as String,
                                             style: kSmallTextStyle,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -537,9 +577,10 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                         ),
                                         Expanded(
                                           child: Text(
-                                            comments[commentId]['comment'],
+                                            comments[index].comment as String,
                                             style: kSmallTextStyle,
-                                            overflow: TextOverflow.ellipsis,
+                                            // overflow:
+                                            //     TextOverflow.ellipsis,
                                             maxLines: null,
                                           ),
                                         ),
@@ -554,156 +595,150 @@ class _DetailsSreenState extends State<DetailsSreen> {
                             );
                           },
                         ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextField(
-                              textCapitalization: TextCapitalization.sentences,
-                              controller: commentController,
-                              maxLines: null,
-                              decoration: InputDecoration(
-                                hintText: 'Type a message',
-                                hintStyle: kSmallPrimTextStyle,
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: kPrimaryColor,
-                                  ),
-                                  borderRadius: BorderRadius.circular(32.0),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: kPrimaryColor,
-                                  ),
-                                  borderRadius: BorderRadius.circular(32.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: kPrimaryColor,
-                                  ),
-                                  borderRadius: BorderRadius.circular(32.0),
-                                ),
-                                suffixIcon: IconButton(
-                                  icon: Icon(Icons.send, color: kPrimaryColor),
-                                  onPressed: () async {
-                                    if (commentController.text.isNotEmpty) {
-                                      Fluttertoast.showToast(
-                                        msg: "Adding comment . . .",
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: kAccentColor,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0,
-                                      );
-                                      final currUser =
-                                          FirebaseAuth.instance.currentUser;
-
-                                      // currUser.
-
-                                      //* getting data without using FutureBuilder or StreamBuilder
-                                      final documentSnapshot =
-                                          await FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(currUser?.uid)
-                                              .get();
-
-                                      DateTime now = DateTime.now();
-                                      String formattedDate =
-                                          DateFormat('yyyy-MM-dd – kk:mm:ss')
-                                              .format(now);
-
-                                      if (documentSnapshot.exists) {
-                                        final data = documentSnapshot.data();
-
-                                        final comments = FirebaseFirestore
-                                            .instance
-                                            .collection('comments');
-
-                                        final newComment = {
-                                          '$formattedDate|${currUser?.uid as String}|comment':
-                                              {
-                                            'name': data?['fullname'],
-                                            'profile_url': data?['profile_url'],
-                                            'comment':
-                                                commentController.text.trim(),
-                                          }
-                                        };
-
-                                        String commentId =
-                                            '${widget.item.dateTime}|${widget.item.tenantID as String}';
-
-                                        DocumentReference docRef =
-                                            FirebaseFirestore.instance
-                                                .collection('comments')
-                                                .doc(commentId);
-
-                                        docRef.get().then((docSnapshot) {
-                                          if (docSnapshot.exists) {
-                                            comments
-                                                .doc(commentId)
-                                                .update(newComment)
-                                                .then((value) {
-                                              // property data added successfully
-                                              print(
-                                                  'comment added succesfully');
-                                            }).catchError((error) {
-                                              // an error occurred while adding the property data
-                                              print(
-                                                  'an error occurred while adding the property data');
-                                            });
-                                          } else {
-                                            comments
-                                                .doc(commentId)
-                                                .set(newComment)
-                                                .then((value) {
-                                              // property data added successfully
-                                              print(
-                                                  'comment added succesfully');
-                                            }).catchError((error) {
-                                              // an error occurred while adding the property data
-                                              print(
-                                                  'an error occurred while adding the property data');
-                                            });
-                                          }
-                                        });
-
-                                        // comments
-                                        //     .doc(commentId)
-                                        //     .set(newComment)
-                                        //     .then((value) {
-                                        //   // property data added successfully
-                                        //   print('comment added succesfully');
-                                        // }).catchError((error) {
-                                        //   // an error occurred while adding the property data
-                                        //   print('an error occurred while adding the property data');
-                                        // });
-                                      }
-                                      setState(() {});
-                                    }
-                                    // '${widget.item.dateTime}|${widget.item.tenantID as String}'
-                                    // FirebaseFirestore.instance
-                                    // widget.item.thumb_url
-                                    // commentController
-                                    //widget.item.tenantID;
-
-                                    // Send message logic here
-                                    commentController.clear();
-                                  },
-                                ),
-                              ),
-                              style: kSmallTextStyle,
+                      );
+                    }),
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: commentController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: 'Type a message',
+                          hintStyle: kSmallPrimTextStyle,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: kPrimaryColor,
                             ),
-                          ],
+                            borderRadius: BorderRadius.circular(32.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: kPrimaryColor,
+                            ),
+                            borderRadius: BorderRadius.circular(32.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: kPrimaryColor,
+                            ),
+                            borderRadius: BorderRadius.circular(32.0),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.send, color: kPrimaryColor),
+                            onPressed: () async {
+                              if (commentController.text.isNotEmpty) {
+                                Fluttertoast.showToast(
+                                  msg: "Adding comment . . .",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: kAccentColor,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                                final currUser =
+                                    FirebaseAuth.instance.currentUser;
+
+                                // currUser.
+
+                                //* getting data without using FutureBuilder or StreamBuilder
+                                final documentSnapshot = await FirebaseFirestore
+                                    .instance
+                                    .collection('users')
+                                    .doc(currUser?.uid)
+                                    .get();
+
+                                DateTime now = DateTime.now();
+                                String formattedDate =
+                                    DateFormat('yyyy-MM-dd – kk:mm:ss')
+                                        .format(now);
+
+                                if (documentSnapshot.exists) {
+                                  final data = documentSnapshot.data();
+
+                                  final comments = FirebaseFirestore.instance
+                                      .collection('comments');
+
+                                  final newComment = {
+                                    '$formattedDate|${currUser?.uid as String}|comment':
+                                        {
+                                      'name': data?['fullname'],
+                                      'profile_url': data?['profile_url'],
+                                      'comment': commentController.text.trim(),
+                                      'datePosted': formattedDate,
+                                    }
+                                  };
+
+                                  DocumentReference docRef = FirebaseFirestore
+                                      .instance
+                                      .collection('comments')
+                                      .doc(commentId);
+
+                                  docRef.get().then((docSnapshot) {
+                                    if (docSnapshot.exists) {
+                                      comments
+                                          .doc(commentId)
+                                          .update(newComment)
+                                          .then((value) {
+                                        // property data added successfully
+                                        print('comment added succesfully');
+                                      }).catchError((error) {
+                                        // an error occurred while adding the property data
+                                        print(
+                                            'an error occurred while adding the property data');
+                                      });
+                                    } else {
+                                      comments
+                                          .doc(commentId)
+                                          .set(newComment)
+                                          .then((value) {
+                                        // property data added successfully
+                                        print('comment added succesfully');
+                                      }).catchError((error) {
+                                        // an error occurred while adding the property data
+                                        print(
+                                            'an error occurred while adding the property data');
+                                      });
+                                    }
+                                  });
+
+                                  // comments
+                                  //     .doc(commentId)
+                                  //     .set(newComment)
+                                  //     .then((value) {
+                                  //   // property data added successfully
+                                  //   print('comment added succesfully');
+                                  // }).catchError((error) {
+                                  //   // an error occurred while adding the property data
+                                  //   print('an error occurred while adding the property data');
+                                  // });
+                                }
+                                setState(() {});
+                              }
+                              // '${widget.item.dateTime}|${widget.item.tenantID as String}'
+                              // FirebaseFirestore.instance
+                              // widget.item.thumb_url
+                              // commentController
+                              //widget.item.tenantID;
+
+                              // Send message logic here
+                              commentController.clear();
+                            },
+                          ),
                         ),
+                        style: kSmallTextStyle,
                       ),
                     ],
                   ),
                 ),
-              );
-            });
+              ],
+            ),
+          ),
+        );
       },
     );
   }
