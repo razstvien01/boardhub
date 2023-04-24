@@ -39,15 +39,15 @@ class PostFunctions with ChangeNotifier {
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: kBGColor,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(12.0),
               topRight: Radius.circular(12.0),
             ),
           ),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 150.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 150.0),
                 child: Divider(
                   thickness: 4.0,
                   color: kLightColor,
@@ -77,12 +77,12 @@ class PostFunctions with ChangeNotifier {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     return ListView(
                       children: snapshot.data!.docs
                           .map((DocumentSnapshot documentSnapshot) {
-                        return Container(
+                        return SizedBox(
                           height: MediaQuery.of(context).size.height * 0.11,
                           width: MediaQuery.of(context).size.width,
                           child: Column(
@@ -95,14 +95,14 @@ class PostFunctions with ChangeNotifier {
                                     child: CircleAvatar(
                                       backgroundColor: kPrimaryColor,
                                       radius: 15.0,
-                                      backgroundImage: NetworkImage(
+                                      backgroundImage: const NetworkImage(
                                           'https://i.pinimg.com/736x/ae/b1/43/aeb143366a35e1bcade5a6423b1d0aa2.jpg'),
                                     ),
                                   ),
                                   Column(
                                     children: [
                                       Container(
-                                        child: Row(
+                                        child: const Row(
                                           children: [
                                             Text(
                                               'USERNAME',
@@ -121,7 +121,7 @@ class PostFunctions with ChangeNotifier {
                                           icon: Icon(LineIcon.arrowUp().icon,
                                               color: kPrimaryColor),
                                         ),
-                                        Text(
+                                        const Text(
                                           '0',
                                           style: kSmallTextStyle,
                                         ),
@@ -136,7 +136,7 @@ class PostFunctions with ChangeNotifier {
                                           icon: Icon(Icons.delete,
                                               color: kPrimaryColor),
                                         ),
-                                        Text(
+                                        const Text(
                                           '0',
                                           style: kSmallTextStyle,
                                         ),
@@ -155,9 +155,9 @@ class PostFunctions with ChangeNotifier {
                                       ),
                                       onPressed: () {},
                                     ),
-                                    Container(
+                                    SizedBox(
                                       width: MediaQuery.of(context).size.width,
-                                      child: Text(
+                                      child: const Text(
                                         'Sample Comment afeafehunfiosnds',
                                         style: kSmallTextStyle,
                                       ),
