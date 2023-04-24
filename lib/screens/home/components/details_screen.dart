@@ -27,7 +27,18 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
   final currUser = FirebaseAuth.instance.currentUser;
 
-  Map<String, dynamic> posts = {};
+  // Map<String, dynamic> posts = {};
+  Map<String, dynamic> comments = {
+    // 'id': {
+    //   'name': 'Nicolen Evanz Aricayos',
+    //   'thumb_url':
+    //       'https://i.pinimg.com/736x/ae/b1/43/aeb143366a35e1bcade5a6423b1d0aa2.jpg',
+    //   'comment':
+    //       'This is a long text that needs to be displayed in multiple lines.',
+    // },
+  };
+
+  // List<String> commentsList = [];
 
   @override
   void dispose() {
@@ -380,271 +391,282 @@ class _DetailsSreenState extends State<DetailsSreen> {
     );
   }
 
-  // showComments(BuildContext context) {
-  //   return showModalBottomSheet(
-  //       isScrollControlled: true,
-  //       context: context,
-  //       builder: (context) {
-  //         return Container(
-  //           height: MediaQuery.of(context).size.height * 0.6,
-  //           width: MediaQuery.of(context).size.width,
-  //           decoration: BoxDecoration(
-  //             color: kBGColor,
-  //             borderRadius: const BorderRadius.only(
-  //               topLeft: Radius.circular(20.0),
-  //               topRight: Radius.circular(20.0),
-  //             ),
-  //             border: Border.all(
-  //               color: kPrimaryColor,
-  //               width: 2.0,
-  //             ),
-  //           ),
-
-  //           // decoration: BoxDecoration(
-  //           //   border: Border.all(
-  //           //     color: kPrimaryColor,
-  //           //     width: 10.0,
-  //           //   ),
-  //           //   color: kBGColor,
-  //           //   borderRadius: BorderRadius.circular(10.0),
-  //           // ),
-  //           child: Column(
-  //             children: [
-  //               const Padding(
-  //                 padding: EdgeInsets.symmetric(horizontal: 150.0),
-  //                 child: Divider(
-  //                   thickness: 4.0,
-  //                   color: kLightColor,
-  //                 ),
-  //               ),
-  //               Container(
-  //                 width: 120.0,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(color: kPrimaryColor),
-  //                   borderRadius: BorderRadius.circular(5.0),
-  //                 ),
-  //                 child: Center(
-  //                   child: Text(
-  //                     'Comments',
-  //                     style: kPrimTextStyle,
-  //                   ),
-  //                 ),
-  //               ),
-  //               ListView.builder(
-  //                 itemCount: 3,
-  //                 itemBuilder: (context, index) {
-  //                   return Column(
-  //                     mainAxisAlignment: MainAxisAlignment.start,
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       Row(
-  //                         children: [
-  //                           GestureDetector(
-  //                             child: CircleAvatar(
-  //                               backgroundColor: kPrimaryColor,
-  //                               radius: 15.0,
-  //                               backgroundImage: NetworkImage(
-  //                                   'https://i.pinimg.com/736x/ae/b1/43/aeb143366a35e1bcade5a6423b1d0aa2.jpg'),
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ],
-  //                   );
-  //                 },
-  //               )
-  //             ],
-  //           ),
-  //         );
-  //       });
-  // }
-
   showCommentsSheet(BuildContext context) {
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.65,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            decoration: BoxDecoration(
-              color: kBGColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.0),
-                topRight: Radius.circular(12.0),
-              ),
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 150.0),
-                  child: Divider(
-                    thickness: 4.0,
-                    color: kLightColor,
+        return StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance.collection('comments').doc(widget.item.dateTime + '|' + (widget.item.tenantID as String)).snapshots(),
+          builder: (context, snapshot) {
+            return SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.65,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                decoration: BoxDecoration(
+                  color: kBGColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12.0),
+                    topRight: Radius.circular(12.0),
                   ),
                 ),
-                Container(
-                  width: 120,
-                  decoration: BoxDecoration(
-                    // border: Border.all(
-                    //   color: kLightColor,
-                    // ),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Comments',
-                      style: kPrimTextStyle,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Expanded(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 8),
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    child: CircleAvatar(
-                                      backgroundColor: kPrimaryColor,
-                                      radius: 15.0,
-                                      backgroundImage: NetworkImage(
-                                          'https://i.pinimg.com/736x/ae/b1/43/aeb143366a35e1bcade5a6423b1d0aa2.jpg'),
-                                    ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      'USERNAME',
-                                      style: kSmallTextStyle,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(LineIcon.arrowUp().icon,
-                                              color: kPrimaryColor),
-                                        ),
-                                        Text(
-                                          '0',
-                                          style: kSmallTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.delete,
-                                              color: kPrimaryColor),
-                                        ),
-                                        Text(
-                                          '0',
-                                          style: kSmallTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.arrow_forward_ios_outlined,
-                                      color: kPrimaryColor,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Sample Comment afeafehunfiosnds',
-                                      style: kSmallTextStyle,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Divider(
-                                color: kLightColor.withOpacity(0.2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        textCapitalization: TextCapitalization.sentences,
-                        controller: commentController,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          hintText: 'Type a message',
-                          hintStyle: kSmallPrimTextStyle,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: kPrimaryColor,
-                            ),
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: kPrimaryColor,
-                              
-                            ),
-                            borderRadius: BorderRadius.circular(32.0),
-                            
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: kPrimaryColor,
-                            ),
-                            borderRadius: BorderRadius.circular(32.0),
-                            
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.send, color: kPrimaryColor),
-                            onPressed: () {
-                              // Send message logic here
-                              commentController.clear();
-                            },
-                          ),
-                        ),
-                        style: kSmallTextStyle,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 150.0),
+                      child: Divider(
+                        thickness: 4.0,
+                        color: kLightColor,
                       ),
-                    ],
-                  ),
+                    ),
+                    Container(
+                      width: 120,
+                      decoration: BoxDecoration(
+                        // border: Border.all(
+                        //   color: kLightColor,
+                        // ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Comments',
+                          style: kPrimTextStyle,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          String commentId = comments.keys.elementAt(index);
+        
+                          // commentsList = comments.entries.toList();
+        
+                          // print()
+        
+                          return Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        child: CircleAvatar(
+                                          backgroundColor: kPrimaryColor,
+                                          radius: 15.0,
+                                          backgroundImage: NetworkImage(
+                                              comments[commentId]['thumb_url']),
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          comments[commentId]['name'],
+                                          style: kSmallTextStyle,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Container(
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {},
+                                              icon: Icon(LineIcon.arrowUp().icon,
+                                                  color: kPrimaryColor),
+                                            ),
+                                            Text(
+                                              '0',
+                                              style: kSmallTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Container(
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {},
+                                              icon: Icon(Icons.delete,
+                                                  color: kPrimaryColor),
+                                            ),
+                                            Text(
+                                              '0',
+                                              style: kSmallTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.report,
+                                            color: kPrimaryColor),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                          color: kPrimaryColor,
+                                        ),
+                                        onPressed: () {
+                                          print("Pressed");
+                                        },
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          comments[commentId]['comment'],
+                                          style: kSmallTextStyle,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: null,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Divider(
+                                    color: kLightColor.withOpacity(0.2),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            textCapitalization: TextCapitalization.sentences,
+                            controller: commentController,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                              hintText: 'Type a message',
+                              hintStyle: kSmallPrimTextStyle,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: kPrimaryColor,
+                                ),
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: kPrimaryColor,
+                                ),
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: kPrimaryColor,
+                                ),
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.send, color: kPrimaryColor),
+                                onPressed: () async {
+                                  if (commentController.text.isNotEmpty) {
+                                    Fluttertoast.showToast(
+                                      msg: "Adding comment . . .",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: kAccentColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0,
+                                    );
+                                    final currUser =
+                                        FirebaseAuth.instance.currentUser;
+        
+                                    // currUser.
+        
+                                    //* getting data without using FutureBuilder or StreamBuilder
+                                    final documentSnapshot = await FirebaseFirestore
+                                        .instance
+                                        .collection('users')
+                                        .doc(currUser?.uid)
+                                        .get();
+        
+                                    // Map<String, dynamic> comments = {
+                                    //   'id': {
+                                    //     'name': 'Nicolen Evanz Aricayos',
+                                    //     'thumb_url':
+                                    //         'https://i.pinimg.com/736x/ae/b1/43/aeb143366a35e1bcade5a6423b1d0aa2.jpg',
+                                    //     'comment':
+                                    //         'This is a long text that needs to be displayed in multiple lines.',
+                                    //   },
+                                    // };
+        
+                                    DateTime now = DateTime.now();
+                                    String formattedDate =
+                                        DateFormat('yyyy-MM-dd – kk:mm:ss')
+                                            .format(now);
+        
+                                    if (documentSnapshot.exists) {
+                                      final data = documentSnapshot.data();
+        
+                                      final comments = FirebaseFirestore.instance
+                                          .collection('comments');
+        
+                                      final newComment = {
+                                        formattedDate +
+                                            '|' +
+                                            (currUser?.uid as String) +
+                                            '|' +
+                                            'comment': {
+                                          'name': data?['fullname'],
+                                          'profile_url': data?['profile_url'],
+                                          'comment': commentController.text.trim(),
+                                        }
+                                      };
+        
+                                      comments
+                                          .doc(widget.item.dateTime + '|' +(widget.item.tenantID as String))
+                                          .update(newComment)
+                                          .then((value) {
+                                        // property data added successfully
+                                      }).catchError((error) {
+                                        // an error occurred while adding the property data
+                                      });
+                                    }
+                                    setState(() {});
+                                  }
+        
+                                  // FirebaseFirestore.instance
+                                  // widget.item.thumb_url
+                                  // commentController
+                                  //widget.item.tenantID;
+        
+                                  // Send message logic here
+                                  commentController.clear();
+                                },
+                              ),
+                            ),
+                            style: kSmallTextStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          }
         );
       },
     );
