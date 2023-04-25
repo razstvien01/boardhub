@@ -8,6 +8,9 @@ Map<String, dynamic> userGlbData = {};
 //Map<String, dynamic> favItems = {};
 List<Item> favItems = [];
 
+const String default_profile_url = 'https://i.pinimg.com/736x/cb/d1/0d/cbd10dbde141f4a382cda5c8ad5e9dec.jpg';
+// const String default_profile_url = 'https://i.pinimg.com/originals/13/64/28/136428aa185cbdb00b71c54c44afc047.jpg';
+
 Map<String, dynamic> propertyData = {};
 // var allPropData;
 bool enable = true;

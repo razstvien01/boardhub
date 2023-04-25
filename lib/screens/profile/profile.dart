@@ -28,6 +28,18 @@ class _ProfileState extends State<Profile> {
     _timer?.cancel();
     super.dispose();
   }
+  
+  @override
+  void initState()
+  {
+    try {
+        downloadURL();
+      } catch (e) {
+        print("Download URL");
+        print(e);
+      }
+    super.initState();
+  }
 
   final user = FirebaseFirestore.instance
       .collection("users")
@@ -41,7 +53,7 @@ class _ProfileState extends State<Profile> {
 
       // print()
       // ignore: empty_catches
-    } catch (e) {}
+    } catch (e) { profileImageURL = null; }
   }
 
   @override
@@ -102,50 +114,17 @@ class _ProfileState extends State<Profile> {
 
       //print(userGlbData['bookmark']);
 
-      try {
-        downloadURL();
-      } catch (e) {
-        print("Download URL");
-        print(e);
-      }
+      // try {
+      //   downloadURL();
+      // } catch (e) {
+      //   print("Download URL");
+      //   print(e);
+      // }
 
       if (!data['enable']) {
         enable = data['enable'];
         FirebaseAuth.instance.signOut();
       }
-      // profileImageURL = data['profile_url'] as String?;
-
-      // print(propertyData);
-
-      // for (var k in propertyData.keys) {
-      //   print("sdssd");
-      //   if (currUser?.uid == propertyData[k]['uid']) {
-
-      //     print("Inside");
-      //     _items.add(Item(
-      //       propertyData[k]['title'],
-      //       propertyData[k]['type'],
-      //       propertyData[k]['location'],
-      //       propertyData[k]['price'],
-      //       propertyData[k]['imageUrl'],
-      //       propertyData[k]['description'],
-      //       propertyData[k]['uid'],
-      //       k,
-      //       propertyData[k]['favorite'],
-      //       propertyData[k]['images'],
-      //     ));
-      //   }
-      // }
-
-      // _items.sort((a, b) {
-      //   DateTime dateTimeA = DateTime.parse(
-      //       "${a.dateTime.split(" – ")[0]} ${a.dateTime.split(" – ")[1]}");
-      //   DateTime dateTimeB = DateTime.parse(
-      //       "${b.dateTime.split(" – ")[0]} ${b.dateTime.split(" – ")[1]}");
-      //   return dateTimeB.compareTo(dateTimeA);
-      // });
-
-      // return profile(context);
       return FutureBuilder<QuerySnapshot?>(
         future: FirebaseFirestore.instance.collection('properties').get(),
         builder: ((context, s) {
@@ -225,9 +204,9 @@ class _ProfileState extends State<Profile> {
               shape: BoxShape.circle,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage((profileImageURL != null)
-                    ? profileImageURL!
-                    : 'https://wallpapercave.com/wp/wp7151787.jpg'),
+                image: NetworkImage((profileImageURL == null)
+                    ? default_profile_url
+                    : profileImageURL as String),
                 // image: NetworkImage(profileImageURL!),
               ),
             ),

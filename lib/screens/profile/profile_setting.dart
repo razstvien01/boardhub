@@ -34,13 +34,26 @@ class _ProfileSettingState extends State<ProfileSetting> {
   final user = FirebaseFirestore.instance
       .collection("users")
       .doc("${FirebaseAuth.instance.currentUser?.uid}");
+      
+      
+  @override
+  void initState()
+  {
+    try {
+        downloadURL();
+      } catch (e) {
+        print("Download URL");
+        print('Error getting download URL: $e');
+      }
+    super.initState();
+  }
 
   Future<void> downloadURL() async {
     try {
       profileImageURL = await FirebaseStorage.instance
           .ref('profile/${currUser?.uid}' 'profile_pic')
           .getDownloadURL();
-    } catch (e) {}
+    } catch (e) { profileImageURL = null; }
   }
 
   Future _uploadFile(String path) async {
@@ -125,12 +138,12 @@ class _ProfileSettingState extends State<ProfileSetting> {
 
       //print(userGlbData['bookmark']);
 
-      try {
-        downloadURL();
-      } catch (e) {
-        print("Download URL");
-        print(e);
-      }
+      // try {
+      //   downloadURL();
+      // } catch (e) {
+      //   print("Download URL");
+      //   print(e);
+      // }
 
       if (!data['enable']) {
         enable = data['enable'];
@@ -155,16 +168,19 @@ class _ProfileSettingState extends State<ProfileSetting> {
           ),
           Stack(
             children: [
-              (profileImageURL == null)
-                  ? const Icon(
-                      Icons.person,
-                      size: 100,
-                      color: Colors.white,
-                    )
-                  : CircleAvatar(
-                      radius: 50.0,
-                      backgroundImage: NetworkImage(profileImageURL as String),
-                    ),
+              // (profileImageURL == null)
+              // ? const Icon(
+              //     Icons.person,
+              //     size: 100,
+              //     color: Colors.white,
+              //   )
+              // ?
+              CircleAvatar(
+                radius: 50.0,
+                backgroundImage: NetworkImage((profileImageURL == null)
+                    ? default_profile_url
+                    : profileImageURL as String),
+              ),
               Positioned(
                 bottom: 0,
                 right: 0,
