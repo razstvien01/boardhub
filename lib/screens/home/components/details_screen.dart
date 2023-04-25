@@ -48,11 +48,10 @@ class _DetailsSreenState extends State<DetailsSreen> {
         return AlertDialog(
           backgroundColor: kBGColor,
           title: Text(
-              'Delete ' + ((collection == 'properties') ? 'Post' : 'Comment'),
+              'Delete ${(collection == 'properties') ? 'Post' : 'Comment'}',
               style: kSubTextStyle),
           content: Text(
-            'Are you sure you want to delete this ' +
-                ((collection == 'properties') ? 'post?' : 'comment?'),
+            'Are you sure you want to delete this ${(collection == 'properties') ? 'post?' : 'comment?'}',
             style: kSmallTextStyle,
           ),
           actions: <Widget>[
@@ -478,7 +477,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                       }
 
                       if (!snapshot.hasData) {
-                        return Center(
+                        return const Center(
                           child: Text(
                             'No Comment Posts Yet',
                             style: kSubTextStyle,
@@ -564,133 +563,6 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                             children: [
                                               IconButton(
                                                 onPressed: () {
-                                                  // FirebaseFirestore.instance
-                                                  //     .collection('comments')
-                                                  //     .doc(commentId)
-                                                  //     .update({
-                                                  //   '${comments[index].datePosted}|${comments[index].userId}|comment.likes':
-                                                  //       FieldValue.arrayUnion(
-                                                  //           [currUser?.uid])
-                                                  // });
-
-                                                  // FirebaseFirestore.instance
-                                                  //     .collection('comments')
-                                                  //     .doc(commentId)
-                                                  //     .update({
-                                                  //   '${comments[index].datePosted}|${comments[index].userId}|comment.likes':
-                                                  //       FieldValue.arrayRemove(
-                                                  //           [currUser?.uid])
-                                                  // }).then((_) {
-                                                  //   print(
-                                                  //       'Removed currUser?.uid from array in Firestore');
-                                                  //   FirebaseFirestore.instance
-                                                  //       .collection('comments')
-                                                  //       .doc(commentId)
-                                                  //       .update({
-                                                  //     '${comments[index].datePosted}|${comments[index].userId}|comment.likes':
-                                                  //         FieldValue.arrayUnion(
-                                                  //             [currUser?.uid])
-                                                  //   }).then((_) {
-                                                  //     print(
-                                                  //         'Added currUser?.uid to array in Firestore');
-                                                  //   }).catchError((error) => print(
-                                                  //           'Failed to add currUser?.uid: $error'));
-                                                  // }).catchError((error) => print(
-                                                  //         'Failed to remove currUser?.uid: $error'));
-
-                                                  // FirebaseFirestore.instance
-                                                  //     .runTransaction(
-                                                  //         (transaction) async {
-                                                  //   final docRef =
-                                                  //       FirebaseFirestore
-                                                  //           .instance
-                                                  //           .collection(
-                                                  //               'comments')
-                                                  //           .doc(commentId);
-                                                  //   final doc =
-                                                  //       await transaction
-                                                  //           .get(docRef);
-                                                  //   final data = doc.data();
-                                                  //   final likes = data![
-                                                  //           '${comments[index].datePosted}|${comments[index].userId}|comment.likes'] ??
-                                                  //       [];
-
-                                                  //   if (likes.contains(
-                                                  //       currUser?.uid)) {
-                                                  //     // Remove currUser?.uid from the array
-                                                  //     transaction
-                                                  //         .update(docRef, {
-                                                  //       '${comments[index].datePosted}|${comments[index].userId}|comment.likes':
-                                                  //           FieldValue
-                                                  //               .arrayRemove([
-                                                  //         currUser?.uid
-                                                  //       ])
-                                                  //     });
-                                                  //     print(
-                                                  //         'Removed currUser?.uid from array in Firestore');
-                                                  //   } else {
-                                                  //     // Add currUser?.uid to the array
-                                                  //     transaction
-                                                  //         .update(docRef, {
-                                                  //       '${comments[index].datePosted}|${comments[index].userId}|comment.likes':
-                                                  //           FieldValue
-                                                  //               .arrayUnion([
-                                                  //         currUser?.uid
-                                                  //       ])
-                                                  //     });
-                                                  //     print(
-                                                  //         'Added currUser?.uid to array in Firestore');
-                                                  //   }
-                                                  // }).catchError((error) => print(
-                                                  //         'Failed to toggle currUser?.uid: $error'));
-
-                                                  // FirebaseFirestore.instance
-                                                  //     .collection('comments')
-                                                  //     .doc(commentId)
-                                                  //     .get()
-                                                  //     .then((docSnapshot) {
-                                                  //   List<dynamic> likes =
-                                                  //       docSnapshot.data()?[
-                                                  //               '${comments[index].datePosted}|${comments[index].userId}|comment.likes'] ??
-                                                  //           [];
-                                                  //   if (likes.contains(
-                                                  //       currUser?.uid)) {
-                                                  //     FirebaseFirestore.instance
-                                                  //         .collection(
-                                                  //             'comments')
-                                                  //         .doc(commentId)
-                                                  //         .update({
-                                                  //       '${comments[index].datePosted}|${comments[index].userId}|comment.likes':
-                                                  //           FieldValue
-                                                  //               .arrayRemove([
-                                                  //         currUser?.uid
-                                                  //       ])
-                                                  //     }).then((_) {
-                                                  //       print(
-                                                  //           'Removed currUser?.uid from array in Firestore');
-                                                  //     }).catchError((error) =>
-                                                  //             print(
-                                                  //                 'Failed to remove currUser?.uid: $error'));
-                                                  //   } else {
-                                                  //     FirebaseFirestore.instance
-                                                  //         .collection(
-                                                  //             'comments')
-                                                  //         .doc(commentId)
-                                                  //         .update({
-                                                  //       '${comments[index].datePosted}|${comments[index].userId}|comment.likes':
-                                                  //           FieldValue
-                                                  //               .arrayUnion([
-                                                  //         currUser?.uid
-                                                  //       ])
-                                                  //     }).then((_) {
-                                                  //       print(
-                                                  //           'Added currUser?.uid to array in Firestore');
-                                                  //     }).catchError((error) =>
-                                                  //             print(
-                                                  //                 'Failed to add currUser?.uid: $error'));
-                                                  //   }
-                                                  // }).catchError((error) => print(
-                                                  //         'Failed to get document: $error'));
                                                   FirebaseFirestore.instance
                                                       .collection('comments')
                                                       .doc(commentId)
@@ -797,34 +669,85 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                           ),
                                         ),
                                         const SizedBox(width: 8),
-                                        Container(
-                                          child: IconButton(
-                                            onPressed: () {
-                                              // _showDialogBox(context, 'comments', '${comments[index].datePosted}' + '|' + '${comments[index].userId}|comment');
+                                        if (currUser!.uid ==
+                                            comments[index].userId)
+                                          Container(
+                                            child: IconButton(
+                                              onPressed: () {
+                                                // _showDialogBox(context, 'comments', '${comments[index].datePosted}' + '|' + '${comments[index].userId}|comment');
 
-                                              _showDialogBox(
-                                                  context,
-                                                  'comments',
-                                                  widget.item.dateTime +
-                                                      '|' +
-                                                      (widget.item.tenantID
-                                                          as String),
-                                                  '${comments[index].datePosted}' +
-                                                      '|' +
-                                                      '${comments[index].userId}|comment');
+                                                _showDialogBox(
+                                                    context,
+                                                    'comments',
+                                                    '${widget.item.dateTime}|${widget.item.tenantID as String}',
+                                                    '${comments[index].datePosted}|${comments[index].userId}|comment');
 
-                                              comments.remove(index);
+                                                comments.remove(index);
+                                              },
+                                              icon: Icon(Icons.delete,
+                                                  color: kPrimaryColor),
+                                            ),
+                                          ),
+                                        // const SizedBox(width: 8),
+                                        if (currUser!.uid !=
+                                            comments[index].userId)
+                                          IconButton(
+                                            onPressed: () async {
+                                              final commentReports =
+                                                  FirebaseFirestore.instance
+                                                      .collection('reports')
+                                                      .doc('comments');
+
+                                              DateTime now = DateTime.now();
+                                              String formattedDate = DateFormat(
+                                                      'yyyy-MM-dd - kk:mm:ss')
+                                                  .format(now);
+
+                                              final currUser = FirebaseAuth
+                                                  .instance.currentUser;
+
+                                              //* getting data without using FutureBuilder or StreamBuilder
+                                              final documentSnapshot =
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('users')
+                                                      .doc(currUser?.uid)
+                                                      .get();
+
+                                              if (documentSnapshot.exists) {
+                                                data = documentSnapshot.data()!;
+
+                                                final newReport = {
+                                                  'reportedBy': currUser!.uid,
+                                                  'name': comments[index].name,
+                                                  'datePosted': comments[index]
+                                                      .datePosted,
+                                                  'profile_url': comments[index]
+                                                      .profile_url,
+                                                  'uid': comments[index].userId,
+                                                  'dateReported': formattedDate,
+                                                };
+
+                                                commentReports.update({
+                                                  '${comments[index].datePosted}|${comments[index].userId}|${currUser?.uid as String}|report':
+                                                      newReport,
+                                                });
+
+                                                Fluttertoast.showToast(
+                                                  msg: "This comment has been reported",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: kAccentColor,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0,
+                                                );
+                                              }
                                             },
-                                            icon: Icon(Icons.delete,
+                                            icon: Icon(Icons.report,
                                                 color: kPrimaryColor),
                                           ),
-                                        ),
-                                        // const SizedBox(width: 8),
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.report,
-                                              color: kPrimaryColor),
-                                        ),
                                       ],
                                     ),
                                     Text(
