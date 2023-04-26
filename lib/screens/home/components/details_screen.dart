@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+
 import 'package:line_icons/line_icon.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/comment.dart';
@@ -21,6 +24,9 @@ class DetailsSreen extends StatefulWidget {
 
 class _DetailsSreenState extends State<DetailsSreen> {
   TextEditingController commentController = TextEditingController();
+  TextEditingController _editCommentController = TextEditingController();
+  int indexToEdit = -1;
+  Timer? _timer;
 
   final user = FirebaseFirestore.instance
       .collection("users")
@@ -36,8 +42,16 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
   @override
   void dispose() {
+    _timer?.cancel;
     commentController.dispose();
+    _editCommentController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    commentId = '${widget.item.dateTime}|${widget.item.tenantID as String}';
+    super.initState();
   }
 
   void _showDialogBox(BuildContext context, String collection, String docStr,
@@ -329,8 +343,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         ),
                         IconButton(
                             onPressed: () {
-                              // showComments(context);
-                              showCommentsSheet(context);
+                              showCommentSheet(context, comments, data);
                             },
                             icon: Icon(
                               LineIcon.comments().icon,
@@ -410,9 +423,8 @@ class _DetailsSreenState extends State<DetailsSreen> {
     );
   }
 
-  showCommentsSheet(BuildContext context) {
-    commentId = '${widget.item.dateTime}|${widget.item.tenantID as String}';
-
+  Future<dynamic> showCommentSheet(BuildContext context,
+      List<UserComment> comments, Map<String, dynamic> data) {
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -461,12 +473,6 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         .doc(commentId)
                         .snapshots(),
                     builder: (context, snapshot) {
-                      // if (snapshot.connectionState == ConnectionState.waiting) {
-                      //   return Center(
-                      //     child: CircularProgressIndicator(),
-                      //   );
-                      // }
-
                       if (snapshot.hasError) {
                         return Center(
                           child: Text(
@@ -474,9 +480,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                             style: kSubTextStyle,
                           ),
                         );
-                      }
-
-                      if (!snapshot.hasData) {
+                      } else if (!snapshot.hasData) {
                         return const Center(
                           child: Text(
                             'No Comment Posts Yet',
@@ -487,7 +491,41 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
                       comments = [];
 
-                      data = snapshot.data!.data()! as Map<String, dynamic>;
+                      try {
+                        data = snapshot.data!.data() as Map<String, dynamic>;
+                      } catch (e) {
+                        return Expanded(
+                          flex: 3,
+                          child: const Center(
+                            child: Text(
+                              'No Comment Posts Yet',
+                              style: kSubTextStyle,
+                            ),
+                          ),
+                        );
+                      }
+                      
+                      // if(comments.length == 0)
+                      // {
+                      //   return Expanded(
+                      //     flex: 3,
+                      //     child: const Center(
+                      //       child: Text(
+                      //         'No Comment Posts Yet',
+                      //         style: kSubTextStyle,
+                      //       ),
+                      //     ),
+                      //   );
+                      // }
+
+                      // if (data == null) {
+                      //   return Center(
+                      //     child: Text(
+                      //       'Error: ${snapshot.error}',
+                      //       style: kSubTextStyle,
+                      //     ),
+                      //   );
+                      // }
 
                       for (var k in data.keys) {
                         List likes =
@@ -671,22 +709,35 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                         const SizedBox(width: 8),
                                         if (currUser!.uid ==
                                             comments[index].userId)
-                                          Container(
-                                            child: IconButton(
-                                              onPressed: () {
-                                                // _showDialogBox(context, 'comments', '${comments[index].datePosted}' + '|' + '${comments[index].userId}|comment');
+                                          Row(
+                                            children: [
+                                              Container(
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    EditComment(context);
+                                                  },
+                                                  icon: Icon(Icons.edit,
+                                                      color: kPrimaryColor),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    // _showDialogBox(context, 'comments', '${comments[index].datePosted}' + '|' + '${comments[index].userId}|comment');
 
-                                                _showDialogBox(
-                                                    context,
-                                                    'comments',
-                                                    '${widget.item.dateTime}|${widget.item.tenantID as String}',
-                                                    '${comments[index].datePosted}|${comments[index].userId}|comment');
+                                                    _showDialogBox(
+                                                        context,
+                                                        'comments',
+                                                        '${widget.item.dateTime}|${widget.item.tenantID as String}',
+                                                        '${comments[index].datePosted}|${comments[index].userId}|comment');
 
-                                                comments.remove(index);
-                                              },
-                                              icon: Icon(Icons.delete,
-                                                  color: kPrimaryColor),
-                                            ),
+                                                    comments.remove(index);
+                                                  },
+                                                  icon: Icon(Icons.delete,
+                                                      color: kPrimaryColor),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         // const SizedBox(width: 8),
                                         if (currUser!.uid !=
@@ -700,10 +751,10 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
                                               DateTime now = DateTime.now();
                                               String formattedDate = DateFormat(
-                                                      'yyyy-MM-dd - kk:mm:ss')
+                                                      'yyyy-MM-dd - HH:mm:ss')
                                                   .format(now);
 
-                                              final currUser = FirebaseAuth
+                                              final currUser2 = FirebaseAuth
                                                   .instance.currentUser;
 
                                               //* getting data without using FutureBuilder or StreamBuilder
@@ -711,14 +762,14 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                                   await FirebaseFirestore
                                                       .instance
                                                       .collection('users')
-                                                      .doc(currUser?.uid)
+                                                      .doc(currUser2?.uid)
                                                       .get();
 
                                               if (documentSnapshot.exists) {
                                                 data = documentSnapshot.data()!;
 
                                                 final newReport = {
-                                                  'reportedBy': currUser!.uid,
+                                                  'reportedBy': currUser2!.uid,
                                                   'name': comments[index].name,
                                                   'datePosted': comments[index]
                                                       .datePosted,
@@ -726,15 +777,18 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                                       .profile_url,
                                                   'uid': comments[index].userId,
                                                   'dateReported': formattedDate,
+                                                  'comment':
+                                                      comments[index].comment,
                                                 };
 
                                                 commentReports.update({
-                                                  '${comments[index].datePosted}|${comments[index].userId}|${currUser?.uid as String}|report':
+                                                  '${comments[index].datePosted}|${comments[index].userId}|${currUser2.uid}|report':
                                                       newReport,
                                                 });
 
                                                 Fluttertoast.showToast(
-                                                  msg: "This comment has been reported",
+                                                  msg:
+                                                      "This comment has been reported",
                                                   toastLength:
                                                       Toast.LENGTH_SHORT,
                                                   gravity: ToastGravity.BOTTOM,
@@ -832,7 +886,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                   textColor: Colors.white,
                                   fontSize: 16.0,
                                 );
-                                final currUser =
+                                final currUser2 =
                                     FirebaseAuth.instance.currentUser;
 
                                 // currUser.
@@ -841,7 +895,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                 final documentSnapshot = await FirebaseFirestore
                                     .instance
                                     .collection('users')
-                                    .doc(currUser?.uid)
+                                    .doc(currUser2?.uid)
                                     .get();
 
                                 DateTime now = DateTime.now();
@@ -850,19 +904,19 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                         .format(now);
 
                                 if (documentSnapshot.exists) {
-                                  final data = documentSnapshot.data();
+                                  final data2 = documentSnapshot.data();
 
-                                  final comments = FirebaseFirestore.instance
+                                  final comments2 = FirebaseFirestore.instance
                                       .collection('comments');
 
                                   final newComment = {
-                                    '$formattedDate|${currUser?.uid as String}|comment':
+                                    '$formattedDate|${currUser2?.uid as String}|comment':
                                         {
-                                      'name': data?['fullname'],
-                                      'profile_url': data?['profile_url'],
+                                      'name': data2?['fullname'],
+                                      'profile_url': data2?['profile_url'],
                                       'comment': commentController.text.trim(),
                                       'datePosted': formattedDate,
-                                      'uid': currUser!.uid,
+                                      'uid': currUser2!.uid,
                                       'likes': null,
                                     }
                                   };
@@ -874,7 +928,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
                                   docRef.get().then((docSnapshot) {
                                     if (docSnapshot.exists) {
-                                      comments
+                                      comments2
                                           .doc(commentId)
                                           .update(newComment)
                                           .then((value) {
@@ -886,7 +940,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                             'an error occurred while adding the property data');
                                       });
                                     } else {
-                                      comments
+                                      comments2
                                           .doc(commentId)
                                           .set(newComment)
                                           .then((value) {
@@ -922,74 +976,53 @@ class _DetailsSreenState extends State<DetailsSreen> {
     );
   }
 
-  // String formatDateTime(String datePosted) {
-  //   DateTime dateTime;
-
-  //   try {
-  //     dateTime = DateFormat('yyyy-MM-dd - kk:mm:ss').parse(datePosted);
-  //   } catch (e) {
-  //     print('Error parsing datetime: $e');
-  //     return '';
-  //   }
-
-  //   final now = DateTime.now();
-  //   final difference = now.difference(dateTime);
-
-  //   print(now);
-  //   print('before datePosted format: ' +
-  //       datePosted +
-  //       ' vs datePosted: ' +
-  //       dateTime.toString());
-
-  //   if (difference.inSeconds < 5) {
-  //     return 'Just now';
-  //   } else if (difference.inMinutes < 1) {
-  //     return '${difference.inSeconds} seconds ago';
-  //   } else if (difference.inHours < 1) {
-  //     return '${difference.inMinutes} minutes ago';
-  //   } else if (difference.inDays < 1) {
-  //     return '${difference.inHours} hours ago';
-  //   } else {
-  //     return DateFormat.yMMMd().add_jm().format(dateTime);
-  //   }
-  // }
-  // String formatDateTime(String datePosted) {
-  //   DateTime dateTime;
-
-  //   try {
-  //     dateTime = DateFormat('yyyy-MM-dd - kk:mm:ss').parseUtc(datePosted);
-  //   } catch (e) {
-  //     print('Error parsing datetime: $e');
-  //     return '';
-  //   }
-
-  //   final now = DateTime.now().toUtc();
-  //   final difference = now.difference(dateTime);
-
-  //   print(now);
-  //   print('before datePosted format: ' +
-  //       datePosted +
-  //       ' vs datePosted: ' +
-  //       dateTime.toString());
-
-  //   if (difference.inSeconds < 5) {
-  //     return 'Just now';
-  //   } else if (difference.inMinutes < 1) {
-  //     return '${difference.inSeconds} seconds ago';
-  //   } else if (difference.inHours < 1) {
-  //     return '${difference.inMinutes} minutes ago';
-  //   } else if (difference.inDays < 1) {
-  //     return '${difference.inHours} hours ago';
-  //   } else {
-  //     return DateFormat.yMMMd().add_jm().format(dateTime);
-  //   }
-  // }
+  Future<dynamic> EditComment(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        height: 200,
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Enter new value',
+              ),
+              onChanged: (value) {
+                setState(() {
+                  // _text = value;
+                });
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: Text('Save'),
+                  onPressed: () {
+                    // Do something with the updated value
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   String formatDateTime(String datePosted) {
     DateTime serverDateTime;
 
     try {
-      serverDateTime = DateFormat('yyyy-MM-dd - kk:mm:ss').parse(datePosted);
+      serverDateTime =
+          DateFormat('yyyy-MM-dd - HH:mm:ss').parse(datePosted).toLocal();
     } catch (e) {
       print('Error parsing datetime: $e');
       return '';
@@ -997,17 +1030,15 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
     // Get the current date and time in your local timezone
     final localDateTime = DateTime.now();
-
-    // Calculate the difference between the server time and your local time
-    final timeDifference = localDateTime.difference(serverDateTime).inHours;
-
-    // Adjust the server time by the time difference
-    final adjustedDateTime =
-        serverDateTime.add(Duration(hours: timeDifference));
-
+    
     // Calculate the difference between the adjusted server time and your local time
-    final difference = localDateTime.difference(adjustedDateTime);
-
+    final difference = localDateTime.difference(serverDateTime);
+    
+    // print('LocalDateTime: ' + localDateTime.toString());
+    // print('AdjustedDateTime: ' + adjustedDateTime.toString());
+    // // print('TimeDifferenced')
+    // print('Difference: ' + difference.toString());
+  
     if (difference.inSeconds < 5) {
       return 'Just now';
     } else if (difference.inMinutes < 1) {
@@ -1017,7 +1048,8 @@ class _DetailsSreenState extends State<DetailsSreen> {
     } else if (difference.inDays < 1) {
       return '${difference.inHours} hours ago';
     } else {
-      return DateFormat.yMMMd().add_jm().format(adjustedDateTime);
+      return DateFormat.yMMMd().add_jm().format(serverDateTime);
     }
   }
+
 }

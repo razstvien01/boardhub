@@ -16,6 +16,8 @@ import 'package:rent_house/ud_widgets/profile_menu.dart';
 import 'package:path/path.dart' as p;
 
 import '../../constant.dart';
+import '../accounts/accounts.dart';
+import '../report_log/report_log.dart';
 
 class ProfileSetting extends StatefulWidget {
   VoidCallback refresh;
@@ -34,17 +36,15 @@ class _ProfileSettingState extends State<ProfileSetting> {
   final user = FirebaseFirestore.instance
       .collection("users")
       .doc("${FirebaseAuth.instance.currentUser?.uid}");
-      
-      
+
   @override
-  void initState()
-  {
+  void initState() {
     try {
-        downloadURL();
-      } catch (e) {
-        print("Download URL");
-        print('Error getting download URL: $e');
-      }
+      downloadURL();
+    } catch (e) {
+      print("Download URL");
+      print('Error getting download URL: $e');
+    }
     super.initState();
   }
 
@@ -53,7 +53,9 @@ class _ProfileSettingState extends State<ProfileSetting> {
       profileImageURL = await FirebaseStorage.instance
           .ref('profile/${currUser?.uid}' 'profile_pic')
           .getDownloadURL();
-    } catch (e) { profileImageURL = null; }
+    } catch (e) {
+      profileImageURL = null;
+    }
   }
 
   Future _uploadFile(String path) async {
@@ -205,14 +207,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
                             child: MenuItems.buildItem(item),
                           ),
                         ),
-                        // const DropdownMenuItem<Divider>(
-                        //     enabled: false, child: Divider()),
-                        // ...MenuItems.secondItems.map(
-                        //   (item) => DropdownMenuItem<MenuItem>(
-                        //     value: item,
-                        //     child: MenuItems.buildItem(item),
-                        //   ),
-                        // ),
                       ],
                       onChanged: (value) {
                         MenuItems.onChanged(
@@ -302,6 +296,31 @@ class _ProfileSettingState extends State<ProfileSetting> {
             onPress: () {},
             textColor: kLightColor,
           ),
+
+          if (currUser!.email == 'admin@boardhub.com')
+            ProfileMenuWidget(
+              title: "Manage Accounts",
+              icon: Icons.manage_accounts,
+              onPress: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Accounts()));
+              },
+              textColor: kLightColor,
+            ),
+          const SizedBox(
+            height: 5,
+          ),
+
+          if (currUser!.email == 'admin@boardhub.com')
+            ProfileMenuWidget(
+              title: "View Log Report",
+              icon: Icons.report,
+              onPress: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CommentReportLog()));
+              },
+              textColor: kLightColor,
+            ),
 
           const Divider(),
           const SizedBox(

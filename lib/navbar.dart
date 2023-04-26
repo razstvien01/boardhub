@@ -23,22 +23,30 @@ class _NavBarState extends State<NavBar> {
 
   // final docUser = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid);
 
+  // (user?.email != "admin@boardhub.com")
   List<Widget> widgetOptions() {
-    return (user?.email != "admin@boardhub.com")
-        ? [
-            const Home(),
-            // Search(),
-            Favorite(favItems),
-            const Chat(),
-            const Profile(),
-          ]
-        : [
-            const Home(),
-            // Search(),
-            Favorite(favItems),
-            const Chat(),
-            const ProfileAdmin(),
-          ];
+    return [
+      const Home(),
+      // Search(),
+      Favorite(favItems),
+      const Chat(),
+      const Profile(),
+    ];
+    // return (user?.email != "admin@boardhub.com")
+    //     ? [
+    //         const Home(),
+    //         // Search(),
+    //         Favorite(favItems),
+    //         const Chat(),
+    //         const Profile(),
+    //       ]
+    //     : [
+    //         const Home(),
+    //         // Search(),
+    //         Favorite(favItems),
+    //         const Chat(),
+    //         const ProfileAdmin(),
+    //       ];
     // return (user?.email == "admin@gmail.com")
     //   ? [
     //       Home(articles: glbArticles),
@@ -59,7 +67,7 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     super.initState();
-    
+
     //* sorting cities
     cities.sort((a, b) => a.city.compareTo(b.city));
   }
@@ -92,7 +100,7 @@ class _NavBarState extends State<NavBar> {
     return Scaffold(
       // extendBody: true,
       backgroundColor: kBGColor,
-      
+
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(5.0),
         child: AppBar(
@@ -102,11 +110,9 @@ class _NavBarState extends State<NavBar> {
         ),
       ),
       bottomNavigationBar: Theme(
-        
         data: Theme.of(context)
             .copyWith(iconTheme: IconThemeData(color: kPrimaryColor)),
         child: CurvedNavigationBar(
-          
           color: kPrimaryColor,
           backgroundColor: Colors.transparent,
           // backgroundColor: ,
