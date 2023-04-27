@@ -62,8 +62,8 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
             // Disable code minification and obfuscation
-            minifyEnabled false
-            shrinkResources false
+            // minifyEnabled false
+            // shrinkResources false
         }
     }
 }
