@@ -6,7 +6,6 @@ import 'package:rent_house/constant.dart';
 import 'package:rent_house/screens/chat/chat.dart';
 import 'package:rent_house/screens/home/home.dart';
 import 'package:rent_house/screens/profile/profile.dart';
-import 'package:rent_house/screens/profile_admin/profile_admin.dart';
 
 import 'screens/favorite/favorite.dart';
 
