@@ -29,6 +29,8 @@ class _DetailsSreenState extends State<DetailsSreen> {
   Timer? _timer;
   bool isViewedComment = false;
   ScrollController _scrollController = ScrollController();
+  
+  Map<String, dynamic> commentData = {};
 
   final myWidgetKey = GlobalKey();
 
@@ -424,6 +426,10 @@ class _DetailsSreenState extends State<DetailsSreen> {
               const SizedBox(
                 height: 8.0,
               ),
+              Text(
+                widget.item.description as String,
+                style: kSmallTextStyle,
+              ),
               const SizedBox(
                 height: 8.0,
               ),
@@ -434,7 +440,9 @@ class _DetailsSreenState extends State<DetailsSreen> {
                   borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: RawMaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    
+                  },
                   elevation: 0.0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
@@ -794,7 +802,9 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return const Center(
+                        
+                        print("PASSED A");
+                        return Center(
                           child: Text(
                             'No Comment Posts Yet',
                             style: kSubTextStyle,
@@ -818,39 +828,41 @@ class _DetailsSreenState extends State<DetailsSreen> {
                       //     ),
                       //   );
                       // }
+                      
 
-                      // if (snapshot.hasData) {
+                      if (snapshot.hasData) {
                       commentId =
                           '${widget.item.dateTime}|${widget.item.tenantID as String}';
                       comments = [];
 
                       try {
                         data = snapshot.data!.data() as Map<String, dynamic>;
+                        commentData = data;
+                        
+                        
                       } catch (e) {
-                        return Expanded(
-                          flex: 3,
-                          child: const Center(
-                            child: Text(
-                              'No Comment Posts Yet',
-                              style: kSubTextStyle,
-                            ),
+                        print("PASSED B");
+                        return const Center(
+                          child: Text(
+                            'No Comment Posts Yet',
+                            style: kSubTextStyle,
                           ),
                         );
                       }
 
+                      }
+
+                      // if (data.keys.isEmpty) {
+                      //   return Expanded(
+                      //     flex: 3,
+                      //     child: const Center(
+                      //       child: Text(
+                      //         'No Comment Posts Yet',
+                      //         style: kSubTextStyle,
+                      //       ),
+                      //     ),
+                      //   );
                       // }
-
-                      if (data.keys.isEmpty) {
-                        return Expanded(
-                          flex: 3,
-                          child: const Center(
-                            child: Text(
-                              'No Comment Posts Yet',
-                              style: kSubTextStyle,
-                            ),
-                          ),
-                        );
-                      }
 
                       for (var k in data.keys) {
                         List likes =
@@ -1130,6 +1142,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         },
                       );
                     }),
+              
               ],
             ),
           ),
@@ -1245,10 +1258,6 @@ class _DetailsSreenState extends State<DetailsSreen> {
     // Calculate the difference between the adjusted server time and your local time
     final difference = localDateTime.difference(serverDateTime);
 
-    // print('LocalDateTime: ' + localDateTime.toString());
-    // print('AdjustedDateTime: ' + adjustedDateTime.toString());
-    // // print('TimeDifferenced')
-    // print('Difference: ' + difference.toString());
 
     if (difference.inSeconds < 5) {
       return 'Just now';
