@@ -12,8 +12,8 @@ enum SortOption { name, date }
 enum FilterOption { ascending, descending }
 
 class CategoryPage extends StatefulWidget {
-  String? category_name;
-  VoidCallback refresh;
+  final String? category_name;
+  final VoidCallback refresh;
   CategoryPage(this.category_name, this.refresh, {super.key});
 
   @override

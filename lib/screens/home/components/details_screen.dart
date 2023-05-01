@@ -10,6 +10,7 @@ import 'package:line_icons/line_icon.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/comment.dart';
 import 'package:rent_house/models/item_model.dart';
+import 'package:rent_house/screens/chat/chat_room.dart';
 import 'package:rent_house/screens/home/components/edit_post.dart';
 import 'package:rent_house/screens/home/components/view_images.dart';
 
@@ -29,7 +30,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
   Timer? _timer;
   bool isViewedComment = false;
   ScrollController _scrollController = ScrollController();
-  
+
   Map<String, dynamic> commentData = {};
 
   final myWidgetKey = GlobalKey();
@@ -224,6 +225,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
             )
         ],
       ),
+      
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Padding(
@@ -441,7 +443,12 @@ class _DetailsSreenState extends State<DetailsSreen> {
                 ),
                 child: RawMaterialButton(
                   onPressed: () {
-                    
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatRoom(item: widget.item),
+                      ),
+                    );
                   },
                   elevation: 0.0,
                   shape: RoundedRectangleBorder(
@@ -792,6 +799,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         ),
                         style: kSmallTextStyle,
                       ),
+                    
                     ],
                   ),
                 ),
@@ -802,7 +810,6 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        
                         print("PASSED A");
                         return Center(
                           child: Text(
@@ -828,28 +835,24 @@ class _DetailsSreenState extends State<DetailsSreen> {
                       //     ),
                       //   );
                       // }
-                      
 
                       if (snapshot.hasData) {
-                      commentId =
-                          '${widget.item.dateTime}|${widget.item.tenantID as String}';
-                      comments = [];
+                        commentId =
+                            '${widget.item.dateTime}|${widget.item.tenantID as String}';
+                        comments = [];
 
-                      try {
-                        data = snapshot.data!.data() as Map<String, dynamic>;
-                        commentData = data;
-                        
-                        
-                      } catch (e) {
-                        print("PASSED B");
-                        return const Center(
-                          child: Text(
-                            'No Comment Posts Yet',
-                            style: kSubTextStyle,
-                          ),
-                        );
-                      }
-
+                        try {
+                          data = snapshot.data!.data() as Map<String, dynamic>;
+                          commentData = data;
+                        } catch (e) {
+                          print("PASSED B");
+                          return const Center(
+                            child: Text(
+                              'No Comment Posts Yet',
+                              style: kSubTextStyle,
+                            ),
+                          );
+                        }
                       }
 
                       // if (data.keys.isEmpty) {
@@ -1020,7 +1023,11 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                           child: IconButton(
                                             onPressed: () {
                                               indexToEdit = index;
-                                              EditComment(context, comments, comments[index].comment as String);
+                                              EditComment(
+                                                  context,
+                                                  comments,
+                                                  comments[index].comment
+                                                      as String);
                                             },
                                             icon: Icon(Icons.edit,
                                                 color: kPrimaryColor),
@@ -1142,7 +1149,6 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         },
                       );
                     }),
-              
               ],
             ),
           ),
@@ -1151,7 +1157,8 @@ class _DetailsSreenState extends State<DetailsSreen> {
     );
   }
 
-  Future<dynamic> EditComment(BuildContext context, List<UserComment> comments, String prevComment) {
+  Future<dynamic> EditComment(
+      BuildContext context, List<UserComment> comments, String prevComment) {
     // FocusScope.of(context).requestFocus(new FocusNode());
     _editCommentController.text = prevComment;
     return showModalBottomSheet(
@@ -1212,7 +1219,8 @@ class _DetailsSreenState extends State<DetailsSreen> {
                   onPressed: () {
                     print('pressed');
                     print(indexToEdit);
-                    print('${comments[indexToEdit].datePosted}|${comments[indexToEdit].userId}|comment');
+                    print(
+                        '${comments[indexToEdit].datePosted}|${comments[indexToEdit].userId}|comment');
                     // Do something with the updated value
 
                     // FirebaseFirestore.instance.collection('comments').doc('${widget.item.dateTime}|${widget.item.tenantID as String}').update({
@@ -1257,7 +1265,6 @@ class _DetailsSreenState extends State<DetailsSreen> {
 
     // Calculate the difference between the adjusted server time and your local time
     final difference = localDateTime.difference(serverDateTime);
-
 
     if (difference.inSeconds < 5) {
       return 'Just now';
