@@ -31,7 +31,7 @@ class _SuggestionListState extends State<SuggestionList> {
       widget.items = [];
 
       for (var k in propertyData.keys) {
-        widget.items.add(Item(
+        Item item = Item(
           propertyData[k]['title'],
           propertyData[k]['type'],
           propertyData[k]['location'],
@@ -42,8 +42,10 @@ class _SuggestionListState extends State<SuggestionList> {
           k,
           propertyData[k]['favorite'],
           propertyData[k]['images'],
-        ));
+        );
+        widget.items.add(item);
       }
+      
 
       //* sorting a properties based on their DateTime
 
@@ -93,6 +95,7 @@ class _SuggestionListState extends State<SuggestionList> {
                 //itemCount: data.keys.length,
                 itemBuilder: (context, index) {
                   return ItemCard(
+                    
                     widget.items[index],
                     () {
                       Navigator.push(
@@ -129,10 +132,11 @@ class _SuggestionListState extends State<SuggestionList> {
           .toList();
 
       widget.items = [];
+      Item.recommendation = [];
 
       for (var i in allPropData) {
         for (var j in i.keys) {
-          widget.items.add(Item(
+          Item item = Item(
             i[j]['title'],
             i[j]['type'],
             i[j]['location'],
@@ -143,41 +147,15 @@ class _SuggestionListState extends State<SuggestionList> {
             j,
             i[j]['favorite'],
             i[j]['images'],
-          ));
-
+          );
+          widget.items.add(item);
+          Item.recommendation.add(item);
           // print(i[j]['images']);
         }
       }
 
       //* sorting a properties based on their DateTime
-      // widget.items.sort((a, b) => DateTime.parse(b.dateTime.split(" – ")[0])
-      //     .compareTo(DateTime.parse(a.dateTime.split(" – ")[0])));
-
-      // widget.items.sort((a, b) {
-      //   DateTime dateTimeA = DateTime.parse(
-      //       a.dateTime.split(" – ")[0] + " " + a.dateTime.split(" – ")[1]);
-      //   DateTime dateTimeB = DateTime.parse(
-      //       b.dateTime.split(" – ")[0] + " " + b.dateTime.split(" – ")[1]);
-      //   return dateTimeB.compareTo(dateTimeA);
-      // });
-
-      // widget.items.sort((a, b) {
-      //   DateTime dateTimeA = DateTime.parse(
-      //       a.favAddTime.split(" – ")[0] + " " + a.favAddTime.split(" – ")[1]);
-      //   DateTime dateTimeB = DateTime.parse(
-      //       b.favAddTime.split(" – ")[0] + " " + b.favAddTime.split(" – ")[1]);
-
-      //   int dateCompare = dateTimeB.compareTo(dateTimeA);
-      //   if (dateCompare != 0) return dateCompare;
-
-      //   int hourCompare = dateTimeB.hour.compareTo(dateTimeA.hour);
-      //   if (hourCompare != 0) return hourCompare;
-
-      //   int secondCompare = dateTimeB.second.compareTo(dateTimeA.second);
-      //   return secondCompare;
-      // });
-
-      // return Container();
+      
 
       widget.items.sort((a, b) =>
           DateTime.parse(b.dateTime.replaceAll(' – ', ' '))

@@ -61,7 +61,7 @@ class _MasonryGVState extends State<MasonryGV> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Sort by',
+                        'Filter by',
                         style: kSubTextStyle,
                       ),
                       RadioListTile<SortOption>(
@@ -105,7 +105,7 @@ class _MasonryGVState extends State<MasonryGV> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Filter by',
+                        'Sort by',
                         // style: TextStyle(
                         //   fontWeight: FontWeight.bold,
                         //   fontSize: 16,

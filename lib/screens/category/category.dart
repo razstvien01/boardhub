@@ -70,7 +70,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Sort by',
+                        'Filter by',
                         style: kSubTextStyle,
                       ),
                       RadioListTile<SortOption>(
@@ -114,7 +114,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Filter by',
+                        'Sort by',
                         // style: TextStyle(
                         //   fontWeight: FontWeight.bold,
                         //   fontSize: 16,
