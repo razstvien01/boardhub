@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rent_house/constant.dart';
 
 import '../../models/item_model.dart';
@@ -10,7 +11,10 @@ import '../home/components/details_screen.dart';
 import 'profile_setting.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final bool isCurrUserProfile;
+  final String uid;
+  const Profile(
+      {super.key, required this.isCurrUserProfile, required this.uid});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -23,37 +27,74 @@ class _ProfileState extends State<Profile> {
   List<Item> _items = [];
   int total_post = 0;
 
+  var user;
+
   @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
   }
   
+  void loadData() async {
+    user = await FirebaseFirestore.instance.collection("users").doc(
+        (widget.isCurrUserProfile)
+            ? "${FirebaseAuth.instance.currentUser?.uid}"
+            : widget.uid).get();
+  }
   @override
-  void initState()
-  {
+  void initState() {
+    loadData();
+    
     try {
-        downloadURL();
-      } catch (e) {
-        print("Download URL");
-        print(e);
+      downloadURL();
+    } catch (e) {
+      print("Download URL");
+      print(e);
+    }
+    
+    if (!widget.isCurrUserProfile) {
+        DocumentReference docRef = FirebaseFirestore.instance
+            .collection('notifications')
+            .doc('profile_viewed');
+
+        DateTime now = DateTime.now();
+        String formattedDate = DateFormat('yyyy-MM-dd - HH:mm:ss').format(now);
+
+        // print(user);
+
+        //* getting data without using FutureBuilder or StreamBuilder
+
+        // if (documentSnapshot.exists)
+        // {
+        docRef.update({
+          formattedDate.substring(0, 10) +
+              ' | ' +
+              currUser!.uid +
+              ' | ' +
+              widget.uid: {
+            'dateViewed': formattedDate,
+            'uid': currUser?.uid,
+            'note': userGlbData['fullname'] + ' just viewed your profile',
+          }
+        } as Map<String, Object?>);
+        // }
       }
     super.initState();
   }
 
-  final user = FirebaseFirestore.instance
-      .collection("users")
-      .doc("${FirebaseAuth.instance.currentUser?.uid}");
-
   Future<void> downloadURL() async {
     try {
-      profileImageURL = await FirebaseStorage.instance
-          .ref('profile/${currUser?.uid}' 'profile_pic')
-          .getDownloadURL();
+      String path = (widget.isCurrUserProfile)
+          ? 'profile/${currUser?.uid}' + 'profile_pic'
+          : 'profile/${widget.uid}' + 'profile_pic';
+      profileImageURL =
+          await FirebaseStorage.instance.ref(path).getDownloadURL();
 
       // print()
       // ignore: empty_catches
-    } catch (e) { profileImageURL = null; }
+    } catch (e) {
+      profileImageURL = null;
+    }
   }
 
   @override
@@ -81,24 +122,25 @@ class _ProfileState extends State<Profile> {
           style: TextStyle(color: Colors.orange),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.settings, color: kPrimaryColor),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ProfileSetting(() {
-                          setState(() {});
-                        })),
-              );
-            },
-          ),
+          if (widget.isCurrUserProfile)
+            IconButton(
+              icon: Icon(Icons.settings, color: kPrimaryColor),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfileSetting(() {
+                            setState(() {});
+                          })),
+                );
+              },
+            ),
         ],
       ),
       body: FutureBuilder<DocumentSnapshot?>(
         future: FirebaseFirestore.instance
             .collection("users")
-            .doc("${currUser?.uid}")
+            .doc((widget.isCurrUserProfile) ? "${currUser!.uid}" : widget.uid)
             .get(),
         builder: getUserInfo,
       ),
@@ -110,7 +152,9 @@ class _ProfileState extends State<Profile> {
     if (snapshot.hasData) {
       data = snapshot.data!.data() as Map<String, dynamic>;
 
-      userGlbData = data;
+      if (widget.isCurrUserProfile) {
+        userGlbData = data;
+      }
 
       //print(userGlbData['bookmark']);
 
@@ -125,6 +169,34 @@ class _ProfileState extends State<Profile> {
         enable = data['enable'];
         FirebaseAuth.instance.signOut();
       }
+
+      // if (!widget.isCurrUserProfile) {
+      //   DocumentReference docRef = FirebaseFirestore.instance
+      //       .collection('notifications')
+      //       .doc('profile_viewed');
+
+      //   DateTime now = DateTime.now();
+      //   String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+
+      //   // print(user);
+
+      //   //* getting data without using FutureBuilder or StreamBuilder
+
+      //   // if (documentSnapshot.exists)
+      //   // {
+      //   docRef.update({
+      //     formattedDate +
+      //         ' | ' +
+      //         currUser!.uid +
+      //         ' | ' +
+      //         widget.uid: {
+      //       // 'dateViewed': formattedDate,
+      //       'uid': currUser?.uid,
+      //       'note': userGlbData['fullname'] + ' just viewed your profile',
+      //     }
+      //   } as Map<String, Object?>);
+      //   // }
+      // }
       return FutureBuilder<QuerySnapshot?>(
         future: FirebaseFirestore.instance.collection('properties').get(),
         builder: ((context, s) {
@@ -139,7 +211,8 @@ class _ProfileState extends State<Profile> {
 
             for (var i in allPropData) {
               for (var j in i.keys) {
-                if (currUser?.uid == i[j]['uid']) {
+                if (((widget.isCurrUserProfile) ? currUser?.uid : widget.uid) ==
+                    i[j]['uid']) {
                   ++total_post;
                   _items.add(Item(
                     i[j]['title'],
@@ -166,7 +239,7 @@ class _ProfileState extends State<Profile> {
                   "${b.dateTime.split(" – ")[0]} ${b.dateTime.split(" – ")[1]}");
               return dateTimeB.compareTo(dateTimeA);
             });
-            
+
             return profile(context);
             // return Text("Have data", style: kSubTextStyle);
           } else {

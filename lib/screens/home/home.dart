@@ -6,7 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/add_property/add_property.dart';
-import 'package:rent_house/screens/notification/notification.dart';
+import 'package:rent_house/screens/notification/notification_page.dart';
 import 'package:rent_house/screens/select_locations/select_locations.dart';
 import 'package:rent_house/ud_widgets/search_field.dart';
 import 'package:rent_house/ud_widgets/select_category.dart';

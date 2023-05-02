@@ -13,6 +13,7 @@ import 'package:rent_house/models/item_model.dart';
 import 'package:rent_house/screens/chat/chat_room.dart';
 import 'package:rent_house/screens/home/components/edit_post.dart';
 import 'package:rent_house/screens/home/components/view_images.dart';
+import 'package:rent_house/screens/profile/profile.dart';
 
 class DetailsSreen extends StatefulWidget {
   final Item item;
@@ -225,7 +226,6 @@ class _DetailsSreenState extends State<DetailsSreen> {
             )
         ],
       ),
-      
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Padding(
@@ -391,32 +391,56 @@ class _DetailsSreenState extends State<DetailsSreen> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  const Text(
-                    'posted by ',
-                    style: kSmallTextStyle,
-                  ),
-                  FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance
-                          .collection("users")
-                          .doc('${widget.item.tenantID}')
-                          .get(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return const CircularProgressIndicator();
-                        }
+              FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance
+                      .collection("users")
+                      .doc('${widget.item.tenantID}')
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
 
-                        Map<String, dynamic> data =
-                            snapshot.data!.data() as Map<String, dynamic>;
+                    Map<String, dynamic> data =
+                        snapshot.data!.data() as Map<String, dynamic>;
 
-                        return Text(
-                          data['fullname'],
-                          style: kSubTextStyle,
+                    return GestureDetector(
+                      onTap: () {
+                        // print('CLICKED');\
+                        final currUser = FirebaseAuth.instance.currentUser;
+                        bool isCurrUserProfile =
+                            (widget.item.tenantID == currUser!.uid);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Profile(
+                                    isCurrUserProfile: isCurrUserProfile,
+                                    uid: widget.item.tenantID as String,
+                                  )),
                         );
-                      }),
-                ],
-              ),
+                      },
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 15,
+                            backgroundImage: NetworkImage(
+                                (data['profile_url'] == "" ||
+                                        data['profile_url'] == null)
+                                    ? default_profile_url
+                                    : data['profile_url']),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            data['fullname'],
+                            style: kSubTextStyle,
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
 
               const SizedBox(
                 height: 8.0,
@@ -720,6 +744,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                   textColor: Colors.white,
                                   fontSize: 16.0,
                                 );
+
                                 final currUser2 =
                                     FirebaseAuth.instance.currentUser;
 
@@ -799,7 +824,6 @@ class _DetailsSreenState extends State<DetailsSreen> {
                         ),
                         style: kSmallTextStyle,
                       ),
-                    
                     ],
                   ),
                 ),
@@ -908,6 +932,25 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   GestureDetector(
+                                    onTap: () {
+                                      // print('CLICKED');\
+                                      final currUser =
+                                          FirebaseAuth.instance.currentUser;
+                                      bool isCurrUserProfile =
+                                          (comments[index].userId ==
+                                              currUser!.uid);
+
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Profile(
+                                                  isCurrUserProfile:
+                                                      isCurrUserProfile,
+                                                  uid: comments[index].userId
+                                                      as String,
+                                                )),
+                                      );
+                                    },
                                     child: CircleAvatar(
                                       backgroundColor: kPrimaryColor,
                                       radius: 15.0,

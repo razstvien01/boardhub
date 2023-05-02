@@ -29,7 +29,7 @@ class _NavBarState extends State<NavBar> {
       // Search(),
       Favorite(favItems),
       const Chat(),
-      const Profile(),
+      const Profile(isCurrUserProfile: true, uid: '',),
     ];
     // return (user?.email != "admin@boardhub.com")
     //     ? [

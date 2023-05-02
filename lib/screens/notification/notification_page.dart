@@ -55,12 +55,17 @@ class _NotificationUIState extends State<NotificationUI> {
             onTap: () {},
             enabled: true,
             trailing: IconButton(
-                onPressed: null,
+                onPressed: () {
+                  
+                },
                 icon: Icon(
                   Icons.delete,
                   color: kPrimaryColor,
                 )),
           );
+        
+        
+        
         },
         separatorBuilder: ((context, index) {
           return Divider();
