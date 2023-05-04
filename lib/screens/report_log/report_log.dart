@@ -21,7 +21,7 @@ class _CommentReportLogState extends State<CommentReportLog> {
         elevation: 0.0,
         backgroundColor: kBGColor,
         toolbarHeight: 80.0,
-        title: Text(
+        title: const Text(
           'Comments Report Log',
           style: kSubTextStyle,
         ),
@@ -169,7 +169,7 @@ class _CommentReportLogState extends State<CommentReportLog> {
 
                     // ),);
                   }
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 },
               ),
             ),

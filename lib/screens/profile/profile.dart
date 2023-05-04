@@ -67,16 +67,14 @@ class _ProfileState extends State<Profile> {
         // if (documentSnapshot.exists)
         // {
         docRef.update({
-          formattedDate.substring(0, 10) +
-              ' | ' +
-              currUser!.uid +
-              ' | ' +
-              widget.uid: {
+          '${formattedDate.substring(0, 10)} | ${currUser!.uid} | ${widget.uid}': {
             'dateViewed': formattedDate,
             'uid': currUser?.uid,
             'note': userGlbData['fullname'] + ' just viewed your profile',
+            'type': 'profile_viewed',
+            'dateCreated': formattedDate,
           }
-        } as Map<String, Object?>);
+        });
         // }
       }
     super.initState();
@@ -85,8 +83,8 @@ class _ProfileState extends State<Profile> {
   Future<void> downloadURL() async {
     try {
       String path = (widget.isCurrUserProfile)
-          ? 'profile/${currUser?.uid}' + 'profile_pic'
-          : 'profile/${widget.uid}' + 'profile_pic';
+          ? 'profile/${currUser?.uid}' 'profile_pic'
+          : 'profile/${widget.uid}' 'profile_pic';
       profileImageURL =
           await FirebaseStorage.instance.ref(path).getDownloadURL();
 
@@ -140,7 +138,7 @@ class _ProfileState extends State<Profile> {
       body: FutureBuilder<DocumentSnapshot?>(
         future: FirebaseFirestore.instance
             .collection("users")
-            .doc((widget.isCurrUserProfile) ? "${currUser!.uid}" : widget.uid)
+            .doc((widget.isCurrUserProfile) ? currUser!.uid : widget.uid)
             .get(),
         builder: getUserInfo,
       ),

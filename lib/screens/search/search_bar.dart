@@ -175,12 +175,12 @@ class _SearchBarPageState extends State<SearchBarPage> {
       ),
       
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Search for",
               style: TextStyle(
                 color: Colors.deepOrange,
@@ -206,7 +206,7 @@ class _SearchBarPageState extends State<SearchBarPage> {
             //   ),
             // ),
 
-            Container(
+            SizedBox(
               height: 60,
               child: TextField(
                 textCapitalization: TextCapitalization.sentences,
@@ -401,15 +401,15 @@ class _SearchBarPageState extends State<SearchBarPage> {
               ),
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             Expanded(
-              child: display_list.length == 0
-                  ? Center(
+              child: display_list.isEmpty
+                  ? const Center(
                       child: Text(
                         "No Result Found!",
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.deepOrange,
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,

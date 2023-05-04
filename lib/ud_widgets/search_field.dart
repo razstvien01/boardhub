@@ -53,7 +53,7 @@ class _SearchFieldState extends State<SearchField> {
     //     ),
     //   )),
     // );
-    return Container(
+    return SizedBox(
       height: 60,
       child: TextField(
         textCapitalization: TextCapitalization.sentences,
@@ -226,7 +226,7 @@ class _SearchFieldState extends State<SearchField> {
             icon: Icon(Icons.search, color: kPrimaryColor),
             onPressed: () async {
               if (searchController.text.trim() != '') {
-                print('Searching ' + searchController.text.trim());
+                print('Searching ${searchController.text.trim()}');
                 await Navigator.push(
                   context,
                   MaterialPageRoute(

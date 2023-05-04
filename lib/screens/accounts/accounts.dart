@@ -37,7 +37,7 @@ class _AccountsState extends State<Accounts> {
         elevation: 0.0,
         backgroundColor: kBGColor,
         toolbarHeight: 80.0,
-        title: Text(
+        title: const Text(
           'Manage Accounts',
           style: kSubTextStyle,
         ),

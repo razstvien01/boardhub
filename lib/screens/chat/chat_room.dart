@@ -14,10 +14,11 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
   final currUser = FirebaseAuth.instance.currentUser;
   
+  @override
   void initState()
   {
     print('Passed');
-    print(widget.item.tenantID! + '|' + widget.item.dateTime + '|' + currUser!.uid);
+    print('${widget.item.tenantID!}|${widget.item.dateTime}|${currUser!.uid}');
   }
   
   

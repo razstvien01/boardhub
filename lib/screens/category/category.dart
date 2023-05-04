@@ -14,7 +14,7 @@ enum FilterOption { ascending, descending }
 class CategoryPage extends StatefulWidget {
   final String? category_name;
   final VoidCallback refresh;
-  CategoryPage(this.category_name, this.refresh, {super.key});
+  const CategoryPage(this.category_name, this.refresh, {super.key});
 
   @override
   State<CategoryPage> createState() => _CategoryPageState();

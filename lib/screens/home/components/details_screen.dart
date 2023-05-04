@@ -26,11 +26,11 @@ class DetailsSreen extends StatefulWidget {
 
 class _DetailsSreenState extends State<DetailsSreen> {
   TextEditingController commentController = TextEditingController();
-  TextEditingController _editCommentController = TextEditingController();
+  final TextEditingController _editCommentController = TextEditingController();
   int indexToEdit = -1;
   Timer? _timer;
   bool isViewedComment = false;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   Map<String, dynamic> commentData = {};
 
@@ -66,7 +66,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
   void _scrollToBottom() {
     _scrollController.animateTo(
       500,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }
@@ -430,7 +430,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                                     ? default_profile_url
                                     : data['profile_url']),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Text(
@@ -686,7 +686,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Container(
@@ -835,7 +835,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         print("PASSED A");
-                        return Center(
+                        return const Center(
                           child: Text(
                             'No Comment Posts Yet',
                             style: kSubTextStyle,
@@ -918,7 +918,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
                       });
                       return ListView.builder(
                         itemCount: comments.length,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         //physics:
                         //AlwaysScrollableScrollPhysics(), // make the comment ListView always scrollable
                         shrinkWrap: true,
@@ -1207,7 +1207,7 @@ class _DetailsSreenState extends State<DetailsSreen> {
     return showModalBottomSheet(
       backgroundColor: kBGColor,
       context: context,
-      builder: (context) => Container(
+      builder: (context) => SizedBox(
         height: MediaQuery.of(context).size.height * 0.65,
         child: Column(
           children: [
