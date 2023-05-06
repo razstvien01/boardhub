@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rent_house/constant.dart';
-import 'package:rent_house/models/item_model.dart';
-import 'package:rent_house/models/message.dart';
+import 'package:rent_house/models/chatbox.dart';
+import 'package:rent_house/screens/profile/profile.dart';
 
 class ChatRoom extends StatefulWidget {
   // final Message messages;
@@ -23,20 +21,17 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
   final currUser = FirebaseAuth.instance.currentUser;
   final TextEditingController text = TextEditingController();
-  List<Widget> chats = [];
+  List<ChatBoxModel> chats = [];
+  var otherUser;
+  List<String> parts = [];
 
   @override
   void initState() {
-    // print('Passed');
-    // print('${widget.item.tenantID!}|${widget.item.dateTime}|${currUser!.uid}');
-
     super.initState();
-    
-    
   }
 
   @override
-  void dispose() {  
+  void dispose() {
     super.dispose();
     // _timer?.cancel();
     text.dispose();
@@ -44,8 +39,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> parts = widget.chatID.split('|');
-    
+    parts = widget.chatID.split('|');
 
     return FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
@@ -54,11 +48,10 @@ class _ChatRoomState extends State<ChatRoom> {
             .get(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: const CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
+          otherUser = snapshot.data!.data() as Map<String, dynamic>;
 
           return Scaffold(
             backgroundColor: kBGColor,
@@ -70,7 +63,7 @@ class _ChatRoomState extends State<ChatRoom> {
               ),
               title: Text(
                 // (widget.title == '') ? 'TITLE' : widget.title,
-                data['fullname'],
+                parts[3],
                 style: kSubTextStyle,
               ),
               leading: Builder(
@@ -98,7 +91,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Expanded(
+                        return const Expanded(
                             child: Center(child: CircularProgressIndicator()));
                       }
 
@@ -111,9 +104,28 @@ class _ChatRoomState extends State<ChatRoom> {
                           data = snapshot.data!.data() as Map<String, dynamic>;
                         } catch (e) {
                           return Expanded(
-                            child: ListView(
+                            // child: ListView(
+
+                            //   reverse: true,
+                            //   children: chats.toList(),
+                            // ),
+                            child: ListView.builder(
                               reverse: true,
-                              children: chats.toList(),
+                              itemCount: chats.length,
+                              itemBuilder: (context, index) {
+                                print('INDEX ' + index.toString());
+
+                                return ChatBox(
+                                    context,
+                                    chats[index].text,
+                                    chats[index].isFromMe,
+                                    chats[index].dateTime,
+                                    chats[index].imageUrl,
+                                    chats[index].name,
+                                    parts,
+                                    currUser,
+                                    );
+                              },
                             ),
                           );
                         }
@@ -121,40 +133,72 @@ class _ChatRoomState extends State<ChatRoom> {
                         // Widget cb = ChatBox(data, isFromMe)
 
                         for (var k in data.keys) {
-                          
-                          if(k == 'title')
-                          {
+                          if (k == 'title') {
                             widget.title = data[k];
                             // setState(() {
-                              
+
                             // });
                             continue;
                           }
                           bool isFromMe =
                               (data[k]['uid'] == currUser!.uid) ? true : false;
-                          
-                          Widget cb = ChatBox(data[k]['text'], isFromMe,
-                              data[k]['dateTime'], default_profile_url, 'Name'); 
 
-                          chats.add(cb);
+                          // Widget cb = ChatBox(
+                          //     data[k]['text'],
+                          //     isFromMe,
+                          //     data[k]['dateTime'],
+                          //     default_profile_url,
+                          //     otherUser['fullname']);
+                          ChatBoxModel cbm = ChatBoxModel(
+                            dateTime: data[k]['dateTime'],
+                            imageUrl: default_profile_url,
+                            isFromMe: isFromMe,
+                            name: otherUser['fullname'],
+                            text: data[k]['text'],
+                          );
+                          chats.add(cbm);
                         }
+
+                        chats.sort((a, b) {
+                          DateTime dateTimeA = DateTime.parse(
+                              "${a.dateTime.split(" - ")[0]} ${a.dateTime.split(" - ")[1]}");
+                          DateTime dateTimeB = DateTime.parse(
+                              "${b.dateTime.split(" - ")[0]} ${b.dateTime.split(" - ")[1]}");
+                          return dateTimeB.compareTo(dateTimeA);
+                        });
                       }
 
                       return Expanded(
-                        child: ListView(
+                        // child: ListView(
+                        //   reverse: true,
+                        //   children: chats.toList(),
+                        // ),
+                        child: ListView.builder(
                           reverse: true,
-                          children: chats.toList(),
+                          itemCount: chats.length,
+                          itemBuilder: (context, index) {
+                            return ChatBox(
+                                context,
+                                chats[index].text,
+                                chats[index].isFromMe,
+                                chats[index].dateTime,
+                                chats[index].imageUrl,
+                                chats[index].name,
+                                parts,
+                                currUser,
+                                );
+                          },
                         ),
                       );
                     }),
                 Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: text,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.deepOrange,
                             border: InputBorder.none,
@@ -175,19 +219,27 @@ class _ChatRoomState extends State<ChatRoom> {
                               String formattedDate =
                                   DateFormat('yyyy-MM-dd - kk:mm:ss')
                                       .format(now);
-                              var cb = ChatBox(text.text.trim(), true,
-                                  formattedDate, default_profile_url, '');
+                              // var cb = ChatBox(text.text.trim(), true,
+                              //     formattedDate, default_profile_url, '');
 
-                              chats.insert(0, cb);
+                              ChatBoxModel cbm = ChatBoxModel(
+                                dateTime: formattedDate,
+                                imageUrl: default_profile_url,
+                                isFromMe: true,
+                                name: '',
+                                text: default_profile_url,
+                              );
+                              chats.add(cbm);
+
+                              chats.insert(0, cbm);
 
                               if (chats.length == 1) {
                                 FirebaseFirestore.instance
                                     .collection('chats')
                                     .doc(widget.chatID)
                                     .set({
-                                      'title': widget.title as String,
-                                  text.text.trim() + ' | ' + formattedDate: {
-                                    
+                                  // 'title': widget.title,
+                                  '${text.text.trim()} | $formattedDate': {
                                     'text': text.text.trim(),
                                     'dateTime': formattedDate,
                                     'uid': currUser!.uid,
@@ -199,7 +251,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                     .collection('chats')
                                     .doc(widget.chatID)
                                     .update({
-                                  text.text.trim() + ' | ' + formattedDate: {
+                                  '${text.text.trim()} | $formattedDate': {
                                     'text': text.text.trim(),
                                     'dateTime': formattedDate,
                                     'uid': currUser!.uid,
@@ -210,7 +262,7 @@ class _ChatRoomState extends State<ChatRoom> {
                           }
                           text.clear();
                         },
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
                         color: Colors.deepOrange,
                       )
                     ],
@@ -223,42 +275,56 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 }
 
-Widget ChatBox(String text, bool isFromMe, String dateTime, String imageUrl, String name) {
+Widget ChatBox(BuildContext context, String text, bool isFromMe,
+    String dateTime, String imageUrl, String name, List<String> parts, User? currUser) {
   return Row(
     mainAxisAlignment:
         isFromMe ? MainAxisAlignment.end : MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
-      if (imageUrl != null && !isFromMe)
-        CircleAvatar(
-          backgroundImage: NetworkImage(imageUrl),
-          radius: 20.0,
+      if (!isFromMe)
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Profile(
+                        isCurrUserProfile: false,
+                        uid:(parts[0] != currUser!.uid) ? parts[0] : parts[2],
+                      )),
+            );
+          },
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(imageUrl),
+            radius: 20.0,
+          ),
         ),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(!isFromMe) Text(
-            name,
-            style: TextStyle(
-              color: Colors.white,
+          if (!isFromMe)
+            Text(
+              name,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
             ),
-          ),
           Container(
             width: 250.0,
-            margin: EdgeInsets.symmetric(
+            margin: const EdgeInsets.symmetric(
               vertical: 12.0,
               horizontal: 8.0,
             ),
-            padding: EdgeInsets.all(14.0),
+            padding: const EdgeInsets.all(14.0),
             decoration: BoxDecoration(
               color: isFromMe ? Colors.deepOrange[400] : Colors.deepOrange[200],
               borderRadius: isFromMe
-                  ? BorderRadius.only(
+                  ? const BorderRadius.only(
                       topLeft: Radius.circular(12.0),
                       topRight: Radius.circular(12.0),
                       bottomLeft: Radius.circular(12.0),
                       bottomRight: Radius.circular(0))
-                  : BorderRadius.only(
+                  : const BorderRadius.only(
                       topLeft: Radius.circular(12.0),
                       topRight: Radius.circular(12.0),
                       bottomLeft: Radius.circular(0),
@@ -269,11 +335,11 @@ Widget ChatBox(String text, bool isFromMe, String dateTime, String imageUrl, Str
               children: [
                 Text(
                   text,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 6.0),
+                const SizedBox(height: 6.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -286,7 +352,7 @@ Widget ChatBox(String text, bool isFromMe, String dateTime, String imageUrl, Str
                     ),
                     // SizedBox(width: 5,),
                     if (isFromMe)
-                      Icon(
+                      const Icon(
                         Icons.check_circle,
                         color: Colors.white,
                         size: 16.0,
@@ -301,102 +367,3 @@ Widget ChatBox(String text, bool isFromMe, String dateTime, String imageUrl, Str
     ],
   );
 }
-
-
-// Widget ChatBox(String text, bool isFromMe, String dateTime) {
-//   return Row(
-//     mainAxisAlignment:
-//         isFromMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-//     children: [
-//       Container(
-//         width: 250.0,
-//         margin: EdgeInsets.symmetric(
-//           vertical: 12.0,
-//           horizontal: 8.0,
-//         ),
-//         padding: EdgeInsets.all(14.0),
-//         decoration: BoxDecoration(
-//           color: isFromMe ? Colors.deepOrange[400] : Colors.deepOrange[200],
-//           borderRadius: isFromMe
-//               ? BorderRadius.only(
-//                   topLeft: Radius.circular(12.0),
-//                   topRight: Radius.circular(12.0),
-//                   bottomLeft: Radius.circular(12.0),
-//                   bottomRight: Radius.circular(0))
-//               : BorderRadius.only(
-//                   topLeft: Radius.circular(12.0),
-//                   topRight: Radius.circular(12.0),
-//                   bottomLeft: Radius.circular(0),
-//                   bottomRight: Radius.circular(12.0)),
-//         ),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               text,
-//               style: TextStyle(
-//                 color: Colors.white,
-//               ),
-//             ),
-//             SizedBox(height: 6.0),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   dateTime,
-//                   style: TextStyle(
-//                     color: Colors.white.withOpacity(0.8),
-//                     fontSize: 12.0,
-//                   ),
-//                 ),
-//                 // if (isFromMe)
-//                 //   Icon(
-//                 //     Icons.check_circle,
-//                 //     color: Colors.white,
-//                 //     size: 16.0,
-//                 //   ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     ],
-//   );
-// }
-
-// Widget ChatBox(String text, bool isFromMe) {
-//   return Row(
-//     mainAxisAlignment:
-//         isFromMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-//     children: [
-//       Container(
-//         width: 250.0,
-//         margin: EdgeInsets.symmetric(
-//           vertical: 12.0,
-//           horizontal: 8.0,
-//         ),
-//         padding: EdgeInsets.all(14.0),
-//         decoration: BoxDecoration(
-//           color: isFromMe ? Colors.deepOrange[400] : Colors.deepOrange[200],
-//           borderRadius: isFromMe
-//               ? BorderRadius.only(
-//                   topLeft: Radius.circular(12.0),
-//                   topRight: Radius.circular(12.0),
-//                   bottomLeft: Radius.circular(12.0),
-//                   bottomRight: Radius.circular(0))
-//               : BorderRadius.only(
-//                   topLeft: Radius.circular(12.0),
-//                   topRight: Radius.circular(12.0),
-//                   bottomLeft: Radius.circular(0),
-//                   bottomRight: Radius.circular(12.0)),
-//         ),
-//         child: Text(
-//           text,
-//           style: TextStyle(
-//             color: Colors.white,
-//           ),
-//         ),
-//       ),
-//     ],
-//   );
-// }

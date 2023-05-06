@@ -6,9 +6,10 @@ class Message{
   String time;
   String avatar;
   String chatID;
+  String title;
   
   Message({required this.id, required this.currUid, required this.snippet, required this.time, required this.avatar, 
-  required this.chatID
+  required this.chatID, required this.title,
   });
   
   // static List<Message> messages = [
