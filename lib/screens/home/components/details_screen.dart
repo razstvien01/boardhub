@@ -10,6 +10,7 @@ import 'package:line_icons/line_icon.dart';
 import 'package:rent_house/constant.dart';
 import 'package:rent_house/models/comment.dart';
 import 'package:rent_house/models/item_model.dart';
+import 'package:rent_house/models/message.dart';
 import 'package:rent_house/screens/chat/chat_room.dart';
 import 'package:rent_house/screens/home/components/edit_post.dart';
 import 'package:rent_house/screens/home/components/view_images.dart';
@@ -467,10 +468,12 @@ class _DetailsSreenState extends State<DetailsSreen> {
                 ),
                 child: RawMaterialButton(
                   onPressed: () {
+                    
+                    String chatID = '${widget.item.tenantID!}|${widget.item.dateTime}|${currUser!.uid}';
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatRoom(item: widget.item),
+                        builder: (context) => ChatRoom(chatID: chatID, title: widget.item.title as String),
                       ),
                     );
                   },
