@@ -1,4 +1,4 @@
-# rent_house
+# BoardHub
 
 A new Flutter project.
 
